@@ -69,7 +69,7 @@ function Nav() {
           <img
             src={logoImg}
             alt="Paul & Timothy Training Centre"
-            className={`h-9 w-auto md:h-10 transition-[filter] duration-500 ${
+            className={`h-14 w-auto md:h-16 transition-[filter] duration-500 ${
               scrolled ? "" : "brightness-0 invert"
             }`}
           />
@@ -706,7 +706,7 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div>
           <div className="rounded-2xl bg-white/95 p-4 w-fit">
-            <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-10 w-auto" />
+            <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-12 w-auto" />
           </div>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-primary-foreground/70">
             Equipping ordinary people for an extraordinary mission. Rooted in Scripture. Sent in
