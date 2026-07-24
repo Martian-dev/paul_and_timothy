@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -69,7 +69,7 @@ function Nav() {
           <img
             src={logoImg}
             alt="Paul & Timothy Training Centre"
-            className={`h-14 w-auto md:h-16 transition-[filter] duration-500 ${
+            className={`h-9 w-auto md:h-10 transition-[filter] duration-500 ${
               scrolled ? "" : "brightness-0 invert"
             }`}
           />
@@ -433,6 +433,66 @@ function Audience() {
   );
 }
 
+function Counter({
+  target,
+  format,
+  duration = 900,
+}: {
+  target: number;
+  format: (value: number) => string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [inView, setInView] = useState(false);
+  const [value, setValue] = useState(0);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0, rootMargin: "-80px 0px -80px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView || startedRef.current) return;
+    startedRef.current = true;
+
+    const start = performance.now();
+    let raf: number;
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(eased * target);
+      setValue(current);
+
+      if (progress < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        setValue(target);
+      }
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, target, duration]);
+
+  return <span ref={ref}>{format(value)}</span>;
+}
+
 function Mission() {
   return (
     <Section id="mission" className="relative overflow-hidden gradient-hero text-white">
@@ -472,13 +532,15 @@ function Mission() {
           </p>
           <div className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
             {[
-              ["12k+", "Equipped"],
-              ["40+", "Nations"],
-              ["300", "Mentors"],
-            ].map(([n, l]) => (
-              <div key={l}>
-                <div className="text-3xl font-medium text-white md:text-4xl">{n}</div>
-                <div className="mt-1 text-xs uppercase tracking-widest text-white/60">{l}</div>
+              { value: 12000, label: "Equipped", format: (n: number) => `${Math.floor(n / 1000)}k+` },
+              { value: 40, label: "Nations", format: (n: number) => `${n}+` },
+              { value: 300, label: "Mentors", format: (n: number) => `${n}` },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <div className="text-3xl font-medium text-white md:text-4xl">
+                  <Counter target={stat.value} format={stat.format} />
+                </div>
+                <div className="mt-1 text-xs uppercase tracking-widest text-white/60">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -706,7 +768,7 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div>
           <div className="rounded-2xl bg-white/95 p-4 w-fit">
-            <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-12 w-auto" />
+            <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-10 w-auto" />
           </div>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-primary-foreground/70">
             Equipping ordinary people for an extraordinary mission. Rooted in Scripture. Sent in
