@@ -66,26 +66,41 @@ function Nav() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <a href="#top" className="flex items-center gap-2">
-          <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-9 w-auto md:h-10" />
+          <img
+            src={logoImg}
+            alt="Paul & Timothy Training Centre"
+            className={`h-9 w-auto md:h-10 transition-[filter] duration-500 ${
+              scrolled ? "" : "brightness-0 invert"
+            }`}
+          />
         </a>
         <nav className="hidden items-center gap-8 lg:flex">
           {links.map(([label, href]) => (
             <a
               key={label}
               href={href}
-              className="text-sm font-medium text-primary/80 transition-colors hover:text-primary"
+              className={`text-sm font-medium transition-colors duration-500 ${
+                scrolled ? "text-primary/80 hover:text-primary" : "text-white/90 hover:text-white"
+              }`}
             >
               {label}
             </a>
           ))}
         </nav>
         <div className="hidden items-center gap-3 lg:flex">
-          <a href="#assessment" className="text-sm font-medium text-primary/80 hover:text-primary">
+          <a
+            href="#assessment"
+            className={`text-sm font-medium transition-colors duration-500 ${
+              scrolled ? "text-primary/80 hover:text-primary" : "text-white/90 hover:text-white"
+            }`}
+          >
             Login
           </a>
           <a
             href="#assessment"
-            className="group inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:shadow-soft hover:-translate-y-0.5"
+            className={`group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 hover:-translate-y-0.5 hover:shadow-soft ${
+              scrolled ? "bg-primary text-primary-foreground" : "bg-white text-primary"
+            }`}
           >
             Start Here
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -93,11 +108,14 @@ function Nav() {
         </div>
         <button
           onClick={() => setOpen(!open)}
-          className="rounded-full p-2 text-primary lg:hidden"
+          className={`rounded-full p-2 transition-colors duration-500 lg:hidden ${
+            scrolled ? "text-primary" : "text-white"
+          }`}
           aria-label="Menu"
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
+
       </div>
       {open && (
         <div className="glass border-t border-border/40 lg:hidden">
