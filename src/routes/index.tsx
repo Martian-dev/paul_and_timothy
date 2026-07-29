@@ -53,7 +53,7 @@ function Nav() {
     ["Home", "#top"],
     ["Why We Exist", "#mission"],
     ["Assessment", "#assessment"],
-    ["Courses", "#courses"],
+    ["Courses", "/courses"],
     ["Resources", "#resources"],
     ["Contact", "#contact"],
   ];
@@ -115,7 +115,6 @@ function Nav() {
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
-
       </div>
       {open && (
         <div className="glass border-t border-border/40 lg:hidden">
@@ -296,7 +295,9 @@ function AssessmentCards() {
               <c.icon className="h-6 w-6" strokeWidth={1.75} />
             </div>
             <h3 className="text-2xl font-medium text-primary">{c.title}</h3>
-            <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">{c.desc}</p>
+            <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">
+              {c.desc}
+            </p>
             <a
               href="#"
               className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors group-hover:text-teal-deep"
@@ -324,7 +325,8 @@ function JourneyTimeline() {
       <div className="text-center">
         <SectionEyebrow>Your Journey With Us</SectionEyebrow>
         <h2 className="mx-auto max-w-3xl text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-          A clear path from <span className="text-gradient italic">wondering</span> to walking it out.
+          A clear path from <span className="text-gradient italic">wondering</span> to walking it
+          out.
         </h2>
       </div>
 
@@ -458,7 +460,7 @@ function Counter({
           observer.disconnect();
         }
       },
-      { threshold: 0, rootMargin: "-80px 0px -80px 0px" }
+      { threshold: 0, rootMargin: "-80px 0px -80px 0px" },
     );
 
     observer.observe(el);
@@ -514,8 +516,7 @@ function Mission() {
             "The harvest is plenty,
             <br />
             <span className="italic text-[oklch(0.85_0.12_180)]">and the workers are few</span>
-            <br />
-            — and only a handful are equipped."
+            <br />— and only a handful are equipped."
           </h2>
         </motion.div>
         <motion.div
@@ -532,7 +533,11 @@ function Mission() {
           </p>
           <div className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
             {[
-              { value: 12000, label: "Equipped", format: (n: number) => `${Math.floor(n / 1000)}k+` },
+              {
+                value: 12000,
+                label: "Equipped",
+                format: (n: number) => `${Math.floor(n / 1000)}k+`,
+              },
               { value: 40, label: "Nations", format: (n: number) => `${n}+` },
               { value: 300, label: "Mentors", format: (n: number) => `${n}` },
             ].map((stat) => (
@@ -540,7 +545,9 @@ function Mission() {
                 <div className="text-3xl font-medium text-white md:text-4xl">
                   <Counter target={stat.value} format={stat.format} />
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-widest text-white/60">{stat.label}</div>
+                <div className="mt-1 text-xs uppercase tracking-widest text-white/60">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
@@ -745,7 +752,7 @@ function MentorCTA() {
             </p>
           </div>
           <a
-            href="#contact"
+            href="/interaction"
             className="group inline-flex items-center gap-2 self-start rounded-full bg-white px-7 py-4 text-sm font-semibold text-primary transition-all hover:-translate-y-0.5 md:self-center"
           >
             Talk to a Mentor
@@ -830,7 +837,9 @@ function Footer() {
 
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-6 text-xs text-primary-foreground/60">
-          <div>© {new Date().getFullYear()} Paul & Timothy Training Centre. All rights reserved.</div>
+          <div>
+            © {new Date().getFullYear()} Paul & Timothy Training Centre. All rights reserved.
+          </div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white">
               Privacy Policy
