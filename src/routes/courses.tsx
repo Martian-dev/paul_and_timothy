@@ -1,6 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { BookOpen, Check, Clock3, GraduationCap, Search, Sparkles, X } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  BookOpen,
+  Check,
+  ChevronDown,
+  Clock3,
+  Compass,
+  GraduationCap,
+  HeartHandshake,
+  LockKeyhole,
+  Play,
+  Search,
+  Sparkles,
+  Users,
+  X,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import logoImg from "@/assets/logo.png";
 import equipmentImg from "@/assets/pttc-equipment.png";
@@ -12,21 +28,138 @@ export const Route = createFileRoute("/courses")({ component: CoursesPage });
 
 const courseImages = [equipmentImg, communityImg, mentorshipImg, callingImg];
 const courses = [
-  ["Youth & Teens Leadership Training", "Leadership training"],
-  ["Couples Ministry Training", "Specialised ministry"],
-  ["Counselling Training", "Care ministry"],
-  ["Kingdom Shakers (Knowing Your Call)", "Calling & spiritual gifts"],
-  ["One-to-one Evangelism", "Gospel ministry"],
-  ["Writing", "Communication ministry"],
-  ["Media & Digital Media Ministry", "Communication ministry"],
-  ["Prayer Ministry & Prayer Cells", "Prayer ministry"],
-  ["Mentorship", "Formation & discipleship"],
-  ["Team Building & Team Management", "Leadership training"],
-].map(([title, category], index) => ({
-  title,
-  category,
+  {
+    title: "Youth & Teens Leadership Training",
+    category: "Leadership training",
+    skills: [
+      "Lead age-specific discipleship",
+      "Plan meaningful gatherings",
+      "Mentor emerging leaders",
+    ],
+  },
+  {
+    title: "Couples Ministry Training",
+    category: "Specialised ministry",
+    skills: [
+      "Apply biblical relationship principles",
+      "Guide honest conversations",
+      "Support couples with care",
+    ],
+  },
+  {
+    title: "Counselling Training",
+    category: "Care ministry",
+    skills: [
+      "Listen with wisdom and empathy",
+      "Offer Scripture-rooted guidance",
+      "Recognise when to refer",
+    ],
+  },
+  {
+    title: "Kingdom Shakers (Knowing Your Call)",
+    category: "Calling & spiritual gifts",
+    skills: [
+      "Identify your calling and gifts",
+      "Discern a faithful next step",
+      "Build rhythms for spiritual growth",
+    ],
+  },
+  {
+    title: "One-to-one Evangelism",
+    category: "Gospel ministry",
+    skills: [
+      "Share the Gospel clearly",
+      "Respond to real questions",
+      "Follow up with new believers",
+    ],
+  },
+  {
+    title: "Writing",
+    category: "Communication ministry",
+    skills: [
+      "Shape a clear biblical message",
+      "Structure stories and devotionals",
+      "Edit for your audience",
+    ],
+  },
+].map((course, index) => ({
+  ...course,
   image: courseImages[index % courseImages.length],
+  number: index + 1,
 }));
+
+const recommendedCourses = [
+  {
+    course: courses[3],
+    reason: "For discovering your calling",
+    description:
+      "Begin here if you want clarity about your gifts, purpose, and next faithful step.",
+  },
+  {
+    course: courses[0],
+    reason: "For developing leaders",
+    description: "A practical pathway for those serving young people in churches and communities.",
+  },
+  {
+    course: courses[4],
+    reason: "For sharing your faith",
+    description: "Grow in confidence as you explain the Gospel and walk with people one to one.",
+  },
+];
+
+const skillGroups = [
+  {
+    icon: BookOpen,
+    title: "Biblical foundations",
+    description:
+      "Read, understand, and apply Scripture with greater confidence in everyday ministry.",
+  },
+  {
+    icon: Compass,
+    title: "Calling & discernment",
+    description:
+      "Recognise your spiritual gifts and turn a sense of calling into a clear next step.",
+  },
+  {
+    icon: Users,
+    title: "Leadership in practice",
+    description: "Plan, communicate, mentor, and serve people with wisdom, courage, and care.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Gospel-centred care",
+    description:
+      "Listen well, share truth graciously, and support people through real-life questions.",
+  },
+];
+
+const faqs = [
+  {
+    question: "How do I access a course?",
+    answer:
+      "Choose “Watch now” on any course. You will be taken to the separate learner access page, where you can sign in or create an account for the learning platform.",
+  },
+  {
+    question: "How long does each training pathway take?",
+    answer:
+      "Courses are short-term and usually run for 3 to 6 months. The exact weekly or monthly learning rhythm is confirmed before you begin.",
+  },
+  {
+    question: "Do I need previous ministry experience?",
+    answer:
+      "No. Some pathways are designed for people beginning to explore their calling, while others support those already serving in leadership or ministry.",
+  },
+  {
+    question: "Will I receive a certificate?",
+    answer:
+      "Eligible pathways can include a certificate after you complete the required lessons and assessments. The requirements for your chosen course will be shown before enrolment.",
+  },
+  {
+    question: "Are the courses online?",
+    answer:
+      "Yes. The training is designed for online learning, with weekly or monthly lessons and guidance depending on the course.",
+  },
+];
 
 function Header() {
   return (
@@ -39,7 +172,7 @@ function Header() {
           <a href="/" className="transition hover:text-teal-deep">
             Home
           </a>
-          <a href="/courses" className="text-primary">
+          <a href="/courses" className="text-primary" aria-current="page">
             Courses
           </a>
           <a href="/interaction" className="transition hover:text-teal-deep">
@@ -47,10 +180,11 @@ function Header() {
           </a>
         </nav>
         <a
-          href="/interaction#booking"
-          className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
+          href="/login"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
         >
-          Talk to a mentor
+          <LockKeyhole className="h-4 w-4" />
+          Learner login
         </a>
       </div>
     </header>
@@ -59,13 +193,17 @@ function Header() {
 
 function CoursesPage() {
   const [query, setQuery] = useState("");
-  const visible = useMemo(
-    () =>
-      courses.filter((course) =>
-        `${course.title} ${course.category}`.toLowerCase().includes(query.trim().toLowerCase()),
-      ),
-    [query],
-  );
+  const visible = useMemo(() => {
+    const normalisedQuery = query.trim().toLowerCase();
+
+    return courses.filter((course) =>
+      [course.title, course.category, ...course.skills]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalisedQuery),
+    );
+  }, [query]);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -92,15 +230,16 @@ function CoursesPage() {
                 learning. Begin by naming the calling God has placed on your life.
               </p>
               <a
-                href="/interaction"
+                href="#course-catalog"
                 className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-teal transition hover:text-white"
               >
-                Start a conversation <span aria-hidden>→</span>
+                Explore six focused courses <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           </div>
         </section>
-        <section className="px-6 py-20 md:py-28">
+
+        <section id="course-catalog" className="scroll-mt-6 px-6 py-20 md:py-28">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-8 lg:grid-cols-[1fr_25rem] lg:items-end">
               <div>
@@ -118,11 +257,12 @@ function CoursesPage() {
                 <input
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search leadership, prayer, media…"
+                  placeholder="Search leadership, calling, care…"
                   className="h-14 w-full rounded-2xl border border-border bg-card pl-14 pr-12 text-sm text-foreground shadow-card outline-none transition focus:border-teal-deep focus:ring-2 focus:ring-teal/30"
                 />
                 {query && (
                   <button
+                    type="button"
                     onClick={() => setQuery("")}
                     className="absolute right-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl text-muted-foreground transition hover:bg-muted hover:text-primary"
                     aria-label="Clear search"
@@ -133,7 +273,7 @@ function CoursesPage() {
               </label>
             </div>
             <p className="mt-8 text-sm text-muted-foreground" aria-live="polite">
-              {visible.length} specialisations available
+              {visible.length} of {courses.length} courses available
             </p>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {visible.map((course, index) => (
@@ -142,55 +282,57 @@ function CoursesPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.04, duration: 0.35 }}
                   key={course.title}
-                  className="group overflow-hidden rounded-[1.75rem] bg-card shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft"
+                  className="group flex overflow-hidden rounded-[1.75rem] bg-card shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft"
                 >
-                  <div className="relative aspect-[16/8] overflow-hidden bg-primary">
-                    <img
-                      src={course.image}
-                      alt=""
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
-                    <span className="absolute bottom-4 right-5 font-serif text-3xl text-white/90">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div className="flex min-w-0 flex-1 flex-col p-7">
-                    <span className="text-[11px] font-semibold uppercase tracking-[.18em] text-teal-deep">
-                      {course.category}
-                    </span>
-                    <h3 className="mt-5 text-3xl font-medium leading-tight text-primary">
-                      {course.title}
-                    </h3>
-                    <div className="mt-5 flex gap-4 border-y border-border/60 py-4 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1.5">
-                        <Clock3 className="h-4 w-4 text-teal-deep" />
-                        3–6 months
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <BookOpen className="h-4 w-4 text-teal-deep" />
-                        Online learning
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <div className="relative aspect-[16/8] overflow-hidden bg-primary">
+                      <img
+                        src={course.image}
+                        alt=""
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
+                      <span className="absolute bottom-4 right-5 font-serif text-3xl text-white/90">
+                        {String(course.number).padStart(2, "0")}
                       </span>
                     </div>
-                    <ul className="mt-5 space-y-2 text-xs text-foreground/75">
-                      {[
-                        "Basic biblical doctrines",
-                        "Calling & spiritual gifts",
-                        "Field-worker testimonies",
-                      ].map((outcome) => (
-                        <li key={outcome} className="flex items-center gap-2">
-                          <Check className="h-3.5 w-3.5 text-teal-deep" />
-                          {outcome}
-                        </li>
-                      ))}
-                    </ul>
-                    <a
-                      href="/interaction#booking"
-                      className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl border border-primary/15 px-4 text-sm font-semibold text-primary transition hover:border-teal-deep hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
-                    >
-                      Ask about this training
-                    </a>
+                    <div className="flex min-w-0 flex-1 flex-col p-7">
+                      <span className="text-[11px] font-semibold uppercase tracking-[.18em] text-teal-deep">
+                        {course.category}
+                      </span>
+                      <h3 className="mt-5 text-3xl font-medium leading-tight text-primary">
+                        {course.title}
+                      </h3>
+                      <div className="mt-5 flex gap-4 border-y border-border/60 py-4 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1.5">
+                          <Clock3 className="h-4 w-4 text-teal-deep" />
+                          3–6 months
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <BookOpen className="h-4 w-4 text-teal-deep" />
+                          Online learning
+                        </span>
+                      </div>
+                      <div className="mt-5 text-[11px] font-semibold uppercase tracking-[.16em] text-primary">
+                        Skills you will gain
+                      </div>
+                      <ul className="mt-3 space-y-2 text-xs text-foreground/75">
+                        {course.skills.map((skill) => (
+                          <li key={skill} className="flex items-start gap-2">
+                            <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-teal-deep" />
+                            {skill}
+                          </li>
+                        ))}
+                      </ul>
+                      <a
+                        href="/login"
+                        aria-label={`Watch ${course.title} now`}
+                        className="mt-7 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
+                      >
+                        <Play className="h-4 w-4 fill-current" /> Watch now
+                      </a>
+                    </div>
                   </div>
                 </motion.article>
               ))}
@@ -200,6 +342,7 @@ function CoursesPage() {
                 <GraduationCap className="mx-auto h-9 w-9 text-teal-deep" />
                 <h3 className="mt-4 text-2xl text-primary">No training found yet.</h3>
                 <button
+                  type="button"
                   onClick={() => setQuery("")}
                   className="mt-4 text-sm font-semibold text-teal-deep underline underline-offset-4"
                 >
@@ -209,7 +352,147 @@ function CoursesPage() {
             )}
           </div>
         </section>
+
+        <section className="bg-primary px-6 py-20 text-white md:py-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-3xl">
+              <div className="text-xs font-semibold uppercase tracking-[.22em] text-teal">
+                What you will gain
+              </div>
+              <h2 className="mt-4 text-4xl font-medium leading-tight md:text-5xl">
+                Training that moves from{" "}
+                <em className="text-teal not-italic">understanding to action.</em>
+              </h2>
+              <p className="mt-5 max-w-2xl leading-relaxed text-white/70">
+                Each pathway combines biblical grounding with practical ministry skills you can use
+                in your church, family, workplace, and community.
+              </p>
+            </div>
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {skillGroups.map((skill) => (
+                <article
+                  key={skill.title}
+                  className="rounded-3xl border border-white/15 bg-white/7 p-6"
+                >
+                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-teal/15 text-teal">
+                    <skill.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-5 text-xl font-medium">{skill.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/65">{skill.description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-20 md:py-28">
+          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
+            <div
+              className="relative overflow-hidden rounded-[2rem] bg-cream p-6 shadow-soft sm:p-10"
+              aria-label="Paul and Timothy Training Centre certificate preview"
+              role="img"
+            >
+              <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full border-[28px] border-teal/15" />
+              <div className="relative border border-primary/15 bg-background px-6 py-12 text-center shadow-card sm:px-12">
+                <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-teal">
+                  <Award className="h-7 w-7" />
+                </div>
+                <p className="mt-6 text-[10px] font-semibold uppercase tracking-[.3em] text-teal-deep">
+                  Paul & Timothy Training Centre
+                </p>
+                <p className="mt-5 font-serif text-3xl text-primary sm:text-4xl">
+                  Certificate of Completion
+                </p>
+                <div className="mx-auto mt-6 h-px max-w-xs bg-border" />
+                <p className="mt-5 text-sm text-muted-foreground">
+                  Awarded on completion of an eligible training pathway
+                </p>
+                <div className="mt-8 flex items-end justify-between gap-4 text-[10px] uppercase tracking-[.16em] text-muted-foreground">
+                  <span className="border-t border-border px-4 pt-2">Course leader</span>
+                  <span className="border-t border-border px-4 pt-2">Date awarded</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.22em] text-teal-deep">
+                <span className="h-px w-8 bg-teal-deep" /> Certification
+              </div>
+              <h2 className="mt-5 text-4xl font-medium leading-tight text-primary md:text-5xl">
+                Complete the pathway.{" "}
+                <em className="text-teal-deep not-italic">Mark the milestone.</em>
+              </h2>
+              <p className="mt-6 max-w-xl leading-relaxed text-muted-foreground">
+                Eligible courses can lead to a certificate after the required lessons and
+                assessments are complete. You will see the exact completion requirements before
+                enrolment, so you know what you are working toward.
+              </p>
+              <ul className="mt-7 space-y-3 text-sm text-foreground/80">
+                {[
+                  "A clear record of your completed training",
+                  "A meaningful milestone for your ministry journey",
+                  "Course-specific requirements shared before you begin",
+                ].map((benefit) => (
+                  <li key={benefit} className="flex items-start gap-3">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-teal-deep" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="/login"
+                className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                Start an eligible course <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </section>
+
         <section className="bg-cream px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.22em] text-teal-deep">
+                  <span className="h-px w-8 bg-teal-deep" /> Recommended courses
+                </div>
+                <h2 className="mt-5 text-4xl font-medium leading-tight text-primary md:text-5xl">
+                  Not sure where to begin?{" "}
+                  <em className="text-teal-deep not-italic">Start with your next need.</em>
+                </h2>
+              </div>
+              <p className="max-w-xl leading-relaxed text-muted-foreground lg:ml-auto">
+                Choose the pathway closest to the season you are in now. You can build from there as
+                your calling and responsibilities grow.
+              </p>
+            </div>
+            <div className="mt-12 grid gap-5 lg:grid-cols-3">
+              {recommendedCourses.map(({ course, reason, description }, index) => (
+                <article key={course.title} className="rounded-3xl bg-card p-7 shadow-card">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-xs font-semibold uppercase tracking-[.16em] text-teal-deep">
+                      {reason}
+                    </span>
+                    <span className="font-serif text-3xl text-primary/25">0{index + 1}</span>
+                  </div>
+                  <h3 className="mt-6 text-2xl font-medium leading-tight text-primary">
+                    {course.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                    {description}
+                  </p>
+                  <a
+                    href="/login"
+                    className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition hover:text-teal-deep focus:outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    Watch now <Play className="h-4 w-4 fill-current" />
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-20 md:py-28">
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.22em] text-teal-deep">
@@ -246,6 +529,37 @@ function CoursesPage() {
                     {item.label}
                   </figcaption>
                 </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-primary px-6 py-20 text-white md:py-28">
+          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.8fr_1.2fr]">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[.22em] text-teal">
+                Frequently asked questions
+              </div>
+              <h2 className="mt-4 text-4xl font-medium leading-tight md:text-5xl">
+                What to know <em className="text-teal not-italic">before you begin.</em>
+              </h2>
+              <p className="mt-5 max-w-md leading-relaxed text-white/65">
+                Find quick answers about course access, timing, experience, and certification.
+              </p>
+            </div>
+            <div className="space-y-3">
+              {faqs.map((faq, index) => (
+                <details
+                  key={faq.question}
+                  className="group rounded-2xl border border-white/15 bg-white/7"
+                  open={index === 0}
+                >
+                  <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 text-left text-lg font-medium marker:content-none">
+                    <span>{faq.question}</span>
+                    <ChevronDown className="h-5 w-5 shrink-0 text-teal transition-transform group-open:rotate-180" />
+                  </summary>
+                  <p className="px-6 pb-6 text-sm leading-relaxed text-white/65">{faq.answer}</p>
+                </details>
               ))}
             </div>
           </div>
