@@ -10,7 +10,6 @@ import {
   Compass,
   GraduationCap,
   HeartHandshake,
-  LockKeyhole,
   Play,
   Search,
   Sparkles,
@@ -161,6 +160,9 @@ const faqs = [
   },
 ];
 
+const learnerAccessHref = (courseTitle: string) =>
+  `/login?course=${encodeURIComponent(courseTitle)}`;
+
 function Header() {
   return (
     <header className="border-b border-border/60 bg-background/90 backdrop-blur-xl">
@@ -178,13 +180,15 @@ function Header() {
           <a href="/interaction" className="transition hover:text-teal-deep">
             One-to-one
           </a>
+          <a href="/login" className="transition hover:text-teal-deep">
+            Learner login
+          </a>
         </nav>
         <a
-          href="/login"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
+          href="/interaction#booking"
+          className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
         >
-          <LockKeyhole className="h-4 w-4" />
-          Learner login
+          Talk to a mentor
         </a>
       </div>
     </header>
@@ -230,10 +234,10 @@ function CoursesPage() {
                 learning. Begin by naming the calling God has placed on your life.
               </p>
               <a
-                href="#course-catalog"
+                href="/interaction"
                 className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-teal transition hover:text-white"
               >
-                Explore six focused courses <ArrowRight className="h-4 w-4" />
+                Start a conversation <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           </div>
@@ -326,7 +330,7 @@ function CoursesPage() {
                         ))}
                       </ul>
                       <a
-                        href="/login"
+                        href={learnerAccessHref(course.title)}
                         aria-label={`Watch ${course.title} now`}
                         className="mt-7 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
                       >
@@ -481,7 +485,7 @@ function CoursesPage() {
                     {description}
                   </p>
                   <a
-                    href="/login"
+                    href={learnerAccessHref(course.title)}
                     className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition hover:text-teal-deep focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     Watch now <Play className="h-4 w-4 fill-current" />

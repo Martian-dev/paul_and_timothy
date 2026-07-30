@@ -13,7 +13,12 @@ import { FormEvent, useState } from "react";
 import logoImg from "@/assets/logo.png";
 import equipmentImg from "@/assets/pttc-equipment.png";
 
-export const Route = createFileRoute("/login")({ component: LoginPage });
+export const Route = createFileRoute("/login")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    course: typeof search.course === "string" ? search.course : undefined,
+  }),
+  component: LoginPage,
+});
 
 const learnerBenefits = [
   "Continue lessons from any device",
@@ -24,6 +29,7 @@ const learnerBenefits = [
 type AccessMode = "login" | "signup";
 
 function LoginPage() {
+  const { course } = Route.useSearch();
   const [mode, setMode] = useState<AccessMode>("login");
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -128,6 +134,26 @@ function LoginPage() {
                 : "Create your learner profile to access course lessons and progress."}
             </p>
 
+            {course && (
+              <div className="mt-6 rounded-2xl border border-border bg-cream p-4">
+                <p className="text-[10px] font-semibold uppercase tracking-[.18em] text-teal-deep">
+                  Selected course
+                </p>
+                <p className="mt-2 text-sm font-medium text-primary">{course}</p>
+              </div>
+            )}
+
+            <div className="mt-6 flex gap-3 rounded-2xl border border-teal/30 bg-accent p-4">
+              <LockKeyhole className="mt-0.5 h-5 w-5 shrink-0 text-teal-deep" />
+              <div>
+                <p className="text-sm font-semibold text-primary">LMS connection status</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  The official LMS connection is not live yet. This preview will not send or store
+                  your account details.
+                </p>
+              </div>
+            </div>
+
             {submitted ? (
               <div
                 className="mt-8 rounded-2xl border border-teal/30 bg-accent p-6"
@@ -139,8 +165,8 @@ function LoginPage() {
                   LMS connection coming soon
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  This learner access screen is ready. The official learning-platform connection
-                  must be added before account details can be submitted.
+                  This access flow is ready for the official learning-platform connection. No
+                  account details were sent or stored.
                 </p>
                 <button
                   type="button"
@@ -201,7 +227,7 @@ function LoginPage() {
                 <button className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring">
                   {mode === "login" ? (
                     <>
-                      <LockKeyhole className="h-4 w-4" /> Sign in to the LMS
+                      <LockKeyhole className="h-4 w-4" /> Preview LMS sign in
                     </>
                   ) : (
                     <>
