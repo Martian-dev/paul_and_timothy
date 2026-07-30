@@ -30,14 +30,16 @@ type AccessMode = "login" | "signup";
 
 function LoginPage() {
   const { course } = Route.useSearch();
-  const [mode, setMode] = useState<AccessMode>("login");
+
+  return <LearnerAccessPage mode="login" course={course} />;
+}
+
+const accessHref = (path: "/login" | "/signup", course?: string) =>
+  course ? `${path}?course=${encodeURIComponent(course)}` : path;
+
+export function LearnerAccessPage({ mode, course }: { mode: AccessMode; course?: string }) {
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  const chooseMode = (nextMode: AccessMode) => {
-    setMode(nextMode);
-    setSubmitted(false);
-  };
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -99,10 +101,9 @@ function LoginPage() {
 
           <section className="p-6 sm:p-10 lg:p-12" aria-labelledby="access-heading">
             <div className="inline-flex rounded-xl bg-muted p-1" aria-label="Choose learner access">
-              <button
-                type="button"
-                aria-pressed={mode === "login"}
-                onClick={() => chooseMode("login")}
+              <a
+                href={accessHref("/login", course)}
+                aria-current={mode === "login" ? "page" : undefined}
                 className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-4 text-sm font-semibold transition ${
                   mode === "login"
                     ? "bg-background text-primary shadow-card"
@@ -110,11 +111,10 @@ function LoginPage() {
                 }`}
               >
                 <LockKeyhole className="h-4 w-4" /> Sign in
-              </button>
-              <button
-                type="button"
-                aria-pressed={mode === "signup"}
-                onClick={() => chooseMode("signup")}
+              </a>
+              <a
+                href={accessHref("/signup", course)}
+                aria-current={mode === "signup" ? "page" : undefined}
                 className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-4 text-sm font-semibold transition ${
                   mode === "signup"
                     ? "bg-background text-primary shadow-card"
@@ -122,11 +122,11 @@ function LoginPage() {
                 }`}
               >
                 <UserPlus className="h-4 w-4" /> Create account
-              </button>
+              </a>
             </div>
 
             <h2 id="access-heading" className="mt-8 text-3xl font-medium text-primary sm:text-4xl">
-              {mode === "login" ? "Welcome back." : "Begin your learning journey."}
+              {mode === "login" ? "Welcome back." : "Create your learner account."}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {mode === "login"
