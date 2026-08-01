@@ -116,9 +116,8 @@ function Nav() {
   const links = [
     ["Home", "#top"],
     ["Why We Exist", "#mission"],
-    ["Assessment", "#assessment"],
     ["Courses", "/courses"],
-    ["Resources", "#resources"],
+    ["Resources", "#assessment"],
     ["Contact", "#contact"],
   ];
 
@@ -261,7 +260,7 @@ function Hero() {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a
-              href="#courses"
+              href="/courses"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-7 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/10"
             >
               Explore Courses
@@ -612,7 +611,7 @@ function Mission() {
             ))}
           </div>
           <a
-            href="#courses"
+            href="/courses"
             className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-primary transition-all hover:-translate-y-0.5"
           >
             Learn More
