@@ -39,6 +39,70 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.2, 0.8, 0.2, 1] as const } },
 };
 
+function AnimatedLetterLine({
+  text,
+  className = "",
+  delay = 0,
+  stagger = 0.03,
+  accent = false,
+}: {
+  text: string;
+  className?: string;
+  delay?: number;
+  stagger?: number;
+  accent?: boolean;
+}) {
+  const chars = text.split("");
+
+  return (
+    <motion.span
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: { transition: { delayChildren: delay, staggerChildren: stagger } },
+      }}
+      className={className}
+    >
+      {chars.map((char, index) => {
+        const isSpace = char === " ";
+        const content = isSpace ? "\u00A0" : char;
+
+        return (
+          <motion.span
+            key={`${content}-${index}`}
+            variants={{
+              hidden: accent
+                ? { opacity: 0, y: 8, filter: "drop-shadow(0 0 0 rgba(130, 242, 230, 0))" }
+                : { opacity: 0 },
+              visible: accent
+                ? {
+                    opacity: 1,
+                    y: 0,
+                    filter: "drop-shadow(0 0 14px rgba(130, 242, 230, 0.18))",
+                    transition: {
+                      duration: 0.16,
+                      ease: [0.2, 0.8, 0.2, 1] as const,
+                    },
+                  }
+                : {
+                    opacity: 1,
+                    transition: {
+                      duration: 0.04,
+                      ease: [0.2, 0.8, 0.2, 1] as const,
+                    },
+                  },
+            }}
+            className={accent ? "inline-block text-[oklch(0.85_0.12_180)]" : "inline-block"}
+          >
+            {content}
+          </motion.span>
+        );
+      })}
+    </motion.span>
+  );
+}
+
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -164,33 +228,29 @@ function Hero() {
           variants={{ show: { transition: { staggerChildren: 0.15 } } }}
           className="max-w-3xl"
         >
-          <motion.div
-            variants={fadeUp}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide text-white/90 backdrop-blur-md"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-[oklch(0.82_0.14_180)]" />
-            Paul & Timothy Training Centre
-          </motion.div>
-
           <motion.h1
             variants={fadeUp}
-            className="text-5xl font-medium leading-[1.05] text-white md:text-7xl lg:text-8xl"
+            className="text-4xl font-medium leading-[1.05] text-white md:text-6xl lg:text-7xl"
           >
-            You are not here <br />
-            by accident.
-            <br />
-            <span className="italic text-[oklch(0.85_0.12_180)]">You were made</span>
-            <br />
-            for a purpose.
+            <div className="block">
+              <AnimatedLetterLine text="You are not here" delay={0.05} stagger={0.03} />
+            </div>
+            <div className="mt-2 block">
+              <AnimatedLetterLine text="by accident." delay={0.8} stagger={0.03} />
+            </div>
+            <div className="mt-6 block italic text-[oklch(0.85_0.12_180)]">
+              <AnimatedLetterLine text="You were made" delay={1.4} stagger={0.03} />
+            </div>
+            <div className="mt-2 block">
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2.2, duration: 0.25, ease: [0.2, 0.8, 0.2, 1] as const }}
+              >
+                <AnimatedLetterLine text="for a purpose." delay={2.35} stagger={0.14} accent />
+              </motion.span>
+            </div>
           </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            className="mt-8 max-w-xl text-lg leading-relaxed text-white/75 md:text-xl"
-          >
-            Let us help you discover God's calling for your life — through assessment, mentorship,
-            and training rooted in Scripture.
-          </motion.p>
 
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-4">
             <a
@@ -215,7 +275,7 @@ function Hero() {
           transition={{ delay: 1, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-white/50"
         >
-          Scroll
+          
         </motion.div>
       </div>
     </section>
