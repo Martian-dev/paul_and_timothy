@@ -833,9 +833,9 @@ function Footer() {
     <footer id="contact" className="bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div>
-          <div className="rounded-2xl bg-white/95 p-4 w-fit">
+          <a href="#top" className="block rounded-2xl bg-white/95 p-4 w-fit hover:shadow-card transition">
             <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-10 w-auto" />
-          </div>
+          </a>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-primary-foreground/70">
             Equipping ordinary people for an extraordinary mission. Rooted in Scripture. Sent in
             love.
