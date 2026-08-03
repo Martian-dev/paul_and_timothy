@@ -115,7 +115,6 @@ function Nav() {
 
   const links = [
     ["Home", "#top"],
-    ["Why We Exist", "#mission"],
     ["Courses", "/courses"],
     ["Resources", "#assessment"],
     ["Contact", "#contact"],
