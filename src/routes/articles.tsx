@@ -64,7 +64,7 @@ function ArticlesPage() {
           <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium backdrop-blur-md">
             <BookOpen className="h-3.5 w-3.5 text-[oklch(0.82_0.14_180)]" /> Resources · Articles
           </span>
-          <h1 className="font-serif text-4xl font-bold md:text-5xl">Articles</h1>
+          <h1 className="font-serif text-5xl font-medium leading-[1.05] md:text-7xl">Articles</h1>
           <p className="mx-auto mt-4 max-w-xl text-white/80">
             Teaching and encouragement for every stage of the journey — from wondering to walking it
             out.

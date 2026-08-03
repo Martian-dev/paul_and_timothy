@@ -196,7 +196,7 @@ function AssessmentPage() {
               <Sparkles className="h-3.5 w-3.5 text-[oklch(0.82_0.14_180)]" />
               Resources · Assessment
             </span>
-            <h1 className="font-serif text-4xl font-bold leading-tight md:text-6xl">
+            <h1 className="font-serif text-5xl font-medium leading-[1.05] md:text-7xl">
               Ministry Calling Assessment
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">

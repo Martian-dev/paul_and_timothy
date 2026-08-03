@@ -186,9 +186,7 @@ function CoursesPage() {
           <div className="absolute -right-28 top-10 h-96 w-96 rounded-full bg-teal/20 blur-3xl" />
           <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold tracking-wide">
-                <Sparkles className="h-4 w-4 text-teal" /> Training pathways
-              </div>
+              
               <h1 className="mt-6 max-w-3xl text-5xl font-medium leading-[1.04] md:text-7xl">
                 Train. Be equipped. <em className="text-teal not-italic">Be sent.</em>
               </h1>

@@ -432,6 +432,8 @@ function AssessmentCards() {
 }
 
 function JourneyTimeline() {
+  const [activeStep, setActiveStep] = useState(0);
+
   const steps = [
     { icon: ClipboardCheck, title: "Take Assessment", desc: "Answer a few honest questions." },
     { icon: FileText, title: "Personal Report", desc: "Receive a Spirit-led summary." },
@@ -451,31 +453,51 @@ function JourneyTimeline() {
 
       <div className="relative mt-20">
         {/* connecting line */}
-        <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-teal-deep/30 via-teal-deep/40 to-primary/30 md:left-1/2 md:hidden" />
-        <div className="hidden md:block absolute left-0 right-0 top-8 h-px bg-gradient-to-r from-transparent via-teal-deep/40 to-transparent" />
+        <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/10 via-primary/45 to-primary/10 md:left-1/2 md:hidden" />
+        <div className="hidden md:block absolute left-0 right-0 top-8 h-0.5 bg-gradient-to-r from-primary/10 via-primary/45 to-primary/10" />
 
         <div className="grid gap-8 md:grid-cols-5">
-          {steps.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.12, duration: 0.6 }}
-              className="relative flex items-start gap-5 md:flex-col md:items-center md:text-center"
-            >
-              <div className="relative z-10 grid h-16 w-16 shrink-0 place-items-center rounded-full border border-teal-deep/20 bg-background text-primary shadow-card">
-                <s.icon className="h-6 w-6" strokeWidth={1.75} />
-                <span className="absolute -top-2 -right-2 grid h-6 w-6 place-items-center rounded-full gradient-brand text-[11px] font-bold text-white">
-                  {i + 1}
-                </span>
-              </div>
-              <div className="min-w-0 md:mt-4">
-                <h3 className="text-lg font-semibold text-primary">{s.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
-              </div>
-            </motion.div>
-          ))}
+          {steps.map((s, i) => {
+            const isActive = i === activeStep;
+            return (
+              <motion.div
+                key={s.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.6 }}
+                onClick={() => setActiveStep(i)}
+                className="relative flex cursor-pointer items-start gap-5 md:flex-col md:items-center md:text-center group select-none"
+              >
+                <div
+                  className={`relative z-10 grid h-16 w-16 shrink-0 place-items-center rounded-full border transition-all duration-300 stepper-circle ${
+                    isActive ? "stepper-circle-active text-white bg-primary" : "stepper-circle-inactive text-primary bg-card"
+                  }`}
+                >
+                  <s.icon className="h-6 w-6 transition-colors duration-300" strokeWidth={1.75} />
+                  <span
+                    className={`absolute -top-2 -right-2 grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold transition-all duration-300 ring-2 ring-background ${
+                      isActive
+                        ? "bg-primary text-white shadow-[0_2px_8px_rgba(45,10,78,0.3)]"
+                        : "bg-primary/20 text-primary"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                </div>
+                <div className="min-w-0 md:mt-4">
+                  <h3
+                    className={`text-lg font-semibold transition-colors duration-300 ${
+                      isActive ? "text-primary font-bold" : "text-primary/80 group-hover:text-primary"
+                    }`}
+                  >
+                    {s.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground transition-colors duration-300">{s.desc}</p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </Section>
