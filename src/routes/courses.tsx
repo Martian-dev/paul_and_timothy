@@ -17,7 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { useMemo, useState } from "react";
-import logoImg from "@/assets/logo.png";
+import { SiteNav } from "@/components/SiteNav";
 import equipmentImg from "@/assets/pttc-equipment.png";
 import mentorshipImg from "@/assets/pttc-mentorship.png";
 import communityImg from "@/assets/pttc-community-learning.png";
@@ -163,37 +163,7 @@ const faqs = [
 const learnerAccessHref = (courseTitle: string) =>
   `/login?course=${encodeURIComponent(courseTitle)}`;
 
-function Header() {
-  return (
-    <header className="border-b border-border/60 bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="/" className="rounded-xl focus:outline-none focus:ring-2 focus:ring-ring">
-          <img src={logoImg} className="h-10 w-auto" alt="Paul & Timothy Training Centre" />
-        </a>
-        <nav className="hidden items-center gap-7 text-sm font-medium text-primary/80 md:flex">
-          <a href="/" className="transition hover:text-teal-deep">
-            Home
-          </a>
-          <a href="/courses" className="text-primary" aria-current="page">
-            Courses
-          </a>
-          <a href="/interaction" className="transition hover:text-teal-deep">
-            One-to-one
-          </a>
-          <a href="/login" className="transition hover:text-teal-deep">
-            Learner login
-          </a>
-        </nav>
-        <a
-          href="/interaction#booking"
-          className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          Talk to a mentor
-        </a>
-      </div>
-    </header>
-  );
-}
+
 
 function CoursesPage() {
   const [query, setQuery] = useState("");
@@ -210,7 +180,7 @@ function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <SiteNav alwaysSolid />
       <main>
         <section className="relative overflow-hidden gradient-hero px-6 py-20 text-white md:py-28">
           <div className="absolute -right-28 top-10 h-96 w-96 rounded-full bg-teal/20 blur-3xl" />

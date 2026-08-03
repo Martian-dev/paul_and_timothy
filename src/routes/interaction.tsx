@@ -10,7 +10,7 @@ import {
   Video,
 } from "lucide-react";
 import { FormEvent, useState } from "react";
-import logoImg from "@/assets/logo.png";
+import { SiteNav } from "@/components/SiteNav";
 import mentorshipImg from "@/assets/mentorship.jpg";
 
 export const Route = createFileRoute("/interaction")({ component: InteractionPage });
@@ -45,30 +45,7 @@ function InteractionPage() {
   };
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/60 bg-background/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="/">
-            <img src={logoImg} className="h-10 w-auto" alt="Paul & Timothy Training Centre" />
-          </a>
-          <nav className="hidden gap-7 text-sm font-medium text-primary/80 md:flex">
-            <a href="/" className="hover:text-teal-deep">
-              Home
-            </a>
-            <a href="/courses" className="hover:text-teal-deep">
-              Courses
-            </a>
-            <a href="/interaction" className="text-primary">
-              One-to-one
-            </a>
-          </nav>
-          <a
-            href="#booking"
-            className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-card"
-          >
-            Book a conversation
-          </a>
-        </div>
-      </header>
+      <SiteNav alwaysSolid />
       <main>
         <section className="relative overflow-hidden bg-cream px-6 py-18 md:py-24">
           <div className="absolute inset-y-0 right-0 hidden w-1/2 lg:block">

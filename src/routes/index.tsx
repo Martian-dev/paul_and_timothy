@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -10,6 +10,7 @@ import {
   Sparkles,
   Play,
   ChevronRight,
+  ChevronDown,
   Mail,
   Instagram,
   Youtube,
@@ -116,9 +117,20 @@ function Nav() {
   const links = [
     ["Home", "#top"],
     ["Courses", "/courses"],
-    ["Resources", "#assessment"],
+    ["One-to-one", "/interaction"],
     ["Contact", "#contact"],
-  ];
+  ] as const;
+
+  const resourceLinks = [
+    { label: "Assessment", to: "/assessment", desc: "Discover the people group you're called to" },
+    { label: "Articles", to: "/articles", desc: "Teaching and encouragement for your journey" },
+    { label: "FAQs", to: "/faqs", desc: "Answers to the questions we hear most" },
+  ] as const;
+
+  const linkCls = (isScrolled: boolean) =>
+    `text-sm font-medium transition-colors duration-500 ${
+      isScrolled ? "text-primary/80 hover:text-primary" : "text-white/90 hover:text-white"
+    }`;
 
   return (
     <header
@@ -137,36 +149,53 @@ function Nav() {
           />
         </a>
         <nav className="hidden items-center gap-8 lg:flex">
-          {links.map(([label, href]) => (
-            <a
-              key={label}
-              href={href}
-              className={`text-sm font-medium transition-colors duration-500 ${
-                scrolled ? "text-primary/80 hover:text-primary" : "text-white/90 hover:text-white"
-              }`}
-            >
-              {label}
-            </a>
-          ))}
+          {links.map(([label, href]) =>
+            href.startsWith("/") ? (
+              <Link key={label} to={href as any} className={linkCls(scrolled)}>
+                {label}
+              </Link>
+            ) : (
+              <a key={label} href={href} className={linkCls(scrolled)}>
+                {label}
+              </a>
+            )
+          )}
+          <div className="group relative">
+            <button className={`inline-flex items-center gap-1 ${linkCls(scrolled)}`}>
+              Resources
+              <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
+            </button>
+            <div className="pointer-events-none absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-4 opacity-0 transition-all duration-300 group-hover:pointer-events-auto group-hover:opacity-100">
+              <div className="translate-y-2 rounded-3xl border border-border/60 bg-card p-2 shadow-soft transition-transform duration-300 group-hover:translate-y-0 text-left">
+                {resourceLinks.map((r) => (
+                  <Link
+                    key={r.label}
+                    to={r.to}
+                    className="block rounded-2xl px-4 py-3 transition-colors hover:bg-accent"
+                  >
+                    <span className="block font-serif text-base font-semibold text-primary">
+                      {r.label}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">{r.desc}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         </nav>
         <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href="#assessment"
-            className={`text-sm font-medium transition-colors duration-500 ${
-              scrolled ? "text-primary/80 hover:text-primary" : "text-white/90 hover:text-white"
-            }`}
-          >
+          <Link to="/login" search={{ course: undefined }} className={linkCls(scrolled)}>
             Login
-          </a>
-          <a
-            href="#assessment"
+          </Link>
+          <Link
+            to="/assessment"
             className={`group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 hover:-translate-y-0.5 hover:shadow-soft ${
               scrolled ? "bg-primary text-primary-foreground" : "bg-white text-primary"
             }`}
           >
             Start Here
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </a>
+          </Link>
         </div>
         <button
           onClick={() => setOpen(!open)}
@@ -181,23 +210,55 @@ function Nav() {
       {open && (
         <div className="glass border-t border-border/40 lg:hidden">
           <div className="flex flex-col gap-1 px-6 py-4">
-            {links.map(([label, href]) => (
-              <a
-                key={label}
-                href={href}
+            {links.map(([label, href]) =>
+              href.startsWith("/") ? (
+                <Link
+                  key={label}
+                  to={href as any}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5 text-left"
+                >
+                  {label}
+                </Link>
+              ) : (
+                <a
+                  key={label}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5 text-left"
+                >
+                  {label}
+                </a>
+              )
+            )}
+            <Link
+              to="/login"
+              search={{ course: undefined }}
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5 text-left"
+            >
+              Login
+            </Link>
+            <p className="mt-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Resources
+            </p>
+            {resourceLinks.map((r) => (
+              <Link
+                key={r.label}
+                to={r.to}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5 text-left"
               >
-                {label}
-              </a>
+                {r.label}
+              </Link>
             ))}
-            <a
-              href="#assessment"
+            <Link
+              to="/assessment"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground"
             >
               Start Here <ArrowRight className="h-4 w-4" />
-            </a>
+            </Link>
           </div>
         </div>
       )}

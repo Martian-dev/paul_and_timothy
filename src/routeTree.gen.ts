@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesRouteImport } from './routes/articles'
+import { Route as AssessmentRouteImport } from './routes/assessment'
 import { Route as CoursesRouteImport } from './routes/courses'
+import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InteractionRouteImport } from './routes/interaction'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -20,9 +23,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesRoute = ArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssessmentRoute = AssessmentRouteImport.update({
+  id: '/assessment',
+  path: '/assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesRoute = CoursesRouteImport.update({
   id: '/courses',
   path: '/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InteractionRoute = InteractionRouteImport.update({
@@ -43,14 +61,20 @@ const SignupRoute = SignupRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
+  '/assessment': typeof AssessmentRoute
   '/courses': typeof CoursesRoute
+  '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
+  '/assessment': typeof AssessmentRoute
   '/courses': typeof CoursesRoute
+  '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
@@ -58,22 +82,53 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
+  '/assessment': typeof AssessmentRoute
   '/courses': typeof CoursesRoute
+  '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/courses' | '/interaction' | '/login' | '/signup'
+  fullPaths:
+    | '/'
+    | '/articles'
+    | '/assessment'
+    | '/courses'
+    | '/faqs'
+    | '/interaction'
+    | '/login'
+    | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/courses' | '/interaction' | '/login' | '/signup'
-  id: '__root__' | '/' | '/courses' | '/interaction' | '/login' | '/signup'
+  to:
+    | '/'
+    | '/articles'
+    | '/assessment'
+    | '/courses'
+    | '/faqs'
+    | '/interaction'
+    | '/login'
+    | '/signup'
+  id:
+    | '__root__'
+    | '/'
+    | '/articles'
+    | '/assessment'
+    | '/courses'
+    | '/faqs'
+    | '/interaction'
+    | '/login'
+    | '/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArticlesRoute: typeof ArticlesRoute
+  AssessmentRoute: typeof AssessmentRoute
   CoursesRoute: typeof CoursesRoute
+  FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
@@ -88,11 +143,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assessment': {
+      id: '/assessment'
+      path: '/assessment'
+      fullPath: '/assessment'
+      preLoaderRoute: typeof AssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses': {
       id: '/courses'
       path: '/courses'
       fullPath: '/courses'
       preLoaderRoute: typeof CoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/interaction': {
@@ -121,7 +197,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArticlesRoute: ArticlesRoute,
+  AssessmentRoute: AssessmentRoute,
   CoursesRoute: CoursesRoute,
+  FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
