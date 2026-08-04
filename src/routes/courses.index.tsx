@@ -425,7 +425,7 @@ function CoursesPage() {
           </div>
         </section>
 
-        <section className="bg-cream px-6 py-20 md:py-28">
+        <section id="recommended" className="scroll-mt-6 bg-cream px-6 py-20 md:py-28">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
               <div>

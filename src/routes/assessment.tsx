@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { ArrowRight, Baby, Crown, HeartHandshake, RotateCcw, Sparkles, Users } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 
@@ -157,6 +157,7 @@ function interpret(score: number) {
 function AssessmentPage() {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const answered = Object.keys(answers).length;
   const progress = Math.round((answered / TOTAL_QUESTIONS) * 100);
@@ -326,7 +327,12 @@ function AssessmentPage() {
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
-              onClick={() => setSubmitted(true)}
+              onClick={() => {
+                setSubmitted(true);
+                setTimeout(() => {
+                  resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }, 100);
+              }}
               disabled={answered === 0}
               className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-soft disabled:cursor-not-allowed disabled:opacity-50"
             >
@@ -345,10 +351,11 @@ function AssessmentPage() {
         {/* Results */}
         {submitted && (
           <motion.section
+            ref={resultsRef}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="rounded-4xl border border-border/60 bg-card p-8 shadow-soft"
+            className="scroll-mt-24 rounded-4xl border border-border/60 bg-card p-8 shadow-soft"
           >
             <h2 className="font-serif text-2xl font-bold text-primary">Your scoring summary</h2>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -407,8 +414,8 @@ function AssessmentPage() {
             </div>
 
             <Link
-              to="/"
-              hash="courses"
+              to="/courses"
+              hash="recommended"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-soft"
             >
               Find a course for your calling <ArrowRight className="h-4 w-4" />
