@@ -17,6 +17,8 @@ import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InteractionRouteImport } from './routes/interaction'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as CoursesIndexRouteImport } from './routes/courses.index'
+import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,37 +60,52 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoursesIndexRoute = CoursesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CoursesRoute,
+} as any)
+const CoursesSlugRoute = CoursesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CoursesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
-  '/courses': typeof CoursesRoute
+  '/courses': typeof CoursesRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/courses/$slug': typeof CoursesSlugRoute
+  '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
-  '/courses': typeof CoursesRoute
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/courses/$slug': typeof CoursesSlugRoute
+  '/courses': typeof CoursesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
-  '/courses': typeof CoursesRoute
+  '/courses': typeof CoursesRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/courses/$slug': typeof CoursesSlugRoute
+  '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,16 +118,19 @@ export interface FileRouteTypes {
     | '/interaction'
     | '/login'
     | '/signup'
+    | '/courses/$slug'
+    | '/courses/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/articles'
     | '/assessment'
-    | '/courses'
     | '/faqs'
     | '/interaction'
     | '/login'
     | '/signup'
+    | '/courses/$slug'
+    | '/courses'
   id:
     | '__root__'
     | '/'
@@ -121,13 +141,15 @@ export interface FileRouteTypes {
     | '/interaction'
     | '/login'
     | '/signup'
+    | '/courses/$slug'
+    | '/courses/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArticlesRoute: typeof ArticlesRoute
   AssessmentRoute: typeof AssessmentRoute
-  CoursesRoute: typeof CoursesRoute
+  CoursesRoute: typeof CoursesRouteWithChildren
   FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
   LoginRoute: typeof LoginRoute
@@ -192,14 +214,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/courses/': {
+      id: '/courses/'
+      path: '/'
+      fullPath: '/courses/'
+      preLoaderRoute: typeof CoursesIndexRouteImport
+      parentRoute: typeof CoursesRoute
+    }
+    '/courses/$slug': {
+      id: '/courses/$slug'
+      path: '/$slug'
+      fullPath: '/courses/$slug'
+      preLoaderRoute: typeof CoursesSlugRouteImport
+      parentRoute: typeof CoursesRoute
+    }
   }
 }
+
+interface CoursesRouteChildren {
+  CoursesSlugRoute: typeof CoursesSlugRoute
+  CoursesIndexRoute: typeof CoursesIndexRoute
+}
+
+const CoursesRouteChildren: CoursesRouteChildren = {
+  CoursesSlugRoute: CoursesSlugRoute,
+  CoursesIndexRoute: CoursesIndexRoute,
+}
+
+const CoursesRouteWithChildren =
+  CoursesRoute._addFileChildren(CoursesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArticlesRoute: ArticlesRoute,
   AssessmentRoute: AssessmentRoute,
-  CoursesRoute: CoursesRoute,
+  CoursesRoute: CoursesRouteWithChildren,
   FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
   LoginRoute: LoginRoute,
