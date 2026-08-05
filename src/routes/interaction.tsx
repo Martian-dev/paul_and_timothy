@@ -73,7 +73,7 @@ function InteractionPage() {
                 href="#booking"
                 className="mt-8 inline-flex min-h-12 items-center rounded-full bg-primary px-7 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-card"
               >
-                Reserve your session
+                Talk to Your Mentor
               </a>
             </div>
           </div>

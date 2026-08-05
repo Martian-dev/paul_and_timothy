@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as AssessmentRouteImport } from './routes/assessment'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqsRouteImport } from './routes/faqs'
@@ -20,6 +21,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
+import { Route as EventsPreviousRouteImport } from './routes/events.previous'
+import { Route as EventsUpcomingRouteImport } from './routes/events.upcoming'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,6 +37,11 @@ const ArticlesRoute = ArticlesRouteImport.update({
 const AssessmentRoute = AssessmentRouteImport.update({
   id: '/assessment',
   path: '/assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoursesRoute = CoursesRouteImport.update({
@@ -76,30 +84,46 @@ const CoursesSlugRoute = CoursesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CoursesRoute,
 } as any)
+const EventsPreviousRoute = EventsPreviousRouteImport.update({
+  id: '/previous',
+  path: '/previous',
+  getParentRoute: () => EventsRoute,
+} as any)
+const EventsUpcomingRoute = EventsUpcomingRouteImport.update({
+  id: '/upcoming',
+  path: '/upcoming',
+  getParentRoute: () => EventsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
+  '/contact': typeof ContactRoute
   '/courses': typeof CoursesRouteWithChildren
-  '/events': typeof EventsRoute
+  '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
+  '/events/previous': typeof EventsPreviousRoute
+  '/events/upcoming': typeof EventsUpcomingRoute
   '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
-  '/events': typeof EventsRoute
+  '/contact': typeof ContactRoute
+  '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
+  '/events/previous': typeof EventsPreviousRoute
+  '/events/upcoming': typeof EventsUpcomingRoute
   '/courses': typeof CoursesIndexRoute
 }
 export interface FileRoutesById {
@@ -107,13 +131,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
+  '/contact': typeof ContactRoute
   '/courses': typeof CoursesRouteWithChildren
-  '/events': typeof EventsRoute
+  '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
+  '/events/previous': typeof EventsPreviousRoute
+  '/events/upcoming': typeof EventsUpcomingRoute
   '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRouteTypes {
@@ -122,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/articles'
     | '/assessment'
+    | '/contact'
     | '/courses'
     | '/events'
     | '/faqs'
@@ -129,24 +157,30 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/courses/$slug'
+    | '/events/previous'
+    | '/events/upcoming'
     | '/courses/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/articles'
     | '/assessment'
+    | '/contact'
     | '/events'
     | '/faqs'
     | '/interaction'
     | '/login'
     | '/signup'
     | '/courses/$slug'
+    | '/events/previous'
+    | '/events/upcoming'
     | '/courses'
   id:
     | '__root__'
     | '/'
     | '/articles'
     | '/assessment'
+    | '/contact'
     | '/courses'
     | '/events'
     | '/faqs'
@@ -154,6 +188,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/courses/$slug'
+    | '/events/previous'
+    | '/events/upcoming'
     | '/courses/'
   fileRoutesById: FileRoutesById
 }
@@ -161,8 +197,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArticlesRoute: typeof ArticlesRoute
   AssessmentRoute: typeof AssessmentRoute
+  ContactRoute: typeof ContactRoute
   CoursesRoute: typeof CoursesRouteWithChildren
-  EventsRoute: typeof EventsRoute
+  EventsRoute: typeof EventsRouteWithChildren
   FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
   LoginRoute: typeof LoginRoute
@@ -190,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/assessment'
       fullPath: '/assessment'
       preLoaderRoute: typeof AssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/courses': {
@@ -248,6 +292,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoursesSlugRouteImport
       parentRoute: typeof CoursesRoute
     }
+    '/events/previous': {
+      id: '/events/previous'
+      path: '/previous'
+      fullPath: '/events/previous'
+      preLoaderRoute: typeof EventsPreviousRouteImport
+      parentRoute: typeof EventsRoute
+    }
+    '/events/upcoming': {
+      id: '/events/upcoming'
+      path: '/upcoming'
+      fullPath: '/events/upcoming'
+      preLoaderRoute: typeof EventsUpcomingRouteImport
+      parentRoute: typeof EventsRoute
+    }
   }
 }
 
@@ -264,12 +322,26 @@ const CoursesRouteChildren: CoursesRouteChildren = {
 const CoursesRouteWithChildren =
   CoursesRoute._addFileChildren(CoursesRouteChildren)
 
+interface EventsRouteChildren {
+  EventsPreviousRoute: typeof EventsPreviousRoute
+  EventsUpcomingRoute: typeof EventsUpcomingRoute
+}
+
+const EventsRouteChildren: EventsRouteChildren = {
+  EventsPreviousRoute: EventsPreviousRoute,
+  EventsUpcomingRoute: EventsUpcomingRoute,
+}
+
+const EventsRouteWithChildren =
+  EventsRoute._addFileChildren(EventsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArticlesRoute: ArticlesRoute,
   AssessmentRoute: AssessmentRoute,
+  ContactRoute: ContactRoute,
   CoursesRoute: CoursesRouteWithChildren,
-  EventsRoute: EventsRoute,
+  EventsRoute: EventsRouteWithChildren,
   FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
   LoginRoute: LoginRoute,
