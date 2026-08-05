@@ -3,30 +3,68 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 
-type NavLink = { label: string; to?: string; href?: string };
+type NavLink = { label: string; to?: string; href?: string; desc?: string };
 
-const links: NavLink[] = [
+const mainLinks = [
   { label: "Home", to: "/" },
-  { label: "Courses", to: "/courses" },
-  { label: "One-to-one", to: "/interaction" },
-  { label: "Contact", to: "/contact" },
+  { label: "About Us", href: "/#mission" },
 ];
 
-const eventLinks: { label: string; to: string; desc: string }[] = [
+const trainingLinks: NavLink[] = [
+  { label: "Course Overview", to: "/courses", desc: "Explore our training pathways" },
+  { label: "One-on-One Training", to: "/interaction", desc: "Private sessions with a senior mentor" },
+];
+
+const eventLinks: NavLink[] = [
   { label: "Upcoming Events", to: "/events/upcoming", desc: "Conferences, workshops and retreats coming this season" },
   { label: "Previous Events", to: "/events/previous", desc: "Look back at gatherings that have shaped believers" },
 ];
 
-const resources: { label: string; to: string; desc: string }[] = [
+const resources: NavLink[] = [
   { label: "Assessment", to: "/assessment", desc: "Discover the people group you're called to" },
   { label: "Articles", to: "/articles", desc: "Teaching and encouragement for your journey" },
   { label: "FAQs", to: "/faqs", desc: "Answers to the questions we hear most" },
 ];
 
+function NavDropdown({ label, links, linkCls }: { label: string; links: NavLink[]; linkCls: string }) {
+  return (
+    <div className="group relative">
+      <button className={`inline-flex items-center gap-1 ${linkCls}`}>
+        {label}
+        <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
+      </button>
+      <div className="pointer-events-none absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+        <div className="origin-top scale-95 rounded-2xl border border-border/60 bg-card p-1.5 shadow-soft transition-all duration-200 group-hover:scale-100 group-focus-within:scale-100">
+          {links.map((r) => (
+            <Link
+              key={r.label}
+              to={r.to!}
+              className="group/item block rounded-xl px-3 py-2.5 transition-all duration-300 hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+            >
+              <span className="block text-sm font-medium text-primary transition-colors group-hover/item:text-teal-deep">
+                {r.label}
+              </span>
+              {r.desc && (
+                <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">
+                  {r.desc}
+                </span>
+              )}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
   const [scrolled, setScrolled] = useState(alwaysSolid);
   const [open, setOpen] = useState(false);
+  
+  // Mobile dropdown states
+  const [trainingOpen, setTrainingOpen] = useState(false);
   const [eventsOpen, setEventsOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
 
   useEffect(() => {
     if (alwaysSolid) return;
@@ -60,7 +98,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-8 lg:flex">
-          {links.map((l) =>
+          {mainLinks.map((l) =>
             l.to ? (
               <Link key={l.label} to={l.to} className={linkCls}>
                 {l.label}
@@ -72,57 +110,13 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             ),
           )}
 
-          {/* Events dropdown */}
-          <div className="group relative">
-            <button className={`inline-flex items-center gap-1 ${linkCls}`}>
-              Events
-              <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
-            </button>
-            <div className="pointer-events-none absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
-              <div className="origin-top scale-95 rounded-2xl border border-border/60 bg-card p-1.5 shadow-soft transition-all duration-200 group-hover:scale-100 group-focus-within:scale-100">
-                {eventLinks.map((r) => (
-                  <Link
-                    key={r.label}
-                    to={r.to}
-                    className="group/item block rounded-xl px-3 py-2.5 transition-all duration-300 hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
-                  >
-                    <span className="block text-sm font-medium text-primary transition-colors group-hover/item:text-teal-deep">
-                      {r.label}
-                    </span>
-                    <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">
-                      {r.desc}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
+          <NavDropdown label="Training" links={trainingLinks} linkCls={linkCls} />
+          <NavDropdown label="Events" links={eventLinks} linkCls={linkCls} />
+          <NavDropdown label="Resources" links={resources} linkCls={linkCls} />
 
-          {/* Resources dropdown */}
-          <div className="group relative">
-            <button className={`inline-flex items-center gap-1 ${linkCls}`}>
-              Resources
-              <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
-            </button>
-            <div className="pointer-events-none absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
-              <div className="origin-top scale-95 rounded-2xl border border-border/60 bg-card p-1.5 shadow-soft transition-all duration-200 group-hover:scale-100 group-focus-within:scale-100">
-                {resources.map((r) => (
-                  <Link
-                    key={r.label}
-                    to={r.to}
-                    className="group/item block rounded-xl px-3 py-2.5 transition-all duration-300 hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
-                  >
-                    <span className="block text-sm font-medium text-primary transition-colors group-hover/item:text-teal-deep">
-                      {r.label}
-                    </span>
-                    <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">
-                      {r.desc}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
+          <Link to="/contact" className={linkCls}>
+            Contact
+          </Link>
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
@@ -155,7 +149,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
       {open && (
         <div className="bg-background border-t border-border/40 lg:hidden">
           <div className="flex flex-col gap-1 px-6 py-4">
-            {links.map((l) =>
+            {mainLinks.map((l) =>
               l.to ? (
                 <Link
                   key={l.label}
@@ -177,7 +171,30 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               ),
             )}
 
-            {/* Events section in mobile */}
+            {/* Mobile Training Dropdown */}
+            <button
+              onClick={() => setTrainingOpen(!trainingOpen)}
+              className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
+            >
+              Training
+              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${trainingOpen ? "rotate-180" : ""}`} />
+            </button>
+            {trainingOpen && (
+              <div className="ml-3 flex flex-col gap-1 border-l-2 border-border/50 pl-3">
+                {trainingLinks.map((r) => (
+                  <Link
+                    key={r.label}
+                    to={r.to!}
+                    onClick={() => { setOpen(false); setTrainingOpen(false); }}
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
+                  >
+                    {r.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {/* Mobile Events Dropdown */}
             <button
               onClick={() => setEventsOpen(!eventsOpen)}
               className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
@@ -190,7 +207,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
                 {eventLinks.map((r) => (
                   <Link
                     key={r.label}
-                    to={r.to}
+                    to={r.to!}
                     onClick={() => { setOpen(false); setEventsOpen(false); }}
                     className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
                   >
@@ -200,6 +217,37 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               </div>
             )}
 
+            {/* Mobile Resources Dropdown */}
+            <button
+              onClick={() => setResourcesOpen(!resourcesOpen)}
+              className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
+            >
+              Resources
+              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${resourcesOpen ? "rotate-180" : ""}`} />
+            </button>
+            {resourcesOpen && (
+              <div className="ml-3 flex flex-col gap-1 border-l-2 border-border/50 pl-3">
+                {resources.map((r) => (
+                  <Link
+                    key={r.label}
+                    to={r.to!}
+                    onClick={() => { setOpen(false); setResourcesOpen(false); }}
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
+                  >
+                    {r.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <Link
+              to="/contact"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
+            >
+              Contact
+            </Link>
+
             <Link
               to="/login"
               search={{ course: undefined }}
@@ -208,19 +256,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             >
               Login
             </Link>
-            <p className="mt-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Resources
-            </p>
-            {resources.map((r) => (
-              <Link
-                key={r.label}
-                to={r.to}
-                onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
-              >
-                {r.label}
-              </Link>
-            ))}
+
             <Link
               to="/assessment"
               onClick={() => setOpen(false)}
