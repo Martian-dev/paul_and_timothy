@@ -39,7 +39,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        solid ? "glass shadow-[0_4px_30px_-15px_rgba(45,10,78,0.2)]" : "bg-transparent"
+        solid ? "bg-background shadow-sm border-b border-border/40" : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -47,7 +47,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           <img
             src={logoImg}
             alt="Paul & Timothy Training Centre"
-            className={`h-9 w-auto md:h-10 transition-[filter] duration-500 ${
+            className={`h-11 w-auto md:h-12 transition-[filter] duration-500 ${
               solid ? "" : "brightness-0 invert"
             }`}
           />
@@ -117,7 +117,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
       </div>
 
       {open && (
-        <div className="glass border-t border-border/40 lg:hidden">
+        <div className="bg-background border-t border-border/40 lg:hidden">
           <div className="flex flex-col gap-1 px-6 py-4">
             {links.map((l) =>
               l.to ? (
