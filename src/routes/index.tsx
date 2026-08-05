@@ -117,6 +117,7 @@ function Nav() {
   const links = [
     ["Home", "#top"],
     ["Courses", "/courses"],
+    ["Events", "/events"],
     ["One-to-one", "/interaction"],
     ["Contact", "#contact"],
   ] as const;
@@ -316,7 +317,7 @@ function Hero() {
               href="#assessment"
               className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-primary transition-all hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-15px_rgba(255,255,255,0.4)]"
             >
-              Start Here — Discover Your Calling
+              Discover Your Calling
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a

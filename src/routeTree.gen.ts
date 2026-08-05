@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as AssessmentRouteImport } from './routes/assessment'
 import { Route as CoursesRouteImport } from './routes/courses'
+import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InteractionRouteImport } from './routes/interaction'
 import { Route as LoginRouteImport } from './routes/login'
@@ -38,6 +39,11 @@ const AssessmentRoute = AssessmentRouteImport.update({
 const CoursesRoute = CoursesRouteImport.update({
   id: '/courses',
   path: '/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqsRoute = FaqsRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
   '/courses': typeof CoursesRouteWithChildren
+  '/events': typeof EventsRoute
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
+  '/events': typeof EventsRoute
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
   '/courses': typeof CoursesRouteWithChildren
+  '/events': typeof EventsRoute
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/assessment'
     | '/courses'
+    | '/events'
     | '/faqs'
     | '/interaction'
     | '/login'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/'
     | '/articles'
     | '/assessment'
+    | '/events'
     | '/faqs'
     | '/interaction'
     | '/login'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/assessment'
     | '/courses'
+    | '/events'
     | '/faqs'
     | '/interaction'
     | '/login'
@@ -150,6 +162,7 @@ export interface RootRouteChildren {
   ArticlesRoute: typeof ArticlesRoute
   AssessmentRoute: typeof AssessmentRoute
   CoursesRoute: typeof CoursesRouteWithChildren
+  EventsRoute: typeof EventsRoute
   FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
   LoginRoute: typeof LoginRoute
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       path: '/courses'
       fullPath: '/courses'
       preLoaderRoute: typeof CoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faqs': {
@@ -249,6 +269,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesRoute: ArticlesRoute,
   AssessmentRoute: AssessmentRoute,
   CoursesRoute: CoursesRouteWithChildren,
+  EventsRoute: EventsRoute,
   FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
   LoginRoute: LoginRoute,
