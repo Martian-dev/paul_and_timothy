@@ -16,7 +16,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { SiteNav } from "@/components/SiteNav";
 import equipmentImg from "@/assets/pttc-equipment.png";
 import mentorshipImg from "@/assets/pttc-mentorship.png";
@@ -181,6 +181,49 @@ function CoursesPage() {
     );
   }, [query]);
 
+  const [placeholder, setPlaceholder] = useState("");
+
+  useEffect(() => {
+    const phrases = [
+      "Search courses...",
+      "Search leadership training...",
+      "Search Bible courses...",
+      "Search ministry pathways...",
+    ];
+    let currentPhraseIndex = 0;
+    let currentCharIndex = 0;
+    let isDeleting = false;
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const type = () => {
+      const currentPhrase = phrases[currentPhraseIndex];
+
+      if (isDeleting) {
+        setPlaceholder(currentPhrase.substring(0, currentCharIndex - 1));
+        currentCharIndex--;
+      } else {
+        setPlaceholder(currentPhrase.substring(0, currentCharIndex + 1));
+        currentCharIndex++;
+      }
+
+      let typeSpeed = isDeleting ? 40 : 80;
+
+      if (!isDeleting && currentCharIndex === currentPhrase.length) {
+        typeSpeed = 2000;
+        isDeleting = true;
+      } else if (isDeleting && currentCharIndex === 0) {
+        isDeleting = false;
+        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+        typeSpeed = 400;
+      }
+
+      timeout = setTimeout(type, typeSpeed);
+    };
+
+    timeout = setTimeout(type, 800);
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <SiteNav alwaysSolid />
@@ -232,7 +275,7 @@ function CoursesPage() {
                 <input
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search leadership, calling, care…"
+                  placeholder={placeholder}
                   className="h-14 w-full rounded-2xl border border-border bg-card pl-14 pr-12 text-sm text-foreground shadow-card outline-none transition focus:border-teal-deep focus:ring-2 focus:ring-teal/30"
                 />
                 {query && (

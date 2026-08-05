@@ -71,18 +71,20 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               Resources
               <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
             </button>
-            <div className="pointer-events-none absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-4 opacity-0 transition-all duration-300 group-hover:pointer-events-auto group-hover:opacity-100">
-              <div className="translate-y-2 rounded-3xl border border-border/60 bg-card p-2 shadow-soft transition-transform duration-300 group-hover:translate-y-0">
+            <div className="pointer-events-none absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+              <div className="origin-top scale-95 rounded-2xl border border-border/60 bg-card p-1.5 shadow-soft transition-all duration-200 group-hover:scale-100 group-focus-within:scale-100">
                 {resources.map((r) => (
                   <Link
                     key={r.label}
                     to={r.to}
-                    className="block rounded-2xl px-4 py-3 transition-colors hover:bg-accent"
+                    className="group/item block rounded-xl px-3 py-2.5 transition-all duration-300 hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
                   >
-                    <span className="block font-serif text-base font-semibold text-primary">
+                    <span className="block text-sm font-medium text-primary transition-colors group-hover/item:text-teal-deep">
                       {r.label}
                     </span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">{r.desc}</span>
+                    <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">
+                      {r.desc}
+                    </span>
                   </Link>
                 ))}
               </div>
