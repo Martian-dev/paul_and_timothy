@@ -306,6 +306,88 @@ export const courses: Course[] = [
       },
     ],
   },
+  {
+    slug: "bible-exposition",
+    img: courseBibleImg,
+    tag: "Module One",
+    title: "Bible Exposition",
+    desc: "A guided exploration of Genesis to Revelation — see the redemptive story as one whole.",
+    summary: "Understand the overarching narrative of Scripture. This module takes you from Genesis to Revelation, tracing the redemptive work of God and equipping you to read, interpret, and teach the Bible with clarity and faithful context.",
+    duration: "4 months",
+    lessons: "16 lessons",
+    level: "Foundational",
+    outline: [
+      { title: "The Shape of the Biblical Narrative", body: "Understanding the Bible as one unified story pointing to Christ." },
+      { title: "Reading the Old Testament", body: "Navigating law, history, poetry, and prophecy." },
+      { title: "The Gospels and the Kingdom", body: "The life, death, and resurrection of Jesus as the climax of history." },
+      { title: "The Epistles and the Church", body: "Applying apostolic teaching to the life of the early and modern church." },
+      { title: "Faithful Interpretation", body: "Principles for studying the text accurately and avoiding common pitfalls." },
+    ],
+    testimonials: [
+      { name: "Sarah L.", role: "Small Group Leader", quote: "For the first time, the Old Testament makes sense to me. It's all connected.", img: courseTeachingImg },
+      { name: "John M.", role: "Elder", quote: "This module gave me a framework to teach the Bible faithfully.", img: mentorshipImg }
+    ]
+  },
+  {
+    slug: "foundations-of-discipleship",
+    img: courseTeachingImg,
+    tag: "Module Two",
+    title: "Foundations of Discipleship",
+    desc: "Learn to make disciples the way Jesus did — relationally, patiently, reproducibly.",
+    summary: "Jesus didn't just teach crowds; He invested deeply in a few. This module explores the biblical model of disciple-making, equipping you to build intentional relationships and guide others toward spiritual maturity.",
+    duration: "3 months",
+    lessons: "12 lessons",
+    level: "Foundational",
+    outline: [
+      { title: "The Call to Make Disciples", body: "Unpacking the Great Commission and the heart of discipleship." },
+      { title: "The Model of Jesus", body: "How Jesus selected, invested in, and sent out His disciples." },
+      { title: "Life-on-Life Ministry", body: "Moving beyond programs to authentic, relational discipleship." },
+      { title: "Handling Resistance and Growth", body: "Navigating the ups and downs of walking with someone." },
+    ],
+    testimonials: [
+      { name: "David K.", role: "Youth Leader", quote: "I learned how to stop performing and start investing.", img: callingImg }
+    ]
+  },
+  {
+    slug: "called-to-lead",
+    img: mentorshipImg,
+    tag: "Module Three",
+    title: "Called to Lead",
+    desc: "Practical formation for spiritual leadership, character and endurance in ministry.",
+    summary: "True leadership in the Kingdom is about character before competency. This module focuses on the inner life of the leader, spiritual disciplines, and the practical wisdom needed for long-term endurance in ministry.",
+    duration: "4 months",
+    lessons: "14 lessons",
+    level: "Intermediate",
+    outline: [
+      { title: "The Character of a Leader", body: "Why integrity, humility, and holiness matter more than gifting." },
+      { title: "Spiritual Disciplines for Leaders", body: "Maintaining your own soul while caring for others." },
+      { title: "Leading Through Conflict", body: "Handling disagreements and difficult people with grace." },
+      { title: "Vision and Endurance", body: "Staying faithful over the long haul without burning out." },
+    ],
+    testimonials: [
+      { name: "Rachel P.", role: "Ministry Director", quote: "This course saved me from burnout and renewed my love for serving.", img: communityImg }
+    ]
+  },
+  {
+    slug: "sent-to-the-nations",
+    img: callingImg,
+    tag: "Module Four",
+    title: "Sent to the Nations",
+    desc: "For those wired for mission — discern where and how to go.",
+    summary: "God's heart is for all nations. Whether you are called across the street or across the globe, this module helps you discern your role in global mission, understand cross-cultural realities, and step out in faith.",
+    duration: "3 months",
+    lessons: "10 lessons",
+    level: "Advanced",
+    outline: [
+      { title: "God's Heart for the Nations", body: "Tracing the missional thread throughout Scripture." },
+      { title: "Cross-Cultural Realities", body: "Understanding culture, worldview, and contextualization." },
+      { title: "The Role of the Local Church", body: "How churches send and support workers faithfully." },
+      { title: "Discerning Your Go", body: "Practical steps for preparing to move into cross-cultural ministry." },
+    ],
+    testimonials: [
+      { name: "Michael O.", role: "Missionary", quote: "An invaluable foundation before stepping onto the field.", img: equipmentImg }
+    ]
+  }
 ];
 
 export const getCourse = (slug: string) => courses.find((c) => c.slug === slug);

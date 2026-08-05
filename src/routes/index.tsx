@@ -153,19 +153,19 @@ function Hero() {
           </motion.h1>
 
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="#assessment"
+            <Link
+              to="/assessment"
               className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-primary transition-all hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-15px_rgba(255,255,255,0.4)]"
             >
               Discover Your Calling
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
-            <a
-              href="/courses"
+            </Link>
+            <Link
+              to="/courses"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-7 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/10"
             >
               Explore Courses
-            </a>
+            </Link>
           </motion.div>
         </motion.div>
 
@@ -258,13 +258,13 @@ function AssessmentCards() {
             <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">
               {c.desc}
             </p>
-            <a
-              href="#"
+            <Link
+              to="/assessment"
               className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors group-hover:text-teal-deep"
             >
               Start Assessment
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
+            </Link>
           </motion.div>
         ))}
       </div>
@@ -551,24 +551,28 @@ function Courses() {
     {
       img: courseBibleImg,
       tag: "Module One",
+      slug: "bible-exposition",
       title: "Bible Exposition",
       desc: "A guided exploration of Genesis to Revelation — see the redemptive story as one whole.",
     },
     {
       img: courseTeachingImg,
       tag: "Module Two",
+      slug: "foundations-of-discipleship",
       title: "Foundations of Discipleship",
       desc: "Learn to make disciples the way Jesus did — relationally, patiently, reproducibly.",
     },
     {
       img: mentorshipImg,
       tag: "Module Three",
+      slug: "called-to-lead",
       title: "Called to Lead",
       desc: "Practical formation for spiritual leadership, character and endurance in ministry.",
     },
     {
       img: callingImg,
       tag: "Module Four",
+      slug: "sent-to-the-nations",
       title: "Sent to the Nations",
       desc: "For those wired for mission — discern where and how to go.",
     },
@@ -582,12 +586,12 @@ function Courses() {
             Training that forms <br /> both character and craft.
           </h2>
         </div>
-        <a
-          href="#"
+        <Link
+          to="/courses"
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-deep hover:text-primary"
         >
           View all courses <ArrowRight className="h-4 w-4" />
-        </a>
+        </Link>
       </div>
 
       <div className="mt-14 grid gap-6 md:grid-cols-2">
@@ -614,13 +618,14 @@ function Courses() {
             <div className="p-8">
               <h3 className="text-2xl font-medium text-primary">{c.title}</h3>
               <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{c.desc}</p>
-              <a
-                href="#"
+              <Link
+                to="/courses/$slug"
+                params={{ slug: c.slug }}
                 className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors group-hover:text-teal-deep"
               >
                 Explore Course
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
             </div>
           </motion.article>
         ))}
