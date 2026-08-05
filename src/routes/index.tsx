@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -272,73 +272,337 @@ function AssessmentCards() {
   );
 }
 
+function JourneyRoad({
+  path,
+  viewBox,
+  id,
+  active,
+  className,
+}: {
+  path: string;
+  viewBox: string;
+  id: string;
+  active: boolean;
+  className: string;
+}) {
+  return (
+    <svg viewBox={viewBox} preserveAspectRatio="none" className={className} aria-hidden="true">
+      <defs>
+        <linearGradient id={`${id}-light`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="var(--teal-deep)" />
+          <stop offset="0.55" stopColor="var(--gold)" />
+          <stop offset="1" stopColor="var(--teal)" />
+        </linearGradient>
+        <filter id={`${id}-glow`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <path
+        d={path}
+        fill="none"
+        stroke="var(--primary)"
+        strokeOpacity="0.14"
+        strokeWidth="70"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d={path}
+        fill="none"
+        stroke="var(--primary)"
+        strokeOpacity="0.92"
+        strokeWidth="58"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d={path}
+        fill="none"
+        stroke="var(--cream)"
+        strokeOpacity="0.1"
+        strokeWidth="48"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d={path}
+        fill="none"
+        stroke="var(--cream)"
+        strokeOpacity="0.68"
+        strokeWidth="2.5"
+        strokeDasharray="12 14"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+
+      <motion.path
+        d={path}
+        fill="none"
+        stroke={`url(#${id}-light)`}
+        strokeWidth="5"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={active ? { pathLength: 1, opacity: [0, 0.85, 0.35] } : undefined}
+        transition={{ duration: 2.8, ease: [0.22, 1, 0.36, 1], times: [0, 0.15, 1] }}
+      />
+      <motion.path
+        d={path}
+        pathLength={1}
+        fill="none"
+        stroke={`url(#${id}-light)`}
+        strokeWidth="10"
+        strokeDasharray="0.025 0.975"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        filter={`url(#${id}-glow)`}
+        initial={{ strokeDashoffset: 0, opacity: 0 }}
+        animate={active ? { strokeDashoffset: -1, opacity: [0, 1, 1, 0] } : undefined}
+        transition={{ duration: 2.8, ease: "easeInOut", times: [0, 0.1, 0.88, 1] }}
+      />
+    </svg>
+  );
+}
+
 function JourneyTimeline() {
   const [activeStep, setActiveStep] = useState(0);
-
+  const roadmapRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(roadmapRef, { once: true, amount: 0.25 });
+  const prefersReducedMotion = useReducedMotion();
+  const shouldAnimate = isInView && !prefersReducedMotion;
+  const desktopPath =
+    "M -50 318 C 40 270 70 238 120 260 C 210 305 300 290 315 220 C 330 155 265 92 348 108 C 455 125 445 300 590 265 C 720 240 680 115 835 145 C 950 170 970 90 1080 120 C 1160 142 1195 74 1250 42";
+  const mobilePath =
+    "M 48 58 C 80 100 16 160 48 208 C 78 250 16 310 48 358 C 78 400 16 460 48 508 C 78 550 16 610 48 658";
   const steps = [
-    { icon: ClipboardCheck, title: "Take Assessment", desc: "Answer a few honest questions." },
-    { icon: FileText, title: "Personal Report", desc: "Receive a Spirit-led summary." },
-    { icon: GraduationCap, title: "Join Training", desc: "Enter a course that fits your call." },
-    { icon: HandHeart, title: "Mentorship", desc: "Walk with a mature guide." },
-    { icon: Send, title: "Go Minister", desc: "Step into the harvest, equipped." },
+    {
+      icon: ClipboardCheck,
+      title: "Take Assessment",
+      desc: "Answer a few honest questions.",
+      position: { left: "10%", top: 260 },
+      labelClass:
+        "bottom-[calc(100%+1.5rem)] left-1/2 -translate-x-1/2 text-center",
+      markerClass: "bg-teal-deep text-white",
+    },
+    {
+      icon: FileText,
+      title: "Personal Report",
+      desc: "Receive a Spirit-led summary.",
+      position: { left: "29%", top: 108 },
+      labelClass:
+        "bottom-[calc(100%+1.5rem)] left-1/2 -translate-x-1/2 text-center",
+      markerClass: "bg-primary text-white",
+    },
+    {
+      icon: GraduationCap,
+      title: "Join Training",
+      desc: "Enter a course that fits your call.",
+      position: { left: "49%", top: 265 },
+      labelClass: "left-1/2 top-[calc(100%+1.25rem)] -translate-x-1/2 text-center",
+      markerClass: "bg-gold text-primary",
+    },
+    {
+      icon: HandHeart,
+      title: "Mentorship",
+      desc: "Walk with a mature guide.",
+      position: { left: "69.5%", top: 145 },
+      labelClass:
+        "bottom-[calc(100%+1.5rem)] left-1/2 -translate-x-1/2 text-center",
+      markerClass: "bg-teal-deep text-white",
+    },
+    {
+      icon: Send,
+      title: "Go Minister",
+      desc: "Step into the harvest, equipped.",
+      position: { left: "90%", top: 120 },
+      labelClass: "left-1/2 top-[calc(100%+1.25rem)] -translate-x-1/2 text-center",
+      markerClass: "bg-primary text-white",
+    },
   ];
+
+  const checkpointMotion = (index: number) => ({
+    initial: prefersReducedMotion ? false : { opacity: 0.42, scale: 0.9 },
+    animate:
+      isInView || prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0.42, scale: 0.9 },
+    transition: prefersReducedMotion
+      ? { duration: 0 }
+      : { delay: 0.18 + index * 0.52, duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
+  });
+
   return (
-    <Section id="journey">
-      <div className="text-center">
+    <Section
+      id="journey"
+      className="relative overflow-hidden bg-gradient-to-b from-background via-cream/70 to-background"
+    >
+      <div className="pointer-events-none absolute -left-32 top-24 h-80 w-80 rounded-full bg-teal/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-16 h-72 w-72 rounded-full bg-plum/10 blur-3xl" />
+
+      <div className="relative text-center">
         <SectionEyebrow>Your Journey With Us</SectionEyebrow>
         <h2 className="mx-auto max-w-3xl text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
           A clear path from <span className="text-gradient italic">wondering</span> to walking it
           out.
         </h2>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
+          Every step builds on the last, taking you from discovery to confident, equipped ministry.
+        </p>
       </div>
 
-      <div className="relative mt-20">
-        {/* connecting line */}
-        <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/10 via-primary/45 to-primary/10 md:left-1/2 md:hidden" />
-        <div className="hidden md:block absolute left-0 right-0 top-8 h-0.5 bg-gradient-to-r from-primary/10 via-primary/45 to-primary/10" />
+      <div ref={roadmapRef} className="relative mt-14 md:mt-16">
+        <div className="relative lg:hidden">
+          <JourneyRoad
+            path={mobilePath}
+            viewBox="0 0 96 658"
+            id="journey-mobile"
+            active={shouldAnimate}
+            className="pointer-events-none absolute left-0 top-0 h-[658px] w-24 overflow-visible"
+          />
 
-        <div className="grid gap-8 md:grid-cols-5">
-          {steps.map((s, i) => {
-            const isActive = i === activeStep;
-            return (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.12, duration: 0.6 }}
-                onClick={() => setActiveStep(i)}
-                className="relative flex cursor-pointer items-start gap-5 md:flex-col md:items-center md:text-center group select-none"
-              >
-                <div
-                  className={`relative z-10 grid h-16 w-16 shrink-0 place-items-center rounded-full border transition-all duration-300 stepper-circle ${
-                    isActive ? "stepper-circle-active text-white bg-primary" : "stepper-circle-inactive text-primary bg-card"
-                  }`}
+          <ol className="relative">
+            {steps.map((step, index) => {
+              const isActive = index === activeStep;
+              return (
+                <li key={step.title} className="min-h-[150px] last:min-h-0">
+                  <motion.button
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setActiveStep(index)}
+                    {...checkpointMotion(index)}
+                    className="group grid w-full grid-cols-[96px_minmax(0,1fr)] items-start text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                  >
+                    <div className="relative z-10 h-16 w-14 justify-self-center">
+                      <motion.span
+                        className="pointer-events-none absolute left-1/2 top-0 h-12 w-12 -translate-x-1/2 rounded-full border-2 border-gold"
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={
+                          shouldAnimate
+                            ? { opacity: [0, 0.8, 0], scale: [0.85, 1.38, 1.6] }
+                            : undefined
+                        }
+                        transition={{ delay: 0.18 + index * 0.52, duration: 0.75 }}
+                      />
+                      <span
+                        className={`absolute left-1/2 top-9 h-5 w-5 -translate-x-1/2 rotate-45 ${step.markerClass}`}
+                      />
+                      <span
+                        className={`absolute left-1/2 top-0 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full border-4 border-background shadow-card transition-transform duration-300 group-active:scale-95 ${step.markerClass} ${
+                          isActive ? "scale-105 shadow-soft" : "group-hover:scale-105"
+                        }`}
+                      >
+                        <step.icon className="h-5 w-5" strokeWidth={1.9} />
+                      </span>
+                    </div>
+                    <div className="ml-5 pt-0.5 pr-2">
+                      <div
+                        className={`mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] transition-colors duration-300 ${
+                          isActive ? "text-teal-deep" : "text-muted-foreground/70"
+                        }`}
+                      >
+                        Step {String(index + 1).padStart(2, "0")}
+                        <span className="h-px w-8 bg-current opacity-40" />
+                      </div>
+                      <h3
+                        className={`text-xl font-semibold transition-colors duration-300 ${
+                          isActive ? "text-primary" : "text-primary/75 group-hover:text-primary"
+                        }`}
+                      >
+                        {step.title}
+                      </h3>
+                      <p className="mt-1.5 max-w-sm text-base leading-relaxed text-muted-foreground">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </motion.button>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
+        <div className="relative hidden h-[390px] lg:block">
+          <JourneyRoad
+            path={desktopPath}
+            viewBox="0 0 1200 360"
+            id="journey-desktop"
+            active={shouldAnimate}
+            className="pointer-events-none absolute inset-x-0 top-0 h-[360px] w-full overflow-visible"
+          />
+
+          <ol className="absolute inset-0">
+            {steps.map((step, index) => {
+              const isActive = index === activeStep;
+              return (
+                <li
+                  key={step.title}
+                  style={step.position}
+                  className="absolute -translate-x-1/2 -translate-y-[58px]"
                 >
-                  <s.icon className="h-6 w-6 transition-colors duration-300" strokeWidth={1.75} />
-                  <span
-                    className={`absolute -top-2 -right-2 grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold transition-all duration-300 ring-2 ring-background ${
-                      isActive
-                        ? "bg-primary text-white shadow-[0_2px_8px_rgba(45,10,78,0.3)]"
-                        : "bg-primary/20 text-primary"
-                    }`}
+                  <motion.button
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setActiveStep(index)}
+                    {...checkpointMotion(index)}
+                    className="group relative block h-16 w-14 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
                   >
-                    {i + 1}
-                  </span>
-                </div>
-                <div className="min-w-0 md:mt-4">
-                  <h3
-                    className={`text-lg font-semibold transition-colors duration-300 ${
-                      isActive ? "text-primary font-bold" : "text-primary/80 group-hover:text-primary"
-                    }`}
-                  >
-                    {s.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-muted-foreground transition-colors duration-300">{s.desc}</p>
-                </div>
-              </motion.div>
-            );
-          })}
+                    <motion.span
+                      className="pointer-events-none absolute left-1/2 top-0 h-12 w-12 -translate-x-1/2 rounded-full border-2 border-gold"
+                      initial={{ opacity: 0, scale: 0.85 }}
+                      animate={
+                        shouldAnimate
+                          ? { opacity: [0, 0.8, 0], scale: [0.85, 1.38, 1.6] }
+                          : undefined
+                      }
+                      transition={{ delay: 0.18 + index * 0.52, duration: 0.75 }}
+                    />
+                    <span
+                      className={`absolute left-1/2 top-9 h-5 w-5 -translate-x-1/2 rotate-45 ${step.markerClass}`}
+                    />
+                    <span
+                      className={`absolute left-1/2 top-0 z-10 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full border-4 border-background shadow-card transition-transform duration-300 group-active:scale-95 ${step.markerClass} ${
+                        isActive ? "scale-105 shadow-soft" : "group-hover:scale-105"
+                      }`}
+                    >
+                      <step.icon className="h-6 w-6" strokeWidth={1.75} />
+                    </span>
+
+                    <div
+                      className={`absolute w-44 xl:w-52 ${step.labelClass}`}
+                    >
+                      <div className="mb-1 inline-flex items-center gap-2">
+                        <span
+                          className={`h-px w-7 bg-current transition-colors duration-300 ${
+                            isActive ? "text-teal-deep" : "text-muted-foreground/40"
+                          }`}
+                        />
+                        <span
+                          className={`text-xs font-semibold uppercase tracking-[0.18em] transition-colors duration-300 ${
+                          isActive ? "text-teal-deep" : "text-muted-foreground/60"
+                        }`}
+                        >
+                          Step {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <h3
+                        className={`text-lg font-semibold transition-colors duration-300 ${
+                          isActive ? "text-primary" : "text-primary/70 group-hover:text-primary"
+                        }`}
+                      >
+                        {step.title}
+                      </h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </motion.button>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
     </Section>
