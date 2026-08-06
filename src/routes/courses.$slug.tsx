@@ -70,14 +70,27 @@ function CoursePage() {
             className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
           />
           <div className="relative grid gap-10 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
-            <button
-              type="button"
-              className="group mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full border-2 border-white/50 transition-all duration-500 hover:scale-105 hover:border-white md:h-40 md:w-40"
-              aria-label={`Play intro for ${course.title}`}
-            >
-              <Play className="h-10 w-10 translate-x-0.5 fill-white/90 text-white transition-transform duration-500 group-hover:scale-110" />
-              <span className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/60">Intro</span>
-            </button>
+            {course.videoUrl ? (
+              <a
+                href={course.videoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full border-2 border-white/50 transition-all duration-500 hover:scale-105 hover:border-white md:h-40 md:w-40"
+                aria-label={`Watch sample teaching for ${course.title}`}
+              >
+                <Play className="h-10 w-10 translate-x-0.5 fill-white/90 text-white transition-transform duration-500 group-hover:scale-110" />
+                <span className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/60">Intro</span>
+              </a>
+            ) : (
+              <button
+                type="button"
+                className="group mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full border-2 border-white/50 transition-all duration-500 hover:scale-105 hover:border-white md:h-40 md:w-40"
+                aria-label={`Play intro for ${course.title}`}
+              >
+                <Play className="h-10 w-10 translate-x-0.5 fill-white/90 text-white transition-transform duration-500 group-hover:scale-110" />
+                <span className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/60">Intro</span>
+              </button>
+            )}
 
             <div className="min-w-0">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur">

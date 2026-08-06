@@ -19,6 +19,7 @@ export type Course = {
   level: string;
   outline: CourseOutline[];
   testimonials: { name: string; role: string; quote: string; img: string }[];
+  videoUrl?: string;
 };
 
 export const courses: Course[] = [
@@ -164,6 +165,7 @@ export const courses: Course[] = [
   },
   {
     slug: "kingdom-shakers",
+    videoUrl: "https://youtu.be/wiy2VrrMylU",
     img: callingImg,
     tag: "Calling & Spiritual Gifts",
     title: "Kingdom Shakers (Knowing Your Call)",
@@ -308,6 +310,7 @@ export const courses: Course[] = [
   },
   {
     slug: "bible-exposition",
+    videoUrl: "https://youtu.be/OStIz1o-YM0?si=i9GAuhFnzwHHJW55",
     img: courseBibleImg,
     tag: "Module One",
     title: "Bible Exposition",
