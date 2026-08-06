@@ -18,6 +18,7 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InteractionRouteImport } from './routes/interaction'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
@@ -69,6 +70,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
+  '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
+  '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
+  '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/interaction'
     | '/login'
+    | '/partner'
     | '/signup'
     | '/courses/$slug'
     | '/events/previous'
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/interaction'
     | '/login'
+    | '/partner'
     | '/signup'
     | '/courses/$slug'
     | '/events/previous'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/interaction'
     | '/login'
+    | '/partner'
     | '/signup'
     | '/courses/$slug'
     | '/events/previous'
@@ -203,6 +215,7 @@ export interface RootRouteChildren {
   FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
   LoginRoute: typeof LoginRoute
+  PartnerRoute: typeof PartnerRoute
   SignupRoute: typeof SignupRoute
 }
 
@@ -269,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -345,6 +365,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
   LoginRoute: LoginRoute,
+  PartnerRoute: PartnerRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport

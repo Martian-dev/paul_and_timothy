@@ -117,6 +117,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           <Link to="/contact" className={linkCls}>
             Contact
           </Link>
+          <Link to="/partner" className={linkCls}>
+            Partner with Us
+          </Link>
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
@@ -246,6 +249,14 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
             >
               Contact
+            </Link>
+
+            <Link
+              to="/partner"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
+            >
+              Partner with Us
             </Link>
 
             <Link
