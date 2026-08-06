@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApestAssessmentRouteImport } from './routes/apest-assessment'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as AssessmentRouteImport } from './routes/assessment'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -28,6 +29,11 @@ import { Route as EventsUpcomingRouteImport } from './routes/events.upcoming'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApestAssessmentRoute = ApestAssessmentRouteImport.update({
+  id: '/apest-assessment',
+  path: '/apest-assessment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArticlesRoute = ArticlesRouteImport.update({
@@ -103,6 +109,7 @@ const EventsUpcomingRoute = EventsUpcomingRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apest-assessment': typeof ApestAssessmentRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
   '/contact': typeof ContactRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apest-assessment': typeof ApestAssessmentRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
   '/contact': typeof ContactRoute
@@ -137,6 +145,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apest-assessment': typeof ApestAssessmentRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
   '/contact': typeof ContactRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/apest-assessment'
     | '/articles'
     | '/assessment'
     | '/contact'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/apest-assessment'
     | '/articles'
     | '/assessment'
     | '/contact'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/apest-assessment'
     | '/articles'
     | '/assessment'
     | '/contact'
@@ -207,6 +219,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApestAssessmentRoute: typeof ApestAssessmentRoute
   ArticlesRoute: typeof ArticlesRoute
   AssessmentRoute: typeof AssessmentRoute
   ContactRoute: typeof ContactRoute
@@ -226,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apest-assessment': {
+      id: '/apest-assessment'
+      path: '/apest-assessment'
+      fullPath: '/apest-assessment'
+      preLoaderRoute: typeof ApestAssessmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/articles': {
@@ -357,6 +377,7 @@ const EventsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApestAssessmentRoute: ApestAssessmentRoute,
   ArticlesRoute: ArticlesRoute,
   AssessmentRoute: AssessmentRoute,
   ContactRoute: ContactRoute,

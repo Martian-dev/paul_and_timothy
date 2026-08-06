@@ -22,6 +22,7 @@ const eventLinks: NavLink[] = [
 
 const resources: NavLink[] = [
   { label: "Assessment", to: "/assessment", desc: "Discover the people group you're called to" },
+  { label: "APEST Assessment", to: "/apest-assessment", desc: "Identify your spiritual gifting" },
   { label: "Articles", to: "/articles", desc: "Teaching and encouragement for your journey" },
   { label: "FAQs", to: "/faqs", desc: "Answers to the questions we hear most" },
 ];
