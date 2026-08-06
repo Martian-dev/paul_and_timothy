@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import * as SliderPrimitive from "@radix-ui/react-slider";
 import { motion } from "framer-motion";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { ArrowRight, Baby, Crown, HeartHandshake, RotateCcw, Sparkles, Users } from "lucide-react";
@@ -229,7 +230,7 @@ function AssessmentPage() {
         <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
           <p className="font-serif text-lg font-semibold text-primary">How to answer</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            For each statement, choose the number that best describes you.
+            For each statement, move the slider to the number that best describes you.
           </p>
           <div className="mt-4 grid gap-2 sm:grid-cols-5">
             {SCALE.map((s) => (
@@ -283,31 +284,75 @@ function AssessmentPage() {
                 {section.questions.map((q, qi) => {
                   const id = `${section.key}-${qi}`;
                   const current = answers[id];
+                  const questionNumber = si * 3 + qi + 1;
+                  const currentScale = SCALE.find((item) => item.value === current);
                   return (
                     <div key={id} className="px-6 py-6">
                       <p className="text-sm leading-relaxed text-foreground/90">
                         <span className="mr-2 font-serif font-bold text-teal-deep">
-                          {si * 3 + qi + 1}.
+                          {questionNumber}.
                         </span>
                         {q}
                       </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {SCALE.map((s) => (
-                          <button
-                            key={s.value}
-                            type="button"
-                            onClick={() => setAnswer(id, s.value)}
-                            aria-pressed={current === s.value}
-                            aria-label={`${s.value} — ${s.label}`}
-                            className={`h-11 w-11 rounded-2xl border text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 ${
-                              current === s.value
-                                ? "border-transparent gradient-brand text-white shadow-soft"
-                                : "border-border bg-background text-primary/70 hover:border-teal hover:text-primary"
+                      <div className="mt-5 rounded-2xl bg-accent/35 px-4 py-3 sm:px-5">
+                        <div className="flex min-h-7 items-center justify-between gap-3">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            {currentScale ? "Your answer" : "Slide to answer"}
+                          </span>
+                          <span
+                            className={`text-sm font-semibold transition-colors duration-200 ${
+                              currentScale ? "text-teal-deep" : "text-muted-foreground/70"
+                            }`}
+                            aria-live="polite"
+                          >
+                            {currentScale
+                              ? `${currentScale.value} — ${currentScale.label}`
+                              : "Not answered"}
+                          </span>
+                        </div>
+
+                        <SliderPrimitive.Root
+                          min={1}
+                          max={5}
+                          step={1}
+                          value={[current ?? 3]}
+                          onValueChange={([value]) => setAnswer(id, value)}
+                          className="relative mt-2 flex h-11 w-full touch-none select-none items-center"
+                        >
+                          <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-primary/12">
+                            <SliderPrimitive.Range
+                              className={`absolute h-full rounded-full ${
+                                currentScale ? "gradient-brand" : "bg-transparent"
+                              }`}
+                            />
+                          </SliderPrimitive.Track>
+                          <SliderPrimitive.Thumb
+                            aria-label={`Question ${questionNumber}: ${q}`}
+                            aria-valuetext={currentScale?.label ?? "Not answered"}
+                            className={`grid h-8 w-8 place-items-center rounded-full border-2 text-xs font-bold shadow-card transition-[background-color,border-color,color,box-shadow] duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal/25 ${
+                              currentScale
+                                ? "border-background gradient-brand text-white shadow-soft"
+                                : "border-primary/25 bg-background text-primary/55"
                             }`}
                           >
-                            {s.value}
-                          </button>
-                        ))}
+                            {current ?? "?"}
+                          </SliderPrimitive.Thumb>
+                        </SliderPrimitive.Root>
+
+                        <div className="grid grid-cols-5 px-1" aria-hidden="true">
+                          {SCALE.map((scale) => (
+                            <span
+                              key={scale.value}
+                              className={`text-center text-xs font-semibold transition-colors duration-200 ${
+                                current === scale.value
+                                  ? "text-teal-deep"
+                                  : "text-muted-foreground/55"
+                              }`}
+                            >
+                              {scale.value}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   );
