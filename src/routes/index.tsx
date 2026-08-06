@@ -820,11 +820,11 @@ function Courses() {
       desc: "A guided exploration of Genesis to Revelation — see the redemptive story as one whole.",
     },
     {
-      img: courseTeachingImg,
+      img: callingImg,
       tag: "Module Two",
-      slug: "foundations-of-discipleship",
-      title: "Foundations of Discipleship",
-      desc: "Learn to make disciples the way Jesus did — relationally, patiently, reproducibly.",
+      slug: "kingdom-shakers",
+      title: "Kingdom Shakers (Knowing Your Call)",
+      desc: "Identify your calling and gifts, discern a faithful next step, and build rhythms for spiritual growth.",
     },
     {
       img: mentorshipImg,
@@ -834,7 +834,7 @@ function Courses() {
       desc: "Practical formation for spiritual leadership, character and endurance in ministry.",
     },
     {
-      img: callingImg,
+      img: courseTeachingImg,
       tag: "Module Four",
       slug: "sent-to-the-nations",
       title: "Sent to the Nations",
