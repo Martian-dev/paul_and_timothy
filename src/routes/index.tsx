@@ -133,22 +133,27 @@ function Hero() {
             className="text-4xl font-medium leading-[1.05] text-white md:text-6xl lg:text-7xl"
           >
             <div className="block">
-              <AnimatedLetterLine text="You are not here" delay={0.05} stagger={0.03} />
+              <AnimatedLetterLine text="Anyone can do" delay={0.05} stagger={0.03} />
             </div>
             <div className="mt-2 block">
-              <AnimatedLetterLine text="by accident." delay={0.8} stagger={0.03} />
+              <AnimatedLetterLine text="ministry." delay={0.5} stagger={0.03} />
             </div>
-            <div className="mt-6 block italic text-[oklch(0.85_0.12_180)]">
-              <AnimatedLetterLine text="You were made" delay={1.4} stagger={0.03} />
-            </div>
-            <div className="mt-2 block">
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2.2, duration: 0.25, ease: [0.2, 0.8, 0.2, 1] as const }}
-              >
-                <AnimatedLetterLine text="for a purpose." delay={2.35} stagger={0.14} accent />
-              </motion.span>
+            <div className="mt-6 block text-2xl font-normal text-white/90 md:text-3xl lg:text-4xl">
+              <div className="block">
+                <AnimatedLetterLine text="Discover your calling" delay={0.8} stagger={0.03} />
+              </div>
+              <div className="mt-2 block">
+                <AnimatedLetterLine text="Get trained" delay={1.6} stagger={0.03} />
+              </div>
+              <div className="mt-2 block italic text-[oklch(0.85_0.12_180)]">
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.4, duration: 0.25, ease: [0.2, 0.8, 0.2, 1] as const }}
+                >
+                  <AnimatedLetterLine text="Serve with confidence" delay={2.55} stagger={0.08} accent />
+                </motion.span>
+              </div>
             </div>
           </motion.h1>
 
@@ -211,32 +216,31 @@ function AssessmentCards() {
   const cards = [
     {
       icon: Compass,
-      title: "What is your role?",
-      desc: "Discover the spiritual gifts and leadership shape God has designed uniquely in you.",
+      title: "What is my role?",
+      desc: "Find out which gifts God has placed in you, and how they shape the way you're meant to serve.",
     },
     {
       icon: Users,
-      title: "Who are you meant to minister to?",
-      desc: "Uncover the people and places you're wired to reach with the Gospel.",
+      title: "Who should I serve?",
+      desc: "Discover the people and the places you've been designed to carry the Gospel to.",
     },
     {
       icon: Heart,
-      title: "What is your call?",
-      desc: "Move from general purpose into the specific mission God is inviting you into.",
+      title: "What is my call?",
+      desc: "Move from a general sense of purpose to a specific next step you can actually take this year.",
     },
   ];
   return (
     <Section id="assessment" className="bg-cream">
       <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:items-end">
         <div>
-          <SectionEyebrow>Begin Your Journey</SectionEyebrow>
+          <SectionEyebrow>Begin Here</SectionEyebrow>
           <h2 className="text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-            Three questions <br /> that change everything.
+            Three questions <br /> to clarify your calling.
           </h2>
         </div>
         <p className="max-w-xl text-lg leading-relaxed text-muted-foreground lg:text-right lg:ml-auto">
-          Our assessment helps you name what God has been quietly forming in you — so you can walk
-          it out with clarity and confidence.
+          Most believers who want to serve God are willing, but lack clarity. Stop guessing today: use these assessments to help uncover God’s calling on your life.
         </p>
       </div>
 
@@ -612,36 +616,40 @@ function JourneyTimeline() {
 function Audience() {
   const items = [
     {
-      title: "I'm trying to understand my calling",
-      desc: "Start with clarity. Take the assessment and receive a personal report.",
-      cta: "Learn More",
+      title: "I'm still figuring it out.",
+      desc: "You want to serve God, but you're not sure what you're made for. Start with the assessment and a personal report.",
+      cta: "Take the Assessment",
       img: callingImg,
+      link: "/assessment",
     },
     {
-      title: "I already know my calling",
-      desc: "Take a relevant course and sharpen the gift God has entrusted to you.",
-      cta: "Take a Course",
+      title: "I know my call, but where do I start?",
+      desc: "You've sensed it for a while now. A short course gives you the foundation, and a first step you can actually take.",
+      cta: "Explore Courses",
       img: mentorshipImg,
+      link: "/courses",
     },
     {
-      title: "I am serving in a church",
-      desc: "Get equipped with tools, teaching and mentorship for the long haul.",
-      cta: "Equip Now",
+      title: "I'm already serving, and want to grow.",
+      desc: "Sharpen your spiritual foundation, kingdom values and develop practical skills for your specific calling.",
+      cta: "Explore Advance courses",
       img: communityImg,
+      link: "/courses",
     },
     {
-      title: "I lead a church",
-      desc: "Train your team and disciple leaders across your community.",
-      cta: "Train My Church",
+      title: "Help my team grow.",
+      desc: "Train your leaders together. For churches, ministries and teams who need to be equipped and trained.",
+      cta: "Group Training",
       img: courseTeachingImg,
+      link: "/assessment",
     },
   ];
   return (
     <Section id="who" className="bg-gradient-to-b from-background to-cream">
       <div className="max-w-2xl">
-        <SectionEyebrow>Who is this for?</SectionEyebrow>
+        <SectionEyebrow>Who Is This For?</SectionEyebrow>
         <h2 className="text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-          Wherever you are on the journey.
+          Identify the right fit that suits your current situation
         </h2>
       </div>
 
@@ -658,13 +666,13 @@ function Audience() {
             <div className="flex flex-col p-8">
               <h3 className="text-xl font-semibold text-primary md:text-2xl">{it.title}</h3>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{it.desc}</p>
-              <a
-                href="#"
+              <Link
+                to={it.link}
                 className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-teal-deep transition-colors hover:text-primary"
               >
                 {it.cta}
                 <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
             </div>
             <div className="relative overflow-hidden">
               <img
@@ -758,11 +766,12 @@ function Mission() {
             <span className="h-px w-8 bg-[oklch(0.85_0.12_180)]" />
             Let's Increase the Count
           </div>
-          <h2 className="text-4xl font-medium leading-[1.05] md:text-6xl">
-            "The harvest is plenty,
+          <h2 className="text-4xl font-medium leading-[1.05] md:text-5xl">
+            "The harvest is plentiful, but the workers are few…" <span className="text-2xl text-white/60 whitespace-nowrap">Luke 10:2</span>
             <br />
-            <span className="italic text-[oklch(0.85_0.12_180)]">and the workers are few</span>
-            <br />— and only a handful are equipped."
+            <span className="mt-4 block text-3xl italic text-[oklch(0.85_0.12_180)]">
+              … and only a handful have ever been trained.
+            </span>
           </h2>
         </motion.div>
         <motion.div
@@ -772,30 +781,42 @@ function Mission() {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="space-y-6"
         >
-          <p className="text-lg leading-relaxed text-white/75">
-            We exist to equip and send out ordinary people for an extraordinary mission. We raise
-            and train faithful leaders who build God's Kingdom — starting in their own homes,
-            workplaces and cities.
-          </p>
+          <div className="space-y-4 text-lg leading-relaxed text-white/75">
+            <p>
+              Bible colleges provide solid theology education but require three years, leaving out practical ministry training. Most believers want to serve but can't commit that much time. This leads to the misconception that only full-time ministers can do ministry, while the Great Commission to share the Gospel applies to all believers.
+            </p>
+            <p>
+              Paul & Timothy Training Centre closes this gap with short, intentional training designed for ordinary believers with a heart to serve.
+            </p>
+          </div>
           <div className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
             {[
               {
-                value: 12000,
-                label: "Equipped",
-                format: (n: number) => `${Math.floor(n / 1000)}k+`,
+                value: 15,
+                label: "Years of ground experience",
+                format: (n: number) => `${n}+`,
               },
-              { value: 40, label: "Nations", format: (n: number) => `${n}+` },
-              { value: 300, label: "Mentors", format: (n: number) => `${n}` },
+              { value: 2020, label: "Training believers", format: (n: number) => `Since ${n}` },
+              { value: 2439, label: "Participants trained", format: (n: number) => `${n}` },
             ].map((stat) => (
               <div key={stat.label}>
                 <div className="text-3xl font-medium text-white md:text-4xl">
-                  <Counter target={stat.value} format={stat.format} />
+                  <Counter target={stat.value} format={stat.format} duration={stat.value === 2020 ? 1500 : 900} />
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-widest text-white/60">
+                <div className="mt-2 text-xs uppercase tracking-widest text-white/60 leading-snug">
                   {stat.label}
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="mt-8 space-y-3 rounded-2xl bg-white/5 p-6 backdrop-blur-sm border border-white/10 text-sm text-white/80">
+            <p>
+              <strong className="text-white">Training programs:</strong> 9 Online & 4 In-person Training
+            </p>
+            <p>
+              <strong className="text-white">Places Covered:</strong> Various parts of Tamil Nadu, Maharashtra, Karnataka, Pune, Gujarat, Singapore & UK
+            </p>
           </div>
           <a
             href="/courses"
@@ -817,28 +838,14 @@ function Courses() {
       tag: "Module One",
       slug: "bible-exposition",
       title: "Bible Exposition",
-      desc: "A guided exploration of Genesis to Revelation — see the redemptive story as one whole.",
+      desc: "Ten hours. Ten days. A daily practice that moves you from knowing about Scripture to knowing God's will and your calling within it.",
     },
     {
       img: callingImg,
       tag: "Module Two",
       slug: "kingdom-shakers",
       title: "Kingdom Shakers (Knowing Your Call)",
-      desc: "Identify your calling and gifts, discern a faithful next step, and build rhythms for spiritual growth.",
-    },
-    {
-      img: mentorshipImg,
-      tag: "Module Three",
-      slug: "called-to-lead",
-      title: "Called to Lead",
-      desc: "Practical formation for spiritual leadership, character and endurance in ministry.",
-    },
-    {
-      img: courseTeachingImg,
-      tag: "Module Four",
-      slug: "sent-to-the-nations",
-      title: "Sent to the Nations",
-      desc: "For those wired for mission — discern where and how to go.",
+      desc: "Identify your calling and your gifts, discern a faithful next step, and build the spiritual rhythms to sustain it.",
     },
   ];
   return (
@@ -847,8 +854,11 @@ function Courses() {
         <div>
           <SectionEyebrow>Explore Courses</SectionEyebrow>
           <h2 className="text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-            Training that forms <br /> both character and craft.
+            Training that shapes both <br /> the messenger and the message.
           </h2>
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            All Paul & Timothy Training Centre courses are built for people with lives, jobs and families already in motion.
+          </p>
         </div>
         <Link
           to="/courses"
@@ -902,33 +912,33 @@ function Testimonials() {
   const items = [
     {
       img: mentorshipImg,
-      name: "Daniel M.",
-      role: "Pastor, Nairobi",
+      name: "[Name Placeholder]",
+      role: "[Role Placeholder]",
       quote:
-        "The assessment named things I'd been sensing for years. I finally have the vocabulary — and the confidence — to walk in my calling.",
+        "[Placeholder for a real quote — e.g. from a Joyful Camp, Wedlock, or PTTC participant. Awaiting copy.]",
     },
     {
       img: communityImg,
-      name: "Priya R.",
-      role: "Marketplace leader",
+      name: "[Name Placeholder]",
+      role: "[Role Placeholder]",
       quote:
-        "I thought ministry meant leaving my job. Paul & Timothy showed me my workplace is my mission field.",
+        "[Placeholder for a real quote — e.g. from a Joyful Camp, Wedlock, or PTTC participant. Awaiting copy.]",
     },
     {
       img: callingImg,
-      name: "Josh T.",
-      role: "Missionary",
+      name: "[Name Placeholder]",
+      role: "[Role Placeholder]",
       quote:
-        "The mentorship was the missing piece. I'm no longer serving alone — I'm being formed as I go.",
+        "[Placeholder for a real quote — e.g. from a Joyful Camp, Wedlock, or PTTC participant. Awaiting copy.]",
     },
   ];
   return (
     <Section id="stories" className="bg-cream">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <SectionEyebrow>Stories</SectionEyebrow>
+          <SectionEyebrow>How We've Helped</SectionEyebrow>
           <h2 className="text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-            Hear from people <br /> like you.
+            Our Stories: How PTTC has <br /> equipped believers like you
           </h2>
         </div>
       </div>
@@ -992,14 +1002,13 @@ function MentorCTA() {
         <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
           <div>
             <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest">
-              <BookOpen className="h-3.5 w-3.5" /> It's Free
+              <BookOpen className="h-3.5 w-3.5" /> Get one-on-one guidance
             </div>
             <h2 className="text-4xl font-medium leading-tight md:text-5xl">
-              Still confused about <br /> your calling?
+              Need help understanding <br /> where you fit?
             </h2>
             <p className="mt-4 max-w-xl text-white/80">
-              Book a free 30-minute conversation with a mentor. No pressure — just prayer, listening
-              and honest counsel.
+              Book a 30-minute conversation with a mentor. Our experienced facilitator will listen and offer honest counsel on your next step.
             </p>
           </div>
           <a
@@ -1029,8 +1038,9 @@ function Footer() {
             <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-10 w-auto" />
           </a>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-primary-foreground/70">
-            Equipping ordinary people for an extraordinary mission. Rooted in Scripture. Sent in
-            love.
+            Equipping ordinary believers to become a powerful & confident witness for Christ.
+            <br /><br />
+            An initiative of Word Life Foundation.
           </p>
 
           <form className="mt-8 flex max-w-sm items-center gap-2 rounded-full border border-white/20 bg-white/5 p-1.5 backdrop-blur">
