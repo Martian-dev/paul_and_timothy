@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useMemo, useState, useEffect } from "react";
 import {
   ArrowRight,
   CalendarDays,
@@ -31,6 +31,15 @@ import courseBibleImg from "@/assets/course-bible.jpg";
 import courseTeachingImg from "@/assets/course-teaching.jpg";
 import prayerImg from "@/assets/event-prayer.jpg";
 import eventsHero from "@/assets/events-hero.jpg";
+import a2017_1 from "@/assets/Alethia2018/IMG-20171002-WA0017.jpg";
+import a2017_2 from "@/assets/Alethia2018/IMG-20171002-WA0019.jpg";
+import a2017_3 from "@/assets/Alethia2018/IMG-20171002-WA0020.jpg";
+import a2026_1 from "@/assets/Alethia2026/WhatsApp Image 2026-07-14 at 11.18.51.jpeg";
+import a2026_2 from "@/assets/Alethia2026/WhatsApp Image 2026-07-14 at 11.18.53.jpeg";
+import a2026_3 from "@/assets/Alethia2026/WhatsApp Image 2026-07-14 at 11.19.22.jpeg";
+import a2026_4 from "@/assets/Alethia2026/WhatsApp Image 2026-07-14 at 11.24.07.jpeg";
+import a2026_5 from "@/assets/Alethia2026/WhatsApp Image 2026-07-31 at 17.17.55.jpeg";
+import a2026_6 from "@/assets/Alethia2026/WhatsApp Image 2026-07-31 at 17.18.46.jpeg";
 
 export const Route = createFileRoute("/events/previous")({
   head: () => ({
@@ -264,24 +273,48 @@ function PastGrid() {
 
 /* ---------------- Gallery ---------------- */
 
-const gallery = [
-  { src: communityImg, alt: "Small group Bible study", tall: false },
-  { src: mentorshipImg, alt: "Mentor and mentee", tall: true },
-  { src: prayerImg, alt: "Prayer gathering", tall: false },
-  { src: courseTeachingImg, alt: "Teaching session", tall: true },
-  { src: callingImg, alt: "Sunrise on the mountain", tall: false },
-  { src: courseBibleImg, alt: "Bible and coffee", tall: false },
+const gallery: { src: string; alt: string; year: string; tall?: boolean }[] = [
+  { src: a2017_1, alt: "Alethia 2018 Gathering", year: "Alethia - 2018" },
+  { src: a2017_2, alt: "Alethia 2018 Gathering", year: "Alethia - 2018" },
+  { src: a2017_3, alt: "Alethia 2018 Gathering", year: "Alethia - 2018" },
+  { src: a2026_1, alt: "Alethia 2026 Gathering", year: "Alethia - 2026" },
+  { src: a2026_2, alt: "Alethia 2026 Gathering", year: "Alethia - 2026" },
+  { src: a2026_3, alt: "Alethia 2026 Gathering", year: "Alethia - 2026" },
+  { src: a2026_4, alt: "Alethia 2026 Gathering", year: "Alethia - 2026" },
+  { src: a2026_5, alt: "Alethia 2026 Gathering", year: "Alethia - 2026" },
+  { src: a2026_6, alt: "Alethia 2026 Gathering", year: "Alethia - 2026" },
 ];
 
 function Gallery() {
   const [active, setActive] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    let interval: number;
+    if (isPlaying && active !== null) {
+      interval = window.setInterval(() => {
+        setActive((prev) => (prev === null ? 0 : (prev + 1) % gallery.length));
+      }, 3000);
+    }
+    return () => window.clearInterval(interval);
+  }, [isPlaying, active]);
+
+  const startHighlights = () => {
+    setActive(0);
+    setIsPlaying(true);
+  };
+
+  const closeGallery = () => {
+    setActive(null);
+    setIsPlaying(false);
+  };
 
   return (
     <Section id="gallery">
       <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center">
-        <Eyebrow>Photo Gallery</Eyebrow>
-        <h2 className="mt-5 font-serif text-3xl font-bold text-primary md:text-4xl">
-          Captured moments from past gatherings
+        <Eyebrow>Captured moments from past gatherings</Eyebrow>
+        <h2 className="mt-5 font-serif text-3xl font-bold text-primary md:text-4xl uppercase">
+          PHOTO GALLERY
         </h2>
       </motion.div>
 
@@ -308,38 +341,54 @@ function Gallery() {
 
       <div className="mt-10 flex flex-wrap justify-center gap-3">
         <button
-          onClick={() => setActive(0)}
+          onClick={startHighlights}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
         >
           <Play className="h-4 w-4" /> Watch Highlights
         </button>
-        <button
-          onClick={() => setActive(0)}
+        <Link
+          to="/events/gallery"
           className="inline-flex items-center gap-2 rounded-full border border-border px-7 py-3.5 text-sm font-semibold text-primary transition-colors hover:bg-accent"
         >
           View Full Gallery
-        </button>
+        </Link>
       </div>
 
       {active !== null && (
         <div
           className="fixed inset-0 z-[60] grid place-items-center bg-primary/90 p-6 backdrop-blur-sm animate-fade-in"
-          onClick={() => setActive(null)}
+          onClick={closeGallery}
           role="dialog"
           aria-modal="true"
         >
           <button
-            onClick={() => setActive(null)}
+            onClick={closeGallery}
             aria-label="Close gallery"
-            className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white"
+            className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
-          <img
-            src={gallery[active].src}
-            alt={gallery[active].alt}
-            className="max-h-[80vh] w-auto rounded-3xl object-contain shadow-soft"
-          />
+          <div className="flex flex-col items-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+                className="flex flex-col items-center"
+              >
+                <img
+                  src={gallery[active].src}
+                  alt={gallery[active].alt}
+                  className="max-h-[75vh] w-auto rounded-3xl object-contain shadow-soft"
+                />
+                <p className="mt-6 text-xl font-medium tracking-wide text-white drop-shadow-md">
+                  {gallery[active].year}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       )}
     </Section>

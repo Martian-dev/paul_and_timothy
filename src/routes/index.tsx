@@ -849,7 +849,7 @@ function Courses() {
     },
   ];
   return (
-    <Section id="courses">
+    <Section id="courses" className="pb-12 md:pb-16">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <SectionEyebrow>Explore Courses</SectionEyebrow>
@@ -933,7 +933,7 @@ function Testimonials() {
     },
   ];
   return (
-    <Section id="stories" className="bg-cream">
+    <Section id="stories" className="bg-cream pt-12 md:pt-16">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <SectionEyebrow>How We've Helped</SectionEyebrow>
@@ -1114,6 +1114,7 @@ function Footer() {
     </footer>
   );
 }
+
 
 function Home() {
   return (

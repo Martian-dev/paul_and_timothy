@@ -23,6 +23,7 @@ import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
+import { Route as EventsGalleryRouteImport } from './routes/events.gallery'
 import { Route as EventsPreviousRouteImport } from './routes/events.previous'
 import { Route as EventsUpcomingRouteImport } from './routes/events.upcoming'
 
@@ -96,6 +97,11 @@ const CoursesSlugRoute = CoursesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CoursesRoute,
 } as any)
+const EventsGalleryRoute = EventsGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => EventsRoute,
+} as any)
 const EventsPreviousRoute = EventsPreviousRouteImport.update({
   id: '/previous',
   path: '/previous',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
+  '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
   '/courses/': typeof CoursesIndexRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
+  '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
   '/courses': typeof CoursesIndexRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
   '/courses/$slug': typeof CoursesSlugRoute
+  '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
   '/courses/': typeof CoursesIndexRoute
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/signup'
     | '/courses/$slug'
+    | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
     | '/courses/'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/signup'
     | '/courses/$slug'
+    | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
     | '/courses'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/signup'
     | '/courses/$slug'
+    | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
     | '/courses/'
@@ -332,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoursesSlugRouteImport
       parentRoute: typeof CoursesRoute
     }
+    '/events/gallery': {
+      id: '/events/gallery'
+      path: '/gallery'
+      fullPath: '/events/gallery'
+      preLoaderRoute: typeof EventsGalleryRouteImport
+      parentRoute: typeof EventsRoute
+    }
     '/events/previous': {
       id: '/events/previous'
       path: '/previous'
@@ -363,11 +382,13 @@ const CoursesRouteWithChildren =
   CoursesRoute._addFileChildren(CoursesRouteChildren)
 
 interface EventsRouteChildren {
+  EventsGalleryRoute: typeof EventsGalleryRoute
   EventsPreviousRoute: typeof EventsPreviousRoute
   EventsUpcomingRoute: typeof EventsUpcomingRoute
 }
 
 const EventsRouteChildren: EventsRouteChildren = {
+  EventsGalleryRoute: EventsGalleryRoute,
   EventsPreviousRoute: EventsPreviousRoute,
   EventsUpcomingRoute: EventsUpcomingRoute,
 }
