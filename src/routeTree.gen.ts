@@ -19,8 +19,10 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InteractionRouteImport } from './routes/interaction'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MinistryCallingRouteImport } from './routes/ministry-calling'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SpiritualGiftsRouteImport } from './routes/spiritual-gifts'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
 import { Route as EventsGalleryRouteImport } from './routes/events.gallery'
@@ -77,6 +79,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MinistryCallingRoute = MinistryCallingRouteImport.update({
+  id: '/ministry-calling',
+  path: '/ministry-calling',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PartnerRoute = PartnerRouteImport.update({
   id: '/partner',
   path: '/partner',
@@ -85,6 +92,11 @@ const PartnerRoute = PartnerRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpiritualGiftsRoute = SpiritualGiftsRouteImport.update({
+  id: '/spiritual-gifts',
+  path: '/spiritual-gifts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoursesIndexRoute = CoursesIndexRouteImport.update({
@@ -124,8 +136,10 @@ export interface FileRoutesByFullPath {
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
+  '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
+  '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -142,8 +156,10 @@ export interface FileRoutesByTo {
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
+  '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
+  '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -162,8 +178,10 @@ export interface FileRoutesById {
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
   '/login': typeof LoginRoute
+  '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/signup': typeof SignupRoute
+  '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -183,8 +201,10 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/interaction'
     | '/login'
+    | '/ministry-calling'
     | '/partner'
     | '/signup'
+    | '/spiritual-gifts'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -201,8 +221,10 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/interaction'
     | '/login'
+    | '/ministry-calling'
     | '/partner'
     | '/signup'
+    | '/spiritual-gifts'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -220,8 +242,10 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/interaction'
     | '/login'
+    | '/ministry-calling'
     | '/partner'
     | '/signup'
+    | '/spiritual-gifts'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -240,8 +264,10 @@ export interface RootRouteChildren {
   FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
   LoginRoute: typeof LoginRoute
+  MinistryCallingRoute: typeof MinistryCallingRoute
   PartnerRoute: typeof PartnerRoute
   SignupRoute: typeof SignupRoute
+  SpiritualGiftsRoute: typeof SpiritualGiftsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -316,6 +342,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ministry-calling': {
+      id: '/ministry-calling'
+      path: '/ministry-calling'
+      fullPath: '/ministry-calling'
+      preLoaderRoute: typeof MinistryCallingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/partner': {
       id: '/partner'
       path: '/partner'
@@ -328,6 +361,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spiritual-gifts': {
+      id: '/spiritual-gifts'
+      path: '/spiritual-gifts'
+      fullPath: '/spiritual-gifts'
+      preLoaderRoute: typeof SpiritualGiftsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/courses/': {
@@ -407,8 +447,10 @@ const rootRouteChildren: RootRouteChildren = {
   FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
   LoginRoute: LoginRoute,
+  MinistryCallingRoute: MinistryCallingRoute,
   PartnerRoute: PartnerRoute,
   SignupRoute: SignupRoute,
+  SpiritualGiftsRoute: SpiritualGiftsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
