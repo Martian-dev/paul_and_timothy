@@ -9,9 +9,27 @@ const cols: { title: string; links: FooterLink[] }[] = [
     title: "Quick Links",
     links: [
       { label: "Home", to: "/" },
-      { label: "Why We Exist", href: "/#mission" },
-      { label: "Courses", href: "/#courses" },
-      { label: "Events", to: "/events" },
+      { label: "Why We Exist", to: "/why-we-exist" },
+      { label: "Events", to: "/events/upcoming" },
+      { label: "Courses", to: "/courses" },
+      { label: "Resources", to: "/articles" },
+      { label: "Contact Us", to: "/contact" },
+      { label: "Partner With Us", to: "/partner" },
+    ],
+  },
+  {
+    title: "Events",
+    links: [
+      { label: "Upcoming Events", to: "/events/upcoming" },
+      { label: "Previous Events", to: "/events/previous" },
+    ],
+  },
+  {
+    title: "Courses",
+    links: [
+      { label: "Course Overview", to: "/courses" },
+      { label: "Group Training", to: "/courses" },
+      { label: "Talk to a Mentor", to: "/interaction" },
     ],
   },
   {
@@ -20,16 +38,13 @@ const cols: { title: string; links: FooterLink[] }[] = [
       { label: "Assessment", to: "/assessment" },
       { label: "Articles", to: "/articles" },
       { label: "FAQs", to: "/faqs" },
-      { label: "Library", href: "/#courses" },
     ],
   },
   {
     title: "Connect",
     links: [
-      { label: "Contact", href: "/#contact" },
-      { label: "Find a Mentor", href: "/#contact" },
-      { label: "Partner With Us", href: "/#contact" },
-      { label: "Prayer", href: "/#contact" },
+      { label: "Contact Us", to: "/contact" },
+      { label: "Find a Mentor", to: "/interaction" },
     ],
   },
 ];
@@ -37,27 +52,29 @@ const cols: { title: string; links: FooterLink[] }[] = [
 export function SiteFooter() {
   return (
     <footer id="contact" className="bg-primary text-primary-foreground">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 xl:grid-cols-[minmax(0,1fr)_minmax(0,4fr)]">
         <div>
-          <div className="w-fit rounded-2xl bg-white/95 p-4">
+          <Link to="/" onClick={() => window.scrollTo(0, 0)} className="block w-fit rounded-2xl bg-white/95 p-4 transition-transform hover:-translate-y-1 hover:shadow-lg">
             <img src={logoImg} alt="Paul & Timothy Training Centre" className="h-10 w-auto" />
-          </div>
+          </Link>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-primary-foreground/70">
             Equipping ordinary people for an extraordinary mission. Rooted in Scripture. Sent in
             love.
           </p>
 
-          <form className="mt-8 flex max-w-sm items-center gap-2 rounded-full border border-white/20 bg-white/5 p-1.5 backdrop-blur">
-            <Mail className="ml-3 h-4 w-4 text-primary-foreground/60" />
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 bg-transparent px-2 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none"
-              aria-label="Email address"
-            />
+          <form className="mt-8 flex max-w-sm flex-col gap-4">
+            <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 p-1.5 backdrop-blur">
+              <Mail className="ml-3 h-4 w-4 text-primary-foreground/60" />
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="flex-1 bg-transparent px-2 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none"
+                aria-label="Email address"
+              />
+            </div>
             <button
               type="submit"
-              className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-primary transition hover:bg-cream"
+              className="w-fit rounded-full bg-white px-8 py-2.5 text-sm font-semibold text-primary transition hover:bg-cream"
             >
               Subscribe
             </button>
@@ -77,7 +94,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-5">
           {cols.map((col) => (
             <div key={col.title}>
               <div className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/50">

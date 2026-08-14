@@ -13,6 +13,10 @@ const mainLinks = [
 const coursesLinks: NavLink[] = [
   { label: "Course Overview", to: "/courses" },
   { label: "Group Training", to: "/courses" },
+];
+
+const contactLinks: NavLink[] = [
+  { label: "Contact Us", to: "/contact" },
   { label: "Talk to a mentor", to: "/interaction" },
 ];
 
@@ -62,6 +66,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
   const [eventsOpen, setEventsOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     if (alwaysSolid) return;
@@ -83,7 +88,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
           <img
             src={logoImg}
             alt="Paul & Timothy Training Centre"
@@ -110,10 +115,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           <NavDropdown label="Events" links={eventLinks} linkCls={linkCls} />
           <NavDropdown label="Courses" links={coursesLinks} linkCls={linkCls} />
           <NavDropdown label="Resources" links={resources} linkCls={linkCls} />
-
-          <Link to="/contact" className={linkCls}>
-            Contact Us
-          </Link>
+          <NavDropdown label="Contact" links={contactLinks} linkCls={linkCls} />
           <Link to="/partner" className={linkCls}>
             Partner with us
           </Link>
@@ -240,13 +242,28 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               </div>
             )}
 
-            <Link
-              to="/contact"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
+            {/* Mobile Contact Dropdown */}
+            <button
+              onClick={() => setContactOpen(!contactOpen)}
+              className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
             >
-              Contact Us
-            </Link>
+              Contact
+              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${contactOpen ? "rotate-180" : ""}`} />
+            </button>
+            {contactOpen && (
+              <div className="ml-3 flex flex-col gap-1 border-l-2 border-border/50 pl-3">
+                {contactLinks.map((r) => (
+                  <Link
+                    key={r.label}
+                    to={r.to!}
+                    onClick={() => { setOpen(false); setContactOpen(false); }}
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
+                  >
+                    {r.label}
+                  </Link>
+                ))}
+              </div>
+            )}
 
             <Link
               to="/partner"

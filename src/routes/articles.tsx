@@ -26,32 +26,12 @@ export const Route = createFileRoute("/articles")({
 
 const articles = [
   {
-    tag: "Calling",
-    title: "How do I know what God is calling me to?",
+    tag: "History & Calling",
+    title: "The Apostle of Tirunelveli: C. D. Rhenius",
     excerpt:
-      "Calling rarely arrives as a lightning bolt. It usually shows up as a burden you can't put down and a joy you can't explain.",
-    read: "5 min read",
-  },
-  {
-    tag: "Discipleship",
-    title: "The Paul & Timothy pattern",
-    excerpt:
-      "Paul didn't hand Timothy a curriculum — he handed him a life. Why mentorship is still the primary engine of the church.",
-    read: "6 min read",
-  },
-  {
-    tag: "Ministry",
-    title: "Serving the group God has burdened you for",
-    excerpt:
-      "Children, teenagers, women, men, couples, seniors — every field needs labourers. Here's how to start where you are.",
-    read: "4 min read",
-  },
-  {
-    tag: "Growth",
-    title: "Faithful in small rooms",
-    excerpt:
-      "Before the platform comes the practice. Habits that keep your ministry rooted when nobody is watching.",
-    read: "7 min read",
+      "A divine calling that began in the life of a young boy and transformed an entire generation in South India.",
+    read: "8 min read",
+    link: "/articles/rhenius",
   },
 ];
 
@@ -73,23 +53,41 @@ function ArticlesPage() {
       </section>
 
       <div className="mx-auto grid max-w-5xl gap-6 px-6 py-16 md:grid-cols-2">
-        {articles.map((a, i) => (
-          <motion.article
-            key={a.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, delay: i * 0.06 }}
-            className="rounded-4xl border border-border/60 bg-card p-7 shadow-card hover-lift"
-          >
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-teal-deep">
-              {a.tag}
-            </span>
-            <h2 className="mt-3 font-serif text-xl font-bold text-primary">{a.title}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.excerpt}</p>
-            <p className="mt-4 text-xs text-muted-foreground">{a.read}</p>
-          </motion.article>
-        ))}
+        {articles.map((a, i) => {
+          const CardContent = (
+            <>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-teal-deep">
+                {a.tag}
+              </span>
+              <h2 className="mt-3 font-serif text-xl font-bold text-primary transition-colors group-hover:text-teal-deep">{a.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.excerpt}</p>
+              <p className="mt-4 text-xs text-muted-foreground">{a.read}</p>
+            </>
+          );
+
+          return (
+            <motion.article
+              key={a.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: i * 0.06 }}
+              className="rounded-4xl border border-border/60 bg-card p-7 shadow-card hover-lift group"
+            >
+              {a.link ? (
+                // @ts-ignore - dynamic link
+                <Link to={a.link} className="block h-full w-full">
+                  {CardContent}
+                </Link>
+              ) : (
+                <div className="block h-full w-full cursor-not-allowed opacity-80">
+                  {CardContent}
+                  <div className="mt-4 text-xs font-semibold text-teal-deep">Coming Soon</div>
+                </div>
+              )}
+            </motion.article>
+          );
+        })}
       </div>
 
       <div className="mx-auto max-w-5xl px-6 pb-20">
