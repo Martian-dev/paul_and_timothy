@@ -78,38 +78,7 @@ function InteractionPage() {
             </div>
           </div>
         </section>
-        <section className="bg-primary px-6 py-18 text-white md:py-24">
-          <div className="mx-auto max-w-7xl">
-            <div className="max-w-2xl">
-              <div className="text-xs font-semibold uppercase tracking-[.22em] text-teal">
-                What we can hold together
-              </div>
-              <h2 className="mt-4 text-4xl font-medium leading-tight md:text-5xl">
-                Bring the question that has been sitting with you.
-              </h2>
-            </div>
-            <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {topics.map((topic, index) => (
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.06 }}
-                  key={topic}
-                  className="rounded-3xl border border-white/15 bg-white/7 p-6"
-                >
-                  <div className="grid h-11 w-11 place-items-center rounded-2xl bg-teal/20 text-teal">
-                    <MessageCircle className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-5 text-2xl font-medium">{topic}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/65">
-                    A spacious, Scripture-rooted conversation focused on your actual next step.
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+
         <section id="booking" className="scroll-mt-6 px-6 py-20 md:py-28">
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.8fr_1.2fr]">
             <div>
@@ -200,20 +169,22 @@ function InteractionPage() {
             </div>
             <div className="mt-10 space-y-3">
               {faqs.map(([question, answer], index) => (
-                <div key={question} className="rounded-2xl bg-card">
+                <div key={question} className="rounded-3xl bg-white shadow-sm border border-border/50 overflow-hidden transition-all duration-300">
                   <button
                     onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
-                    className="flex min-h-16 w-full items-center justify-between gap-4 px-6 text-left text-lg font-medium text-primary"
+                    className="flex w-full items-center justify-between gap-4 px-8 py-6 text-left text-xl font-medium text-primary"
                   >
                     <span>{question}</span>
                     <ChevronDown
-                      className={`h-5 w-5 shrink-0 text-teal-deep transition-transform ${openFaq === index ? "rotate-180" : ""}`}
+                      className={`h-5 w-5 shrink-0 text-teal transition-transform duration-300 ${openFaq === index ? "rotate-180" : ""}`}
                     />
                   </button>
                   {openFaq === index && (
-                    <p className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground">
-                      {answer}
-                    </p>
+                    <div className="px-8 pb-6">
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        {answer}
+                      </p>
+                    </div>
                   )}
                 </div>
               ))}
@@ -221,10 +192,6 @@ function InteractionPage() {
           </div>
         </section>
       </main>
-      <footer className="bg-primary px-6 py-10 text-center text-sm text-white/65">
-        © {new Date().getFullYear()} Paul & Timothy Training Centre. Rooted in Scripture. Sent in
-        love.
-      </footer>
     </div>
   );
 }

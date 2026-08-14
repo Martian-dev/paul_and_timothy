@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 import a2017_1 from "@/assets/Alethia2018/IMG-20171002-WA0017.jpg";
 import a2017_2 from "@/assets/Alethia2018/IMG-20171002-WA0019.jpg";
 import a2017_3 from "@/assets/Alethia2018/IMG-20171002-WA0020.jpg";
@@ -93,7 +92,6 @@ function GalleryPage() {
           </div>
         </div>
       </main>
-      <SiteFooter />
     </div>
   );
 }

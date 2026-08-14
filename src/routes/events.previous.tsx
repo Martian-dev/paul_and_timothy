@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Play, X } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 
 import a2017_1 from "@/assets/Alethia2018/IMG-20171002-WA0017.jpg";
 import a2017_2 from "@/assets/Alethia2018/IMG-20171002-WA0019.jpg";
@@ -226,7 +225,6 @@ function PreviousEventsPage() {
         <Gallery />
         <Testimonials />
       </main>
-      <SiteFooter />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNav } from "@/components/ui/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 import { Mail, Phone, MapPin, Send, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
@@ -217,7 +216,6 @@ function ContactPage() {
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   );
 }

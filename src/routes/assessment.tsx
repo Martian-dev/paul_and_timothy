@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 
 import callingImg from "@/assets/calling.jpg";
 import courseTeachingImg from "@/assets/course-teaching.jpg";
@@ -92,8 +91,6 @@ function AssessmentHubPage() {
           </motion.div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   );
 }

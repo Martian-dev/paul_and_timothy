@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/spiritual-gifts")({
   head: () => ({
@@ -35,8 +34,6 @@ function SpiritualGiftsPage() {
           </Link>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   );
 }

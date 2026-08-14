@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 import { timeline } from "@/data/events";
 
 import speaker1 from "@/assets/speaker-1.jpg";
@@ -185,7 +184,6 @@ function UpcomingEventsPage() {
         <Testimonials />
         <Timeline />
       </main>
-      <SiteFooter />
     </div>
   );
 }

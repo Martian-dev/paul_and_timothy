@@ -31,6 +31,7 @@ const courses = [
     title: "Bible Exposition",
     slug: "bible-exposition",
     category: "Module One",
+    level: "Beginner",
     skills: [
       "The Shape of the Biblical Narrative",
       "Reading the Old Testament",
@@ -41,6 +42,7 @@ const courses = [
     title: "Kingdom Shakers (Knowing Your Call)",
     slug: "kingdom-shakers",
     category: "Calling & spiritual gifts",
+    level: "Intermediate",
     skills: [
       "Identify your calling and gifts",
       "Discern a faithful next step",
@@ -111,16 +113,20 @@ const faqs = [
 
 function CoursesPage() {
   const [query, setQuery] = useState("");
+  const [level, setLevel] = useState("Beginner");
+  const levels = ["Beginner", "Intermediate", "Advance"];
+  
   const visible = useMemo(() => {
     const normalisedQuery = query.trim().toLowerCase();
 
     return courses.filter((course) =>
+      course.level === level &&
       [course.title, course.category, ...course.skills]
         .join(" ")
         .toLowerCase()
         .includes(normalisedQuery),
     );
-  }, [query]);
+  }, [query, level]);
 
   const [placeholder, setPlaceholder] = useState("");
 
@@ -231,8 +237,25 @@ function CoursesPage() {
                 )}
               </label>
             </div>
-            <p className="mt-8 text-sm text-muted-foreground" aria-live="polite">
-              {visible.length} of {courses.length} courses available
+            
+            <div className="mt-10 flex flex-wrap justify-center gap-3">
+              {levels.map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLevel(l)}
+                  className={`px-8 py-3 rounded-full text-sm font-semibold transition-colors ${
+                    level === l
+                      ? "bg-[#2a2a2a] text-white shadow-md"
+                      : "bg-[#d8d6ce] text-primary hover:bg-[#cecaca]"
+                  }`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+            
+            <p className="mt-12 text-sm text-muted-foreground" aria-live="polite">
+              {visible.length} of {courses.filter(c => c.level === level).length} courses available in {level}
             </p>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {visible.map((course, index) => (
@@ -484,10 +507,6 @@ function CoursesPage() {
           </div>
         </section>
       </main>
-      <footer className="bg-primary px-6 py-10 text-center text-sm text-white/65">
-        © {new Date().getFullYear()} Paul & Timothy Training Centre. Rooted in Scripture. Sent in
-        love.
-      </footer>
     </div>
   );
 }

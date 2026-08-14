@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
@@ -132,8 +131,6 @@ function RegisterPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   );
 }

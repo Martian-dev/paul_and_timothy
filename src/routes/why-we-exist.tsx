@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 
 import speaker1 from "@/assets/speaker-1.jpg";
 import speaker2 from "@/assets/speaker-2.jpg";
@@ -126,8 +125,6 @@ function WhyWeExistPage() {
           </motion.div>
         </section>
       </main>
-
-      <SiteFooter />
     </div>
   );
 }
