@@ -33,13 +33,13 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 const galleryData = [
   { year: "2026", images: [a2026_1, a2026_2, a2026_3, a2026_4, a2026_5, a2026_6] },
-  { year: "2018", images: [a2017_1, a2017_2, a2017_3] },
+  { year: "2017", images: [a2017_1, a2017_2, a2017_3] },
 ];
 
 function GalleryPage() {
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav alwaysSolid={false} />
+      <SiteNav alwaysSolid />
       <main className="pt-32 pb-24">
         <div className="mx-auto max-w-7xl px-6">
           <Link
@@ -66,7 +66,7 @@ function GalleryPage() {
                 variants={fadeUp}
                 transition={{ delay: idx * 0.1 }}
               >
-                <h2 className="mb-8 font-serif text-3xl font-bold text-primary border-b border-border/50 pb-4">
+                <h2 id={`year-${section.year}`} className="mb-8 font-serif text-3xl font-bold text-primary border-b border-border/50 pb-4">
                   Alethia - {section.year}
                 </h2>
                 <div className="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6">
