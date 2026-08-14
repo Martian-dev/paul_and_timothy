@@ -36,6 +36,7 @@ export const Route = createFileRoute("/courses/$slug")({
 function CoursePage() {
   const { course } = Route.useLoaderData() as { course: Course };
   const [open, setOpen] = useState<number | null>(0);
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const allowedSlugs = ["bible-exposition", "kingdom-shakers"];
   const similar = courses.filter((c) => allowedSlugs.includes(c.slug) && c.slug !== course.slug).slice(0, 2);
 
@@ -193,13 +194,32 @@ function CoursePage() {
               >
                 {t.videoUrl ? (
                   <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">
-                    <iframe 
-                      src={t.videoUrl.replace('youtu.be/', 'www.youtube.com/embed/').split('?')[0]} 
-                      title={`Testimony from ${t.name}`}
-                      className="absolute inset-0 h-full w-full border-0" 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                      allowFullScreen
-                    ></iframe>
+                    {activeVideo === t.videoUrl ? (
+                      <iframe 
+                        src={`${t.videoUrl.replace('youtu.be/', 'www.youtube.com/embed/').split('?')[0]}?autoplay=1`} 
+                        title={`Testimony from ${t.name}`}
+                        className="absolute inset-0 h-full w-full border-0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                      ></iframe>
+                    ) : (
+                      <div 
+                        className="relative h-full w-full cursor-pointer group" 
+                        onClick={() => setActiveVideo(t.videoUrl!)}
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${t.videoUrl.split('youtu.be/')[1]?.split('?')[0]}/hqdefault.jpg`}
+                          alt={t.name}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
+                        />
+                        <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors group-hover:bg-black/10">
+                          <span className="grid h-16 w-16 place-items-center rounded-full bg-black/50 backdrop-blur-sm border-2 border-white/70 transition-transform duration-500 group-hover:scale-110">
+                            <Play className="h-6 w-6 translate-x-0.5 fill-white text-white" />
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="relative aspect-[4/3] overflow-hidden">

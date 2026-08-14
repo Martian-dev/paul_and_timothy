@@ -113,14 +113,14 @@ const faqs = [
 
 function CoursesPage() {
   const [query, setQuery] = useState("");
-  const [level, setLevel] = useState("Beginner");
-  const levels = ["Beginner", "Intermediate", "Advance"];
+  const [level, setLevel] = useState<string>("All");
+  const levels = ["All", "Beginner", "Intermediate", "Advance"];
   
   const visible = useMemo(() => {
     const normalisedQuery = query.trim().toLowerCase();
 
     return courses.filter((course) =>
-      course.level === level &&
+      (level === "All" || course.level === level) &&
       [course.title, course.category, ...course.skills]
         .join(" ")
         .toLowerCase()
@@ -206,7 +206,7 @@ function CoursesPage() {
 
         <section id="course-catalog" className="scroll-mt-6 px-6 py-20 md:py-28">
           <div className="mx-auto max-w-7xl">
-            <div className="grid gap-8 lg:grid-cols-[1fr_25rem] lg:items-end">
+            <div className="flex flex-col gap-8">
               <div>
                 <div className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.22em] text-teal-deep">
                   <span className="h-px w-8 bg-teal-deep" /> Training specialisations
@@ -216,20 +216,20 @@ function CoursesPage() {
                   <em className="text-teal-deep not-italic">God has called you to.</em>
                 </h2>
               </div>
-              <label className="relative block">
+              <label className="relative block w-full max-w-md">
                 <span className="sr-only">Search courses</span>
-                <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-primary/70" />
                 <input
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder={placeholder}
-                  className="h-14 w-full rounded-2xl border border-border bg-card pl-14 pr-12 text-sm text-foreground shadow-card outline-none transition focus:border-teal-deep focus:ring-2 focus:ring-teal/30"
+                  className="h-14 w-full rounded-full border border-border/50 bg-white pl-12 pr-12 text-sm text-primary shadow-sm outline-none transition focus:border-teal-deep focus:ring-2 focus:ring-teal/30"
                 />
                 {query && (
                   <button
                     type="button"
                     onClick={() => setQuery("")}
-                    className="absolute right-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl text-muted-foreground transition hover:bg-muted hover:text-primary"
+                    className="absolute right-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full text-primary/70 transition hover:bg-muted hover:text-primary"
                     aria-label="Clear search"
                   >
                     <X className="h-4 w-4" />
@@ -238,15 +238,15 @@ function CoursesPage() {
               </label>
             </div>
             
-            <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-wrap justify-start gap-3">
               {levels.map((l) => (
                 <button
                   key={l}
                   onClick={() => setLevel(l)}
-                  className={`px-8 py-3 rounded-full text-sm font-semibold transition-colors ${
+                  className={`px-8 py-3 rounded-full text-base font-semibold transition-colors ${
                     level === l
-                      ? "bg-[#2a2a2a] text-white shadow-md"
-                      : "bg-[#d8d6ce] text-primary hover:bg-[#cecaca]"
+                      ? "bg-primary text-white shadow-md"
+                      : "bg-[#e8e6e1] text-primary hover:bg-[#dcd9d2]"
                   }`}
                 >
                   {l}
@@ -254,15 +254,28 @@ function CoursesPage() {
               ))}
             </div>
             
-            <p className="mt-12 text-sm text-muted-foreground" aria-live="polite">
-              {visible.length} of {courses.filter(c => c.level === level).length} courses available in {level}
-            </p>
-            <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {visible.map((course, index) => (
-                <motion.article
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.04, duration: 0.35 }}
+            
+            {visible.length === 0 ? (
+              <div className="mt-20 flex flex-col items-center text-center">
+                <p className="text-2xl font-medium text-primary">No training found yet.</p>
+                <button 
+                  onClick={() => setLevel("All")}
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-teal-deep transition hover:text-teal"
+                >
+                  Show all training <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <>
+                <p className="mt-12 text-sm text-muted-foreground" aria-live="polite">
+                  {visible.length} of {level === "All" ? courses.length : courses.filter(c => c.level === level).length} courses available {level !== "All" ? `in ${level}` : ''}
+                </p>
+                <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {visible.map((course, index) => (
+                    <motion.article
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.04, duration: 0.35 }}
                   key={course.title}
                   className="group flex overflow-hidden rounded-[1.75rem] bg-card shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft"
                 >
@@ -321,19 +334,8 @@ function CoursesPage() {
                 </motion.article>
               ))}
             </div>
-            {visible.length === 0 && (
-              <div className="mt-6 rounded-3xl border border-dashed border-border bg-card p-12 text-center">
-                <GraduationCap className="mx-auto h-9 w-9 text-teal-deep" />
-                <h3 className="mt-4 text-2xl text-primary">No training found yet.</h3>
-                <button
-                  type="button"
-                  onClick={() => setQuery("")}
-                  className="mt-4 text-sm font-semibold text-teal-deep underline underline-offset-4"
-                >
-                  Show all training
-                </button>
-              </div>
-            )}
+            </>
+          )}
           </div>
         </section>
 
