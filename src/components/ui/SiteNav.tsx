@@ -7,7 +7,7 @@ type NavLink = { label: string; to?: string; href?: string; desc?: string };
 
 const mainLinks = [
   { label: "Home", to: "/" },
-  { label: "Why we exist", href: "/#mission" },
+  { label: "Why we exist", to: "/why-we-exist" },
 ];
 
 const coursesLinks: NavLink[] = [

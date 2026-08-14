@@ -24,6 +24,7 @@ import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SpiritualGiftsRouteImport } from './routes/spiritual-gifts'
+import { Route as WhyWeExistRouteImport } from './routes/why-we-exist'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
 import { Route as EventsGalleryRouteImport } from './routes/events.gallery'
@@ -105,6 +106,11 @@ const SpiritualGiftsRoute = SpiritualGiftsRouteImport.update({
   path: '/spiritual-gifts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WhyWeExistRoute = WhyWeExistRouteImport.update({
+  id: '/why-we-exist',
+  path: '/why-we-exist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesIndexRoute = CoursesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/signup': typeof SignupRoute
   '/spiritual-gifts': typeof SpiritualGiftsRoute
+  '/why-we-exist': typeof WhyWeExistRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/signup': typeof SignupRoute
   '/spiritual-gifts': typeof SpiritualGiftsRoute
+  '/why-we-exist': typeof WhyWeExistRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/signup': typeof SignupRoute
   '/spiritual-gifts': typeof SpiritualGiftsRoute
+  '/why-we-exist': typeof WhyWeExistRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/signup'
     | '/spiritual-gifts'
+    | '/why-we-exist'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/signup'
     | '/spiritual-gifts'
+    | '/why-we-exist'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/signup'
     | '/spiritual-gifts'
+    | '/why-we-exist'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -281,6 +293,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   SignupRoute: typeof SignupRoute
   SpiritualGiftsRoute: typeof SpiritualGiftsRoute
+  WhyWeExistRoute: typeof WhyWeExistRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpiritualGiftsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/why-we-exist': {
+      id: '/why-we-exist'
+      path: '/why-we-exist'
+      fullPath: '/why-we-exist'
+      preLoaderRoute: typeof WhyWeExistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses/': {
       id: '/courses/'
       path: '/'
@@ -472,6 +492,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   SignupRoute: SignupRoute,
   SpiritualGiftsRoute: SpiritualGiftsRoute,
+  WhyWeExistRoute: WhyWeExistRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
