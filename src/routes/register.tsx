@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 
@@ -25,7 +26,7 @@ function RegisterPage() {
     <div className="min-h-screen bg-cream flex flex-col">
       <SiteNav alwaysSolid />
       
-      <main className="flex-1 px-6 py-32 md:py-40">
+      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="flex-1 px-6 py-32 md:py-40">
         <div className="mx-auto max-w-xl">
           <Link
             to="/events/upcoming"
@@ -130,7 +131,7 @@ function RegisterPage() {
             )}
           </div>
         </div>
-      </main>
+      </motion.main>
     </div>
   );
 }

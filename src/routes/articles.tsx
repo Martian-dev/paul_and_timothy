@@ -39,6 +39,7 @@ function ArticlesPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteNav />
+      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
       <section className="gradient-hero pt-36 pb-20 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium backdrop-blur-md">
@@ -104,6 +105,7 @@ function ArticlesPage() {
           </Link>
         </div>
       </div>
+      </motion.main>
     </div>
   );
 }

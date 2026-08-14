@@ -39,7 +39,7 @@ function GalleryPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteNav alwaysSolid />
-      <main className="pt-32 pb-24">
+      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="pt-32 pb-24">
         <div className="mx-auto max-w-7xl px-6">
           <Link
             to="/events/previous"
@@ -91,7 +91,7 @@ function GalleryPage() {
             ))}
           </div>
         </div>
-      </main>
+      </motion.main>
     </div>
   );
 }

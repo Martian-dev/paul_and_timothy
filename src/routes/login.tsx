@@ -12,6 +12,7 @@ import {
 import { FormEvent, useState } from "react";
 import logoImg from "@/assets/logo.png";
 import equipmentImg from "@/assets/pttc-equipment.png";
+import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/login")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -62,7 +63,7 @@ export function LearnerAccessPage({ mode, course }: { mode: AccessMode; course?:
         </div>
       </header>
 
-      <main className="px-6 py-12 md:py-20">
+      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="px-6 py-12 md:py-20">
         <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] bg-card shadow-soft lg:grid-cols-[.9fr_1.1fr]">
           <section className="relative min-h-[28rem] overflow-hidden bg-primary p-8 text-white sm:p-12">
             <img
@@ -244,7 +245,7 @@ export function LearnerAccessPage({ mode, course }: { mode: AccessMode; course?:
             </p>
           </section>
         </div>
-      </main>
+      </motion.main>
     </div>
   );
 }

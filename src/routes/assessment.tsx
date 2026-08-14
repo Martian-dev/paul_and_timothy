@@ -21,7 +21,7 @@ function AssessmentHubPage() {
     <div className="min-h-screen bg-background flex flex-col">
       <SiteNav alwaysSolid />
 
-      <main className="flex-1 px-6 pt-32 pb-24 md:pt-40">
+      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="flex-1 px-6 pt-32 pb-24 md:pt-40">
         <div className="mx-auto max-w-4xl text-center">
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
@@ -90,7 +90,7 @@ function AssessmentHubPage() {
             </div>
           </motion.div>
         </div>
-      </main>
+      </motion.main>
     </div>
   );
 }

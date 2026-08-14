@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/SiteNav";
+import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/articles_/rhenius")({
   component: RheniusArticle,
@@ -9,7 +10,7 @@ function RheniusArticle() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SiteNav alwaysSolid />
-      <main className="flex-1 pb-24 pt-32 md:pt-40">
+      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="flex-1 pb-24 pt-32 md:pt-40">
         <article className="mx-auto max-w-3xl px-6">
           <header className="mb-12 text-center">
             <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.2em] text-teal-deep">
@@ -75,7 +76,7 @@ function RheniusArticle() {
             </div>
           </div>
         </article>
-      </main>
+      </motion.main>
     </div>
   );
 }
