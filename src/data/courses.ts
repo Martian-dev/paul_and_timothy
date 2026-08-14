@@ -18,7 +18,7 @@ export type Course = {
   lessons: string;
   level: string;
   outline: CourseOutline[];
-  testimonials: { name: string; role: string; quote: string; img: string }[];
+  testimonials: { name: string; role: string; quote: string; img: string; videoUrl?: string }[];
   videoUrl?: string;
 };
 
@@ -327,8 +327,34 @@ export const courses: Course[] = [
       { title: "Faithful Interpretation", body: "Principles for studying the text accurately and avoiding common pitfalls." },
     ],
     testimonials: [
-      { name: "Sarah L.", role: "Small Group Leader", quote: "For the first time, the Old Testament makes sense to me. It's all connected.", img: courseTeachingImg },
-      { name: "John M.", role: "Elder", quote: "This module gave me a framework to teach the Bible faithfully.", img: mentorshipImg }
+      { 
+        name: "Student 1", 
+        role: "Participant", 
+        quote: "A powerful testimony from my time in the Bible Exposition course.", 
+        img: courseTeachingImg,
+        videoUrl: "https://youtu.be/K_K6RJXPcb4"
+      },
+      { 
+        name: "Student 2", 
+        role: "Participant", 
+        quote: "This training completely changed how I read Scripture.", 
+        img: mentorshipImg,
+        videoUrl: "https://youtu.be/wgdw9JGcoyc"
+      },
+      { 
+        name: "Student 3", 
+        role: "Participant", 
+        quote: "The connections across the Old and New Testament finally make sense.", 
+        img: courseBibleImg,
+        videoUrl: "https://youtu.be/HTctnx-ONPg"
+      },
+      { 
+        name: "Student 4", 
+        role: "Participant", 
+        quote: "I highly recommend this to anyone looking to deepen their faith.", 
+        img: communityImg,
+        videoUrl: "https://youtu.be/ODgcXT-bvrk"
+      }
     ]
   },
   {

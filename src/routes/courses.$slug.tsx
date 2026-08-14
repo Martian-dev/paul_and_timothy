@@ -191,19 +191,31 @@ function CoursePage() {
                 transition={{ duration: 0.6 }}
                 className="hover-lift group overflow-hidden rounded-3xl bg-card shadow-card"
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={t.img}
-                    alt={t.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 grid place-items-center bg-primary/40">
-                    <span className="grid h-16 w-16 place-items-center rounded-full border-2 border-white/70 transition-transform duration-500 group-hover:scale-110">
-                      <Play className="h-6 w-6 translate-x-0.5 fill-white text-white" />
-                    </span>
+                {t.videoUrl ? (
+                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">
+                    <iframe 
+                      src={t.videoUrl.replace('youtu.be/', 'www.youtube.com/embed/').split('?')[0]} 
+                      title={`Testimony from ${t.name}`}
+                      className="absolute inset-0 h-full w-full border-0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      allowFullScreen
+                    ></iframe>
                   </div>
-                </div>
+                ) : (
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <img
+                      src={t.img}
+                      alt={t.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 grid place-items-center bg-primary/40">
+                      <span className="grid h-16 w-16 place-items-center rounded-full border-2 border-white/70 transition-transform duration-500 group-hover:scale-110">
+                        <Play className="h-6 w-6 translate-x-0.5 fill-white text-white" />
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <figcaption className="p-7">
                   <blockquote className="font-serif text-lg leading-snug text-primary">
                     “{t.quote}”
