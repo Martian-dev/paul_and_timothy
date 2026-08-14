@@ -36,7 +36,8 @@ export const Route = createFileRoute("/courses/$slug")({
 function CoursePage() {
   const { course } = Route.useLoaderData() as { course: Course };
   const [open, setOpen] = useState<number | null>(0);
-  const similar = courses.filter((c) => c.slug !== course.slug).slice(0, 2);
+  const allowedSlugs = ["bible-exposition", "kingdom-shakers"];
+  const similar = courses.filter((c) => allowedSlugs.includes(c.slug) && c.slug !== course.slug).slice(0, 2);
 
   return (
     <div className="min-h-screen bg-background">

@@ -28,33 +28,13 @@ export const Route = createFileRoute("/courses/")({ component: CoursesPage });
 const courseImages = [equipmentImg, communityImg, mentorshipImg, callingImg];
 const courses = [
   {
-    title: "Youth & Teens Leadership Training",
-    slug: "youth-teens-leadership",
-    category: "Leadership training",
+    title: "Bible Exposition",
+    slug: "bible-exposition",
+    category: "Module One",
     skills: [
-      "Lead age-specific discipleship",
-      "Plan meaningful gatherings",
-      "Mentor emerging leaders",
-    ],
-  },
-  {
-    title: "Couples Ministry Training",
-    slug: "couples-ministry",
-    category: "Specialised ministry",
-    skills: [
-      "Apply biblical relationship principles",
-      "Guide honest conversations",
-      "Support couples with care",
-    ],
-  },
-  {
-    title: "Counselling Training",
-    slug: "counselling-training",
-    category: "Care ministry",
-    skills: [
-      "Listen with wisdom and empathy",
-      "Offer Scripture-rooted guidance",
-      "Recognise when to refer",
+      "The Shape of the Biblical Narrative",
+      "Reading the Old Testament",
+      "The Gospels and the Kingdom",
     ],
   },
   {
@@ -67,50 +47,11 @@ const courses = [
       "Build rhythms for spiritual growth",
     ],
   },
-  {
-    title: "One-to-one Evangelism",
-    slug: "one-to-one-evangelism",
-    category: "Gospel ministry",
-    skills: [
-      "Share the Gospel clearly",
-      "Respond to real questions",
-      "Follow up with new believers",
-    ],
-  },
-  {
-    title: "Writing",
-    slug: "writing",
-    category: "Communication ministry",
-    skills: [
-      "Shape a clear biblical message",
-      "Structure stories and devotionals",
-      "Edit for your audience",
-    ],
-  },
 ].map((course, index) => ({
   ...course,
   image: courseImages[index % courseImages.length],
   number: index + 1,
 }));
-
-const recommendedCourses = [
-  {
-    course: courses[3],
-    reason: "For discovering your calling",
-    description:
-      "Begin here if you want clarity about your gifts, purpose, and next faithful step.",
-  },
-  {
-    course: courses[0],
-    reason: "For developing leaders",
-    description: "A practical pathway for those serving young people in churches and communities.",
-  },
-  {
-    course: courses[4],
-    reason: "For sharing your faith",
-    description: "Grow in confidence as you explain the Gospel and walk with people one to one.",
-  },
-];
 
 const skillGroups = [
   {
@@ -468,51 +409,7 @@ function CoursesPage() {
           </div>
         </section>
 
-        <section id="recommended" className="scroll-mt-6 bg-cream px-6 py-20 md:py-28">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
-              <div>
-                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.22em] text-teal-deep">
-                  <span className="h-px w-8 bg-teal-deep" /> Recommended courses
-                </div>
-                <h2 className="mt-5 text-4xl font-medium leading-tight text-primary md:text-5xl">
-                  Not sure where to begin?{" "}
-                  <em className="text-teal-deep not-italic">Start with your next need.</em>
-                </h2>
-              </div>
-              <p className="max-w-xl leading-relaxed text-muted-foreground lg:ml-auto">
-                Choose the pathway closest to the season you are in now. You can build from there as
-                your calling and responsibilities grow.
-              </p>
-            </div>
-            <div className="mt-12 grid gap-5 lg:grid-cols-3">
-              {recommendedCourses.map(({ course, reason, description }, index) => (
-                <Link
-                  key={course.title}
-                  to="/courses/$slug"
-                  params={{ slug: course.slug }}
-                  className="group rounded-3xl bg-card p-7 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-xs font-semibold uppercase tracking-[.16em] text-teal-deep">
-                      {reason}
-                    </span>
-                    <span className="font-serif text-3xl text-primary/25">0{index + 1}</span>
-                  </div>
-                  <h3 className="mt-6 text-2xl font-medium leading-tight text-primary">
-                    {course.title}
-                  </h3>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                    {description}
-                  </p>
-                  <span className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition group-hover:text-teal-deep">
-                    Explore course <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+
 
         <section className="px-6 py-20 md:py-28">
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
