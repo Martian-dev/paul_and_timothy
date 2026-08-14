@@ -21,6 +21,7 @@ import { Route as InteractionRouteImport } from './routes/interaction'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MinistryCallingRouteImport } from './routes/ministry-calling'
 import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SpiritualGiftsRouteImport } from './routes/spiritual-gifts'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
@@ -89,6 +90,11 @@ const PartnerRoute = PartnerRouteImport.update({
   path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
+  '/register': typeof RegisterRoute
   '/signup': typeof SignupRoute
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
+  '/register': typeof RegisterRoute
   '/signup': typeof SignupRoute
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
+  '/register': typeof RegisterRoute
   '/signup': typeof SignupRoute
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/ministry-calling'
     | '/partner'
+    | '/register'
     | '/signup'
     | '/spiritual-gifts'
     | '/courses/$slug'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/ministry-calling'
     | '/partner'
+    | '/register'
     | '/signup'
     | '/spiritual-gifts'
     | '/courses/$slug'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/ministry-calling'
     | '/partner'
+    | '/register'
     | '/signup'
     | '/spiritual-gifts'
     | '/courses/$slug'
@@ -266,6 +278,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MinistryCallingRoute: typeof MinistryCallingRoute
   PartnerRoute: typeof PartnerRoute
+  RegisterRoute: typeof RegisterRoute
   SignupRoute: typeof SignupRoute
   SpiritualGiftsRoute: typeof SpiritualGiftsRoute
 }
@@ -354,6 +367,13 @@ declare module '@tanstack/react-router' {
       path: '/partner'
       fullPath: '/partner'
       preLoaderRoute: typeof PartnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -449,6 +469,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MinistryCallingRoute: MinistryCallingRoute,
   PartnerRoute: PartnerRoute,
+  RegisterRoute: RegisterRoute,
   SignupRoute: SignupRoute,
   SpiritualGiftsRoute: SpiritualGiftsRoute,
 }
