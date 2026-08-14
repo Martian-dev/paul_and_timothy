@@ -473,7 +473,7 @@ function Audience() {
       desc: "Sharpen your spiritual foundation, kingdom values and develop practical skills for your specific calling.",
       cta: "Explore Advance courses",
       img: communityImg,
-      link: "/courses",
+      link: "/courses?level=Advance#course-catalog",
     },
     {
       title: "Help my team grow.",

@@ -113,8 +113,17 @@ const faqs = [
 
 function CoursesPage() {
   const [query, setQuery] = useState("");
-  const [level, setLevel] = useState<string>("All");
   const levels = ["All", "Beginner", "Intermediate", "Advance"];
+  const [level, setLevel] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const levelParam = params.get("level");
+      if (levelParam && levels.includes(levelParam)) {
+        return levelParam;
+      }
+    }
+    return "All";
+  });
   
   const visible = useMemo(() => {
     const normalisedQuery = query.trim().toLowerCase();
