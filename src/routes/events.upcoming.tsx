@@ -160,7 +160,7 @@ function Timeline() {
               transition={{ duration: 0.55, delay: i * 0.1 }}
               className={`relative mb-10 pl-16 md:w-1/2 md:pl-0 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:ml-auto md:pl-12"}`}
             >
-              <span className={`absolute left-6 top-6 z-10 grid h-4 w-4 -translate-x-1/2 place-items-center rounded-full gradient-brand ring-4 ring-background md:left-auto ${i % 2 === 0 ? "md:right-0 md:translate-x-1/2" : "md:left-0 md:-translate-x-1/2"}`} />
+              <span className={`absolute top-6 z-10 grid h-4 w-4 place-items-center rounded-full gradient-brand ring-4 ring-background left-6 -translate-x-1/2 ${i % 2 === 0 ? "md:left-auto md:-right-2 md:translate-x-0" : "md:-left-2 md:translate-x-0"}`} />
               <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
                 <span className="text-xs font-semibold uppercase tracking-widest text-gold">{t.month}</span>
                 <h3 className="mt-1.5 font-serif text-lg font-semibold text-primary">{t.title}</h3>

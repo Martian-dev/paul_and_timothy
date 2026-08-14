@@ -15,7 +15,7 @@ export const Route = createFileRoute("/spiritual-gifts")({
 function SpiritualGiftsPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SiteNav />
+      <SiteNav alwaysSolid />
 
       <main className="flex-1 px-6 pt-36 pb-24 md:pt-48">
         <div className="mx-auto max-w-3xl text-center">

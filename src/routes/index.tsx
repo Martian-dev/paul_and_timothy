@@ -406,7 +406,7 @@ function JourneyTimeline() {
             {steps.map((step, index) => {
               const isEven = index % 2 === 0;
               return (
-                <div key={index} className={`relative flex items-center gap-6 ${isEven ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}>
+                <div key={index} className="relative flex items-center">
                   {/* Icon Circle */}
                   <motion.div 
                     initial={{ scale: 0, opacity: 0 }}
@@ -426,7 +426,7 @@ function JourneyTimeline() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ delay: index * 0.15 + 0.2, duration: 0.5 }}
-                    className={`flex-1 ${isEven ? 'sm:text-right' : 'sm:text-left'} ml-[110px] sm:ml-0 pt-2`}
+                    className={`flex-1 sm:flex-none sm:w-1/2 ${isEven ? 'sm:text-right sm:pr-[5.5rem]' : 'sm:text-left sm:pl-[5.5rem] sm:ml-auto'} ml-[110px] sm:ml-0 pt-2`}
                   >
                     <div className={`text-[15px] font-bold tracking-widest ${step.textClass}`}>
                       0{index + 1}
@@ -439,9 +439,6 @@ function JourneyTimeline() {
                       {step.desc}
                     </p>
                   </motion.div>
-
-                  {/* Spacer for alternating layout */}
-                  <div className="hidden sm:block flex-1" />
                 </div>
               );
             })}
