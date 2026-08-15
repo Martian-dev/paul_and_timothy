@@ -27,6 +27,14 @@ export const Route = createFileRoute("/articles")({
 const articles = [
   {
     tag: "History & Calling",
+    title: "A Cry for Help… A Calling… A Legacy",
+    excerpt:
+      "The unforgettable journey of Dr Ida Sophia Scudder: One night. Three women. Three deaths. And a 20-year-old woman whose life was changed forever.",
+    read: "6 min read",
+    link: "/articles/scudder",
+  },
+  {
+    tag: "History & Calling",
     title: "The Apostle of Tirunelveli: C. D. Rhenius",
     excerpt:
       "A divine calling that began in the life of a young boy and transformed an entire generation in South India.",
