@@ -26,6 +26,14 @@ export const Route = createFileRoute("/articles")({
 
 const articles = [
   {
+    tag: "Ministry & Calling",
+    title: "Stay Faithful to Your Calling",
+    excerpt:
+      "Ministry can take many forms, but every believer must ask a deeper question: How to discover God’s calling and run faithfully in it?",
+    read: "5 min read",
+    link: "/articles/calling",
+  },
+  {
     tag: "History & Calling",
     title: "A Cry for Help… A Calling… A Legacy",
     excerpt:
