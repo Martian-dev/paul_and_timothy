@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 
-import speaker1 from "@/assets/speaker-1.jpg";
+import trainerImage from "@/assets/Trainer_image.jpg";
 import speaker2 from "@/assets/speaker-2.jpg";
 import videoBg from "@/assets/calling.jpg";
 
@@ -168,7 +168,7 @@ function WhyWeExistPage() {
               <div className="flex flex-col md:flex-row gap-10 items-start group">
                 <div className="w-full md:w-1/3 shrink-0">
                   <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-muted shadow-soft transition-transform duration-500 group-hover:-translate-y-2">
-                     <img src={speaker1} alt="Trainer" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                     <img src={trainerImage} alt="Trainer" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
                   </div>
                 </div>
                 <div className="flex-1 pt-4">

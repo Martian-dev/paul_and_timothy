@@ -5,7 +5,7 @@ import { Sparkles, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 import { timeline } from "@/data/events";
 
-import speaker1 from "@/assets/speaker-1.jpg";
+import trainerImage from "@/assets/Trainer_image.jpg";
 import speaker2 from "@/assets/speaker-2.jpg";
 import speaker3 from "@/assets/speaker-3.jpg";
 
@@ -261,7 +261,7 @@ function PosterSection() {
 }
 
 const speakers = [
-  { name: "Roselind Rex", role: "Trainer", org: "Word Life Foundation", bio: "3 decades serving in youth & Teens ministry.", image: speaker1 },
+  { name: "Roselind Rex", role: "Trainer", org: "Word Life Foundation", bio: "3 decades serving in youth & Teens ministry.", image: trainerImage },
 ];
 
 function Speakers() {
@@ -290,7 +290,7 @@ function Speakers() {
             >
               <div className="h-64 overflow-hidden">
                 <img src={s.image} alt={s.name} loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="p-6">
