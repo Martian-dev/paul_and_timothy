@@ -103,14 +103,36 @@ function PosterSection() {
   const handleNext = () => setMainPosterIndex((prev) => (prev + 1) % allPosters.length);
 
   return (
-    <section className="px-6 pt-32 pb-16 md:pt-40 bg-background text-center md:text-left">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="mx-auto max-w-4xl">
-        
+    <>
+      <section className="gradient-hero pt-36 pb-20 text-white">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium backdrop-blur-md">
+            <Sparkles className="h-3.5 w-3.5 text-[oklch(0.82_0.14_180)]" /> Events · Upcoming
+          </span>
+          <h1 className="font-serif text-5xl font-medium leading-[1.05] md:text-7xl">
+            Upcoming events
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-white/80">
+            Training, workshops and gatherings you can attend in person & on online platforms
+          </p>
+        </div>
+      </section>
+
+      <section className="px-6 py-16 bg-background text-center md:text-left">
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="mx-auto max-w-4xl">
+
+        {/* FEATURED EVENT EYEBROW */}
+        <div className="mb-6">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-teal-deep shadow-card">
+            Next Up
+          </span>
+        </div>
+
         {/* TITLE */}
         <div className="mb-10 w-full overflow-hidden">
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-primary leading-[1.1] whitespace-nowrap tracking-tight">
-            Alethia Training Conference
-          </h1>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-primary leading-[1.1] whitespace-nowrap tracking-tight">
+            Aletheia Training Conference
+          </h2>
         </div>
 
         {/* LARGE EVENT POSTER */}
@@ -124,7 +146,7 @@ function PosterSection() {
             <motion.img 
               key={mainPosterIndex}
               src={allPosters[mainPosterIndex]} 
-              alt="Alethia Training Conference" 
+              alt="Aletheia Training Conference" 
               className="absolute inset-0 w-full h-full object-contain block" 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -150,11 +172,11 @@ function PosterSection() {
 
         {/* DETAILS SECTION */}
         <div className="mt-8 max-w-3xl">
-          <p className="text-xl font-medium text-teal-deep tracking-wide uppercase">
-            Nov 7-14
+          <p className="text-lg font-bold text-primary">
+            Nov 7-14 <span className="mx-2 text-muted-foreground font-normal">·</span> Online <span className="mx-2 text-muted-foreground font-normal">·</span> Eight-day
           </p>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Training for Youth Leaders, Teachers & Counsellors.
+            Training for Youth Leaders, Teachers & Counsellors. Walk away with practical tools to reach and disciple the next generation.
           </p>
           <div className="mt-8">
             <Link to="/register" className="inline-flex items-center justify-center rounded-sm bg-primary px-10 py-3.5 text-base md:text-lg font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md hover:shadow-lg">
@@ -233,14 +255,13 @@ function PosterSection() {
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+      </section>
+    </>
   );
 }
 
 const speakers = [
-  { name: "Pastor Daniel Okoye", role: "Lead Trainer", org: "Grace Chapel, Nairobi", bio: "Three decades of shepherding pastors and planting churches across East Africa.", image: speaker1 },
-  { name: "Rev. Grace Mwangi", role: "Director of Discipleship", org: "Paul & Timothy Training Centre", bio: "Teacher and author helping women and couples build homes rooted in Scripture.", image: speaker2 },
-  { name: "Pastor Samuel Lim", role: "Youth & Missions Pastor", org: "Hope Chapel, Kampala", bio: "Mobilises young adults into local mission and Spirit-led everyday discipleship.", image: speaker3 },
+  { name: "Roselind Rex", role: "Trainer", org: "Word Life Foundation", bio: "3 decades serving in youth & Teens ministry.", image: speaker1 },
 ];
 
 function Speakers() {
@@ -250,13 +271,13 @@ function Speakers() {
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-teal-deep shadow-card">
             <Sparkles className="h-3.5 w-3.5 text-gold" />
-            Guest Speakers
+            Who You'll Hear From
           </span>
           <h2 className="mt-5 font-serif text-3xl font-bold text-primary md:text-4xl">
-            Voices you'll hear this season
+            Meet Your Facilitators
           </h2>
         </motion.div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-12 flex justify-center">
           {speakers.map((s, i) => (
             <motion.article
               key={s.name}
@@ -265,7 +286,7 @@ function Speakers() {
               viewport={{ once: true, margin: "-60px" }}
               variants={fadeUp}
               transition={{ delay: i * 0.08 }}
-              className="group overflow-hidden rounded-4xl border border-border/60 bg-card shadow-card"
+              className="group overflow-hidden rounded-4xl border border-border/60 bg-card shadow-card max-w-sm w-full text-left"
             >
               <div className="h-64 overflow-hidden">
                 <img src={s.image} alt={s.name} loading="lazy"
@@ -320,11 +341,14 @@ function Timeline() {
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-teal-deep shadow-card">
             <Sparkles className="h-3.5 w-3.5 text-gold" />
-            Season Timeline
+            The Season Ahead
           </span>
           <h2 className="mt-5 font-serif text-3xl font-bold text-primary md:text-4xl">
-            What's ahead, month by month
+            What's coming, month by month.
           </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            A quick look at what's on the calendar. Registration opens closer to each date.
+          </p>
         </motion.div>
         <div className="relative mx-auto mt-14 max-w-3xl">
           <motion.div
@@ -351,6 +375,29 @@ function Timeline() {
               </div>
             </motion.div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EmptyState() {
+  return (
+    <section className="px-6 py-20 text-center">
+      <div className="mx-auto max-w-2xl">
+        <h2 className="font-serif text-3xl font-bold text-primary md:text-4xl">
+          Nothing on the calendar just yet.
+        </h2>
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+          We're planning the next season of training programs and other gatherings. Leave your email and we'll let you know as soon as dates are confirmed. You could also start with an online course: you can take these right now, in your own time.
+        </p>
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link to="/contact" className="w-full sm:w-auto inline-flex items-center justify-center rounded-sm bg-primary px-8 py-3 text-base font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md">
+            Notify me
+          </Link>
+          <Link to="/courses" className="w-full sm:w-auto inline-flex items-center justify-center rounded-sm bg-teal-soft px-8 py-3 text-base font-bold text-teal-deep hover:bg-teal-soft/80 transition-colors uppercase tracking-wider shadow-md">
+            Explore Courses
+          </Link>
         </div>
       </div>
     </section>
