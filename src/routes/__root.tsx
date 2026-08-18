@@ -147,6 +147,20 @@ function WhatsAppButton() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useRouter().state.location;
+
+  useEffect(() => {
+    // Increase overall base font size by 2px for all pages except homepage
+    if (location.pathname === "/") {
+      document.documentElement.style.fontSize = "16px";
+    } else {
+      document.documentElement.style.fontSize = "18px";
+    }
+    
+    return () => {
+      document.documentElement.style.fontSize = "";
+    };
+  }, [location.pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
