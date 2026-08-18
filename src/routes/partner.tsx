@@ -107,7 +107,7 @@ function PartnerPage() {
           <div className="grid gap-8 md:grid-cols-3">
             {/* Pray */}
             <div className="flex flex-col rounded-[2.5rem] bg-white p-10 shadow-soft h-full">
-              <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-brand text-white shadow-md">
+              <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-teal-deep text-white shadow-md">
                 <Heart className="h-5 w-5" />
               </div>
               <h3 className="font-serif text-2xl font-bold text-primary mb-3">Pray With Us</h3>
@@ -122,7 +122,7 @@ function PartnerPage() {
 
             {/* Host */}
             <div className="flex flex-col rounded-[2.5rem] bg-white p-10 shadow-soft h-full">
-              <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-brand text-white shadow-md">
+              <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-teal-deep text-white shadow-md">
                 <Globe className="h-5 w-5" />
               </div>
               <h3 className="font-serif text-2xl font-bold text-primary mb-3">Host a Training</h3>
@@ -137,7 +137,7 @@ function PartnerPage() {
 
             {/* Give */}
             <div className="flex flex-col rounded-[2.5rem] bg-white p-10 shadow-soft h-full relative overflow-hidden">
-              <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-brand text-white shadow-md">
+              <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-teal-deep text-white shadow-md">
                 <Handshake className="h-5 w-5" />
               </div>
               <h3 className="font-serif text-2xl font-bold text-primary mb-3">Give</h3>
@@ -234,7 +234,7 @@ function PartnerPage() {
               <textarea id="message" rows={4} className="w-full rounded-2xl border border-border/40 bg-cream/30 px-5 py-4 text-sm focus:border-teal focus:outline-none focus:ring-1 focus:ring-teal" placeholder="Tell us a little about you and your church or organisation..." />
             </div>
             
-            <button type="button" onClick={() => alert("Thank you, we've received your message. Someone from our team will be in touch within [X] working days.")} className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-brand px-8 py-4 text-sm font-bold text-white transition-opacity hover:opacity-90 shadow-md">
+            <button type="button" onClick={() => alert("Thank you, we've received your message. Someone from our team will be in touch within [X] working days.")} className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-teal-deep px-8 py-4 text-sm font-bold text-white transition-opacity hover:opacity-90 shadow-md">
               Send message <Send className="h-4 w-4" />
             </button>
           </form>
