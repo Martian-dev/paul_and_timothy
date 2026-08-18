@@ -28,6 +28,7 @@ import { Route as WhyWeExistRouteImport } from './routes/why-we-exist'
 import { Route as ArticlesCallingRouteImport } from './routes/articles_.calling'
 import { Route as ArticlesRheniusRouteImport } from './routes/articles_.rhenius'
 import { Route as ArticlesScudderRouteImport } from './routes/articles_.scudder'
+import { Route as ArticlesSpiritualGiftsRouteImport } from './routes/articles_.spiritual-gifts'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
 import { Route as EventsGalleryRouteImport } from './routes/events.gallery'
@@ -129,6 +130,11 @@ const ArticlesScudderRoute = ArticlesScudderRouteImport.update({
   path: '/articles/scudder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesSpiritualGiftsRoute = ArticlesSpiritualGiftsRouteImport.update({
+  id: '/articles_/spiritual-gifts',
+  path: '/articles/spiritual-gifts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesIndexRoute = CoursesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/articles/calling': typeof ArticlesCallingRoute
   '/articles/rhenius': typeof ArticlesRheniusRoute
   '/articles/scudder': typeof ArticlesScudderRoute
+  '/articles/spiritual-gifts': typeof ArticlesSpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/articles/calling': typeof ArticlesCallingRoute
   '/articles/rhenius': typeof ArticlesRheniusRoute
   '/articles/scudder': typeof ArticlesScudderRoute
+  '/articles/spiritual-gifts': typeof ArticlesSpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/articles_/calling': typeof ArticlesCallingRoute
   '/articles_/rhenius': typeof ArticlesRheniusRoute
   '/articles_/scudder': typeof ArticlesScudderRoute
+  '/articles_/spiritual-gifts': typeof ArticlesSpiritualGiftsRoute
   '/courses/$slug': typeof CoursesSlugRoute
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/articles/calling'
     | '/articles/rhenius'
     | '/articles/scudder'
+    | '/articles/spiritual-gifts'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/articles/calling'
     | '/articles/rhenius'
     | '/articles/scudder'
+    | '/articles/spiritual-gifts'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '/articles_/calling'
     | '/articles_/rhenius'
     | '/articles_/scudder'
+    | '/articles_/spiritual-gifts'
     | '/courses/$slug'
     | '/events/gallery'
     | '/events/previous'
@@ -333,6 +345,7 @@ export interface RootRouteChildren {
   ArticlesCallingRoute: typeof ArticlesCallingRoute
   ArticlesRheniusRoute: typeof ArticlesRheniusRoute
   ArticlesScudderRoute: typeof ArticlesScudderRoute
+  ArticlesSpiritualGiftsRoute: typeof ArticlesSpiritualGiftsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -470,6 +483,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesScudderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles_/spiritual-gifts': {
+      id: '/articles_/spiritual-gifts'
+      path: '/articles/spiritual-gifts'
+      fullPath: '/articles/spiritual-gifts'
+      preLoaderRoute: typeof ArticlesSpiritualGiftsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses/': {
       id: '/courses/'
       path: '/'
@@ -556,6 +576,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesCallingRoute: ArticlesCallingRoute,
   ArticlesRheniusRoute: ArticlesRheniusRoute,
   ArticlesScudderRoute: ArticlesScudderRoute,
+  ArticlesSpiritualGiftsRoute: ArticlesSpiritualGiftsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

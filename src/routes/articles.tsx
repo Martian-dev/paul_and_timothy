@@ -49,6 +49,14 @@ const articles = [
     read: "8 min read",
     link: "/articles/rhenius",
   },
+  {
+    tag: "Ministry & Calling",
+    title: "Spiritual Gifts: Essential Resources for Ministry",
+    excerpt:
+      "Understanding our calling is important, but it is equally important to recognise the spiritual gifts God has given us to fulfil that calling.",
+    read: "4 min read",
+    link: "/articles/spiritual-gifts",
+  },
 ];
 
 function ArticlesPage() {
