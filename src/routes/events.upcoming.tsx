@@ -1,13 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { Sparkles, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 import { timeline } from "@/data/events";
 
 import speaker1 from "@/assets/speaker-1.jpg";
 import speaker2 from "@/assets/speaker-2.jpg";
 import speaker3 from "@/assets/speaker-3.jpg";
-import eventsHero from "@/assets/events-hero.jpg";
+
+import poster1 from "@/assets/Alethia poster/Alethia_training_topics.jpeg";
+import poster2 from "@/assets/Alethia poster/Alethia_training_topics_tamil.jpeg";
+import poster3 from "@/assets/Alethia poster/Alethia_who_can_participate_landscape.jpeg";
+import poster4 from "@/assets/Alethia poster/Alethia_who_can_participate_landscape_tamil.jpeg";
+import poster5 from "@/assets/Alethia poster/Alethia_who_can_participate_portrait.jpeg";
 
 export const Route = createFileRoute("/events/upcoming")({
   head: () => ({
@@ -24,32 +30,209 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.2, 0.8, 0.2, 1] as const } },
 };
 
-function PosterSection() {
-  return (
-    <section className="px-6 pt-32 pb-16 md:pt-40 text-center">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="mx-auto max-w-5xl">
-        <h1 className="font-serif text-4xl font-bold text-primary md:text-5xl">
-          Upcoming events
-        </h1>
+const allPosters = [poster3, poster4, poster1, poster2];
 
-        <div className="mt-12 relative overflow-hidden rounded-[2.5rem] bg-card shadow-lg flex items-center justify-center min-h-[300px] md:min-h-[450px]">
-          <img src={eventsHero} alt="Event Poster" className="absolute inset-0 w-full h-full object-cover blur-[2px]" />
-          <div className="absolute inset-0 bg-primary/60" />
-          <div className="relative z-10 flex flex-col items-center">
-            <h2 className="text-white font-bold text-lg md:text-xl tracking-widest uppercase mb-6">Poster or video</h2>
-            <Link to="/register" className="inline-flex items-center gap-2 rounded-full border border-white bg-transparent px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-primary">
-              Register now
+function ThumbnailCard({ images, defaultIndex, onClick }: { images: string[], defaultIndex: number, onClick: (index: number) => void }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(defaultIndex);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isHovered) {
+      interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      }, 2000);
+    } else {
+      setCurrentIndex(defaultIndex);
+    }
+    return () => clearInterval(interval);
+  }, [isHovered, images.length, defaultIndex]);
+
+  return (
+    <motion.div
+      className="relative overflow-hidden rounded-xl border border-border/40 shadow-sm cursor-pointer bg-black/5 aspect-video flex items-center justify-center group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onClick(currentIndex)}
+      whileHover={{ scale: 1.05, zIndex: 10 }}
+      transition={{ duration: 0.2 }}
+    >
+      <AnimatePresence initial={false}>
+        <motion.img 
+          key={currentIndex}
+          src={images[currentIndex]} 
+          alt="Related Slide" 
+          className="absolute inset-0 w-full h-full object-cover" 
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        />
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+function PosterSection() {
+  const [mainPosterIndex, setMainPosterIndex] = useState(0); // start with poster3 (index 0)
+  const [modalPosterIndex, setModalPosterIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (modalPosterIndex === null) return;
+      if (e.key === "ArrowRight") {
+        setModalPosterIndex((prev) => (prev !== null ? (prev + 1) % allPosters.length : null));
+      } else if (e.key === "ArrowLeft") {
+        setModalPosterIndex((prev) => (prev !== null ? (prev - 1 + allPosters.length) % allPosters.length : null));
+      } else if (e.key === "Escape") {
+        setModalPosterIndex(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [modalPosterIndex]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMainPosterIndex((prev) => (prev + 1) % allPosters.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handlePrev = () => setMainPosterIndex((prev) => (prev - 1 + allPosters.length) % allPosters.length);
+  const handleNext = () => setMainPosterIndex((prev) => (prev + 1) % allPosters.length);
+
+  return (
+    <section className="px-6 pt-32 pb-16 md:pt-40 bg-background text-center md:text-left">
+      <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="mx-auto max-w-4xl">
+        
+        {/* TITLE */}
+        <div className="mb-10 w-full overflow-hidden">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-primary leading-[1.1] whitespace-nowrap tracking-tight">
+            Alethia Training Conference
+          </h1>
+        </div>
+
+        {/* LARGE EVENT POSTER */}
+        <motion.div 
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+          onClick={() => setModalPosterIndex(mainPosterIndex)}
+          className="w-full aspect-video rounded-[2rem] overflow-hidden bg-black/5 shadow-2xl border border-border/40 relative flex items-center justify-center group cursor-pointer"
+        >
+          <AnimatePresence initial={false}>
+            <motion.img 
+              key={mainPosterIndex}
+              src={allPosters[mainPosterIndex]} 
+              alt="Alethia Training Conference" 
+              className="absolute inset-0 w-full h-full object-contain block" 
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            />
+          </AnimatePresence>
+
+          {/* Navigation Buttons */}
+          <button 
+            onClick={(e) => { e.stopPropagation(); handlePrev(); }} 
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-10 shadow-md"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button 
+            onClick={(e) => { e.stopPropagation(); handleNext(); }} 
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-10 shadow-md"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </motion.div>
+
+        {/* DETAILS SECTION */}
+        <div className="mt-8 max-w-3xl">
+          <p className="text-xl font-medium text-teal-deep tracking-wide uppercase">
+            Nov 7-14
+          </p>
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+            Training for Youth Leaders, Teachers & Counsellors.
+          </p>
+          <div className="mt-8">
+            <Link to="/register" className="inline-flex items-center justify-center rounded-sm bg-primary px-10 py-3.5 text-base md:text-lg font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md hover:shadow-lg">
+              Register Now
             </Link>
           </div>
         </div>
 
-        <div className="mt-16 text-left">
-          <h2 className="font-serif text-3xl font-bold text-primary">Name of the event</h2>
-          <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummyLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-          </p>
+        <hr className="my-14 border-border/60" />
+
+        {/* RELATED SLIDES */}
+        <div>
+          <h3 className="text-xl font-bold text-primary mb-6 uppercase tracking-wider text-left">Related Slides</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+             <ThumbnailCard images={allPosters} defaultIndex={0} onClick={setModalPosterIndex} />
+             <ThumbnailCard images={allPosters} defaultIndex={1} onClick={setModalPosterIndex} />
+             <ThumbnailCard images={allPosters} defaultIndex={2} onClick={setModalPosterIndex} />
+             <ThumbnailCard images={allPosters} defaultIndex={3} onClick={setModalPosterIndex} />
+          </div>
         </div>
+
       </motion.div>
+
+      {/* MODAL */}
+      <AnimatePresence>
+        {modalPosterIndex !== null && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setModalPosterIndex(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-12 cursor-pointer"
+          >
+            <div 
+              className="relative max-w-5xl w-full aspect-video flex flex-col items-center justify-center cursor-default group"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Keyboard navigation hint */}
+              <div className="absolute -top-10 left-0 text-white/50 text-sm hidden md:block">
+                Use arrow keys to navigate
+              </div>
+              <button 
+                onClick={() => setModalPosterIndex(null)} 
+                className="absolute -top-12 right-0 md:-right-12 md:-top-12 text-white/70 hover:text-white p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-20"
+              >
+                <X className="w-6 h-6 md:w-8 md:h-8" />
+              </button>
+              
+              <button 
+                onClick={() => setModalPosterIndex((prev) => (prev !== null ? (prev - 1 + allPosters.length) % allPosters.length : null))} 
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-20 shadow-md"
+              >
+                <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+              </button>
+
+              <button 
+                onClick={() => setModalPosterIndex((prev) => (prev !== null ? (prev + 1) % allPosters.length : null))} 
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-20 shadow-md"
+              >
+                <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+              </button>
+
+              <AnimatePresence initial={false}>
+                <motion.img 
+                  key={modalPosterIndex}
+                  src={allPosters[modalPosterIndex]} 
+                  alt="Enlarged Slide" 
+                  className="w-full h-full max-h-[85vh] object-contain rounded-lg shadow-2xl absolute inset-0 m-auto" 
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                />
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
