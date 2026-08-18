@@ -274,7 +274,7 @@ function Speakers() {
             Who You'll Hear From
           </span>
           <h2 className="mt-5 font-serif text-3xl font-bold text-primary md:text-4xl">
-            Meet Your Facilitators
+            Meet Your Facilitator
           </h2>
         </motion.div>
         <div className="mt-12 flex justify-center">

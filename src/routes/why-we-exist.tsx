@@ -172,11 +172,11 @@ function WhyWeExistPage() {
                   </div>
                 </div>
                 <div className="flex-1 pt-4">
-                  <h3 className="font-serif text-2xl font-bold text-primary">Name</h3>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-teal-deep mt-2">Location</p>
-                  <p className="text-sm font-bold text-primary mt-6">Experience:</p>
+                  <h3 className="font-serif text-2xl font-bold text-primary">Roselind Rex</h3>
+                  <p className="text-sm font-semibold uppercase tracking-wider text-teal-deep mt-2">Trainer</p>
+                  <p className="text-sm font-bold text-primary mt-6">Word Life Foundation</p>
                   <p className="mt-2 text-base leading-relaxed text-muted-foreground">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    3 decades serving in youth & Teens ministry.
                   </p>
                   <div className="mt-8">
                     <Link to="/courses" className="inline-flex items-center text-sm font-bold text-primary hover:text-teal-deep transition-colors">
