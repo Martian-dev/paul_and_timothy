@@ -51,8 +51,8 @@ function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-primary">Email</h3>
-                    <a href="mailto:hello@paulandtimothy.com" className="mt-1 block text-[15px] text-muted-foreground hover:text-teal-deep transition-colors">
-                      hello@paulandtimothy.com
+                    <a href="mailto:contact@paulandtimothytrainingcentre.com" className="mt-1 block text-[15px] text-muted-foreground hover:text-teal-deep transition-colors">
+                      contact@paulandtimothytrainingcentre.com
                     </a>
                   </div>
                 </div>
