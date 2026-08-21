@@ -717,7 +717,7 @@ function Courses() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ delay: (i % 2) * 0.1, duration: 0.6 }}
-            className="hover-lift group overflow-hidden rounded-3xl bg-card shadow-card"
+            className="hover-lift group flex h-full flex-col overflow-hidden rounded-3xl bg-card shadow-card"
           >
             <div className="relative aspect-[16/9] overflow-hidden">
               <img
@@ -730,9 +730,9 @@ function Courses() {
                 {c.tag}
               </div>
             </div>
-            <div className="p-8">
+            <div className="flex flex-1 flex-col p-8">
               <h3 className="text-2xl font-medium text-primary">{c.title}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{c.desc}</p>
+              <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">{c.desc}</p>
               <Link
                 to="/courses/$slug"
                 params={{ slug: c.slug }}

@@ -315,7 +315,7 @@ function CoursesPage() {
                           {course.tag}
                         </span>
                       </div>
-                      <p className="mt-5 text-sm leading-relaxed text-foreground/75">
+                      <p className="mt-5 flex-1 text-sm leading-relaxed text-foreground/75">
                         {course.desc}
                       </p>
                       <span

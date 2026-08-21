@@ -6,7 +6,7 @@ export const TESTIMONIAL_VIDEOS = [
   { id: "K_K6RJXPcb4", name: "Sis. Sezia", role: "Founder, World Revival Seeds" },
   { id: "wgdw9JGcoyc", name: "Richard", role: "Network Administrator" },
   { id: "HTctnx-ONPg", name: "Beniel Phinehas", role: "Student, MBBS" },
-  { id: "ODgcXT-bvrk", name: "Sis. Helena", role: "PTTC Participant" },
+  { id: "ODgcXT-bvrk", name: "Dr Helena", role: "Business" },
 ];
 
 function TestimonialVideo({

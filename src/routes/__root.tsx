@@ -131,7 +131,15 @@ function RootComponent() {
   const location = useRouter().state.location;
 
   // Pages with a dark hero keep the transparent-over-hero nav; all others get the solid nav.
-  const transparentNavPaths = ["/", "/articles", "/faqs", "/partner", "/ministry-calling"];
+  const transparentNavPaths = [
+    "/",
+    "/articles",
+    "/faqs",
+    "/partner",
+    "/ministry-calling",
+    "/spiritual-gifts",
+    "/apest-assessment",
+  ];
 
   return (
     <QueryClientProvider client={queryClient}>

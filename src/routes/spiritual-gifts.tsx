@@ -7,7 +7,11 @@ export const Route = createFileRoute("/spiritual-gifts")({
   head: () => ({
     meta: [
       { title: "Type of Calling Assessment" },
-      { name: "description", content: "Identify the type of Christian calling that best describes God's present direction for your life." },
+      {
+        name: "description",
+        content:
+          "Identify the type of Christian calling that best describes God's present direction for your life.",
+      },
     ],
   }),
   component: TypeOfCallAssessment,
@@ -81,16 +85,32 @@ function TypeOfCallAssessment() {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [personalInfo, setPersonalInfo] = useState({ name: "", email: "" });
 
+  const answered = Object.keys(answers).length;
+  const progress =
+    step === 1 ? Math.round((answered / QUESTIONS.length) * 80) : step === 2 ? 90 : 100;
+  const progressLabel =
+    step === 1 ? `${answered}/${QUESTIONS.length}` : step === 2 ? "Details" : "Complete";
   const isQuizComplete = useMemo(() => Object.keys(answers).length === QUESTIONS.length, [answers]);
 
   const handleAnswer = (qIndex: number, value: number) => {
     setAnswers((prev) => ({ ...prev, [qIndex]: value }));
   };
 
+  const showStep = (nextStep: 1 | 2 | 3) => {
+    setStep(nextStep);
+    window.setTimeout(
+      () => document.querySelector("#assessment-content")?.scrollIntoView({ behavior: "smooth" }),
+      0,
+    );
+  };
+
   const results = useMemo(() => {
     if (step !== 3) return null;
 
-    const scores = { "Part-Time Call": 0, "Full-Time Call": 0, "Tentmakers' Call": 0 } as Record<Call, number>;
+    const scores = { "Part-Time Call": 0, "Full-Time Call": 0, "Tentmakers' Call": 0 } as Record<
+      Call,
+      number
+    >;
     for (const call of CALLS) {
       MAPPING[call].forEach((qNum) => {
         scores[call] += answers[qNum - 1] || 0;
@@ -105,23 +125,55 @@ function TypeOfCallAssessment() {
 
   return (
     <div className="min-h-screen bg-background">
-
-      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="mx-auto max-w-3xl px-6 pt-32 pb-24 md:pt-40">
-        <div className="text-center">
-          <h1 className="font-serif text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-            Type of Calling
-          </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
-            This assessment is designed to help you prayerfully identify the type of Christian calling that may best describe God's present direction for your life: Part-Time Call, Full-Time Call, or Tentmakers' Call. Read each statement carefully and select the response that best describes you.
-          </p>
+      <section className="relative overflow-hidden gradient-hero pb-24 pt-36 text-white">
+        <div className="absolute inset-0 opacity-40 [background:radial-gradient(ellipse_at_70%_20%,color-mix(in_oklab,var(--teal)_35%,transparent),transparent_60%)]" />
+        <div className="relative mx-auto max-w-4xl px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="font-serif text-5xl font-medium leading-[1.05] md:text-7xl">
+              Ministry Type Assessment
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
+              Prayerfully explore whether God may be leading you to serve through a part-time,
+              full-time, or tentmaking call.
+            </p>
+          </motion.div>
         </div>
+      </section>
 
+      <div className="sticky top-[72px] z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
+        <div className="mx-auto flex max-w-4xl items-center gap-4 px-6 py-3">
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full gradient-brand transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="min-w-16 text-right text-xs font-semibold text-primary/70">
+            {progressLabel}
+          </span>
+        </div>
+      </div>
+
+      <motion.main
+        id="assessment-content"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+        className="mx-auto max-w-3xl scroll-mt-28 px-6 pb-24 pt-12 md:pt-16"
+      >
         {/* STEP 1: Quiz */}
         {step === 1 && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-12">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             <div className="space-y-10">
               {QUESTIONS.map((q, idx) => (
-                <div key={idx} className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
+                <div
+                  key={idx}
+                  className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm"
+                >
                   <p className="text-[15px] font-medium text-primary">
                     <span className="mr-2 text-teal-deep font-semibold">{idx + 1}.</span> {q}
                   </p>
@@ -152,7 +204,7 @@ function TypeOfCallAssessment() {
               <button
                 type="button"
                 disabled={!isQuizComplete}
-                onClick={() => setStep(2)}
+                onClick={() => showStep(2)}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:shadow-card disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
               >
                 Continue <ArrowRight className="h-4 w-4" />
@@ -163,13 +215,21 @@ function TypeOfCallAssessment() {
 
         {/* STEP 2: Info */}
         {step === 2 && (
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="mt-12 max-w-md mx-auto rounded-3xl border border-border/60 bg-card p-8 shadow-card">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 shadow-card"
+          >
             <h2 className="font-serif text-2xl font-medium text-primary">Almost there</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Provide your details to see your results.</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Provide your details to see your results.
+            </p>
 
             <div className="mt-8 space-y-5">
               <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">Name</label>
+                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">
+                  Name
+                </label>
                 <input
                   type="text"
                   value={personalInfo.name}
@@ -178,7 +238,9 @@ function TypeOfCallAssessment() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">Email</label>
+                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">
+                  Email
+                </label>
                 <input
                   type="email"
                   value={personalInfo.email}
@@ -191,7 +253,7 @@ function TypeOfCallAssessment() {
             <div className="mt-8 flex items-center justify-between">
               <button
                 type="button"
-                onClick={() => setStep(1)}
+                onClick={() => showStep(1)}
                 className="text-sm font-semibold text-muted-foreground hover:text-primary"
               >
                 Back
@@ -199,7 +261,7 @@ function TypeOfCallAssessment() {
               <button
                 type="button"
                 disabled={!personalInfo.name || !personalInfo.email}
-                onClick={() => setStep(3)}
+                onClick={() => showStep(3)}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:shadow-soft disabled:opacity-50"
               >
                 View Results <Send className="h-4 w-4" />
@@ -210,18 +272,30 @@ function TypeOfCallAssessment() {
 
         {/* STEP 3: Results */}
         {step === 3 && results && (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-12 space-y-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="space-y-8"
+          >
             <div className="rounded-[2rem] gradient-hero p-8 text-center text-white shadow-soft md:p-12">
               <CheckCircle2 className="mx-auto h-12 w-12 text-gold mb-6" />
-              <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">Your Result</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+                Your Result
+              </h2>
               <div className="mt-6">
-                <div className="text-[11px] uppercase tracking-widest text-teal">Your Possible Calling</div>
-                <div className="mt-1 font-serif text-3xl font-medium md:text-4xl">{results.primary}</div>
+                <div className="text-[11px] uppercase tracking-widest text-teal">
+                  Your Possible Calling
+                </div>
+                <div className="mt-1 font-serif text-3xl font-medium md:text-4xl">
+                  {results.primary}
+                </div>
                 <div className="mt-3 inline-block rounded-full bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
                   {results.scores[results.primary]} / 20 — {results.band.label}
                 </div>
               </div>
-              <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/80">{results.band.text}</p>
+              <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/80">
+                {results.band.text}
+              </p>
             </div>
 
             <div className="rounded-3xl border border-border/60 bg-card p-8 shadow-sm">
@@ -229,36 +303,52 @@ function TypeOfCallAssessment() {
                 <span className="h-px w-6 bg-teal-deep" /> Your Calling Description
               </h3>
               <h4 className="mt-4 text-2xl font-medium text-primary">{results.primary}</h4>
-              <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{DESCRIPTIONS[results.primary]}</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+                {DESCRIPTIONS[results.primary]}
+              </p>
             </div>
 
             <div className="rounded-3xl bg-cream p-8 md:p-10">
               <h3 className="font-serif text-2xl font-medium text-primary">All Scores</h3>
               <p className="mt-2 text-[15px] text-muted-foreground max-w-2xl">
-                Each category is scored out of 20. 16–20 is a strong indication, 11–15 a possible indication, 6–10 a limited indication, and 4–5 little indication.
+                Each category is scored out of 20. 16–20 is a strong indication, 11–15 a possible
+                indication, 6–10 a limited indication, and 4–5 little indication.
               </p>
 
               <div className="mt-8 space-y-6">
                 {CALLS.map((call) => (
-                  <div key={call} className="border-b border-border/60 pb-6 last:border-0 last:pb-0">
+                  <div
+                    key={call}
+                    className="border-b border-border/60 pb-6 last:border-0 last:pb-0"
+                  >
                     <div className="flex items-baseline justify-between gap-4">
                       <div className="font-semibold text-primary">{call}</div>
                       <div className="text-sm font-semibold text-teal-deep">
                         {results.scores[call]} / 20 · {bandFor(results.scores[call]).label}
                       </div>
                     </div>
-                    <div className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{DESCRIPTIONS[call]}</div>
+                    <div className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+                      {DESCRIPTIONS[call]}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
             <p className="text-center text-[15px] leading-relaxed text-muted-foreground max-w-2xl mx-auto">
-              God calls us in different ways. Some serve in full-time ministry, others through regular jobs while being involved in ministry, and some work as tentmakers, combining both. Know your specific call and remain faithful to it.
+              God calls us in different ways. Some serve in full-time ministry, others through
+              regular jobs while being involved in ministry, and some work as tentmakers, combining
+              both. Know your specific call and remain faithful to it.
             </p>
 
             <div className="text-center pt-8">
-              <button onClick={() => { setStep(1); setAnswers({}); }} className="text-sm font-semibold text-primary underline underline-offset-4 hover:text-teal-deep transition-colors">
+              <button
+                onClick={() => {
+                  setAnswers({});
+                  showStep(1);
+                }}
+                className="text-sm font-semibold text-primary underline underline-offset-4 hover:text-teal-deep transition-colors"
+              >
                 Retake Assessment
               </button>
             </div>
