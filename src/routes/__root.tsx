@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { FirstLoadConfetti } from "@/components/FirstLoadConfetti";
 
 function NotFoundComponent() {
   return (
@@ -160,6 +161,8 @@ function RootComponent() {
       <Outlet />
       <SiteFooter />
       <WhatsAppButton />
+      {/* Removable: first-visit confetti. Delete component + this line to remove. */}
+      <FirstLoadConfetti />
     </QueryClientProvider>
   );
 }
