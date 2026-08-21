@@ -178,8 +178,9 @@ export const events: EventItem[] = [
 ];
 
 export const timeline = [
-  { month: "September", title: "Leadership Workshop", detail: "Character, calling and shepherding." },
-  { month: "October", title: "Mission Conference", detail: "Sending sessions and field stories." },
-  { month: "November", title: "Youth Revival Night", detail: "Worship, testimony and ministry." },
-  { month: "December", title: "Christmas Outreach", detail: "Serving our city together." },
+  { month: "September 14–15", title: "Mumbai", detail: "14th: Women's meeting (morning) & Wedlock — pre-marital seminar (evening). 15th: Mumbai volunteers meet." },
+  { month: "October 1–4", title: "Joyful Family Camp — Season 5", detail: "Yelagiri." },
+  { month: "October 19–20", title: "Couples Camp", detail: "Ooty." },
+  { month: "November 7–14", title: "Alethia", detail: "Online training." },
+  { month: "November 20–29", title: "Mission Trip", detail: "Bihar." },
 ];

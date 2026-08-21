@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { timeline } from "@/data/events";
+import { TestimonialVideoGrid } from "@/components/TestimonialVideos";
 
 import trainerImage from "@/assets/Trainer_image.jpg";
 import speaker2 from "@/assets/speaker-2.jpg";
@@ -301,20 +302,15 @@ function Speakers() {
 function Testimonials() {
   return (
     <section className="px-6 py-20">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="mx-auto max-w-4xl text-center">
-        <h3 className="font-serif text-2xl font-bold text-primary md:text-3xl">
+      <div className="mx-auto max-w-5xl">
+        <motion.h3 initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center font-serif text-2xl font-bold text-primary md:text-3xl">
           Hear from people who have<br />attended this session
-        </h3>
-        
-        <div className="mt-12 space-y-12">
-          <p className="mx-auto max-w-2xl text-base italic leading-relaxed text-muted-foreground md:text-lg">
-            "Lorem Ipsum has been the industry's standard dummyLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"
-          </p>
-          <p className="mx-auto max-w-2xl text-base italic leading-relaxed text-muted-foreground md:text-lg">
-            "Lorem Ipsum has been the industry's standard dummyLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"
-          </p>
+        </motion.h3>
+
+        <div className="mt-12">
+          <TestimonialVideoGrid />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

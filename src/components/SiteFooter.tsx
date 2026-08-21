@@ -118,6 +118,17 @@ export function SiteFooter() {
           <div>
             © {new Date().getFullYear()} Paul & Timothy Training Centre. All rights reserved.
           </div>
+          <div>
+            Designed and Developed by{" "}
+            <a
+              href="https://theeagleseye.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-primary-foreground/80 transition hover:text-white"
+            >
+              The Eagle Eye
+            </a>
+          </div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white">
               Privacy Policy

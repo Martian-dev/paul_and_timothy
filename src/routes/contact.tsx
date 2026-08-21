@@ -61,8 +61,11 @@ function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-primary">General Enquiries</h3>
-                    <a href="tel:18001234567" className="mt-1 block text-[15px] text-muted-foreground hover:text-teal-deep transition-colors">
-                      1800-123-4567
+                    <a href="tel:+917338988088" className="mt-1 block text-[15px] text-muted-foreground hover:text-teal-deep transition-colors">
+                      Ph: 7338988088
+                    </a>
+                    <a href="https://wa.me/918344483000" target="_blank" rel="noopener noreferrer" className="mt-1 block text-[15px] text-muted-foreground hover:text-teal-deep transition-colors">
+                      WhatsApp: 8344483000
                     </a>
                   </div>
                 </div>
@@ -71,12 +74,18 @@ function ContactPage() {
                   <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-primary text-white transition-transform group-hover:scale-110 shadow-[0_8px_20px_-8px_rgba(45,10,78,0.5)]">
                     <MapPin className="h-6 w-6" strokeWidth={1.75} />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="text-lg font-semibold text-primary">Training Centre</h3>
-                    <p className="mt-1 text-[15px] text-muted-foreground leading-relaxed">
-                      123 Ministry Road<br />
-                      London, UK, EC1A 1BB
-                    </p>
+                    <div className="mt-3 overflow-hidden rounded-2xl border border-border/40 shadow-sm">
+                      <iframe
+                        src="https://www.google.com/maps?q=Word%20Life%20Ministry%20Foundation&z=17&output=embed"
+                        title="Word Life Ministry Foundation on the map"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        className="h-64 w-full border-0"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

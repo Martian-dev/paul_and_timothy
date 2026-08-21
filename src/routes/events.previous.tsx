@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Play, X } from "lucide-react";
+import { TestimonialVideoGrid } from "@/components/TestimonialVideos";
 
 import a2017_1 from "@/assets/Alethia2018/IMG-20171002-WA0017.jpg";
 import a2017_2 from "@/assets/Alethia2018/IMG-20171002-WA0019.jpg";
@@ -197,18 +198,13 @@ function Gallery() {
 function Testimonials() {
   return (
     <section className="px-6 py-16 pb-32">
-      <div className="mx-auto max-w-4xl text-center">
-        <h3 className="font-serif text-2xl font-bold text-primary md:text-3xl">
+      <div className="mx-auto max-w-5xl">
+        <h3 className="text-center font-serif text-2xl font-bold text-primary md:text-3xl">
           Hear from people who have<br />attended this session
         </h3>
-        
-        <div className="mt-12 space-y-12">
-          <p className="mx-auto max-w-2xl text-base italic leading-relaxed text-muted-foreground md:text-lg">
-            "Lorem Ipsum has been the industry's standard dummyLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"
-          </p>
-          <p className="mx-auto max-w-2xl text-base italic leading-relaxed text-muted-foreground md:text-lg">
-            "Lorem Ipsum has been the industry's standard dummyLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"
-          </p>
+
+        <div className="mt-12">
+          <TestimonialVideoGrid />
         </div>
       </div>
     </section>
