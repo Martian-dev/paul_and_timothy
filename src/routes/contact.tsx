@@ -154,6 +154,7 @@ function ContactPage() {
                         defaultValue=""
                       >
                         <option value="" disabled>Select Country*</option>
+                        <option value="in">India</option>
                         <option value="uk">United Kingdom</option>
                         <option value="us">United States</option>
                         <option value="ng">Nigeria</option>

@@ -1,9 +1,23 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, Clock, Play, Plus, Signal, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, Plus, Signal, Sparkles } from "lucide-react";
 import { courses, getCourse, type Course } from "@/data/courses";
 import { TestimonialVideoGrid } from "@/components/TestimonialVideos";
+
+const getYoutubeEmbedUrl = (url: string) => {
+  try {
+    const parsedUrl = new URL(url);
+    const videoId =
+      parsedUrl.hostname === "youtu.be"
+        ? parsedUrl.pathname.slice(1)
+        : parsedUrl.searchParams.get("v");
+
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+  } catch {
+    return null;
+  }
+};
 
 export const Route = createFileRoute("/courses/$slug")({
   loader: ({ params }) => {
@@ -36,6 +50,7 @@ export const Route = createFileRoute("/courses/$slug")({
 function CoursePage() {
   const { course } = Route.useLoaderData() as { course: Course };
   const [open, setOpen] = useState<number | null>(0);
+  const videoEmbedUrl = course.videoUrl ? getYoutubeEmbedUrl(course.videoUrl) : null;
   const allowedSlugs = ["bible-exposition", "kingdom-shakers"];
   const similar = courses.filter((c) => allowedSlugs.includes(c.slug) && c.slug !== course.slug).slice(0, 2);
 
@@ -69,29 +84,7 @@ function CoursePage() {
             aria-hidden
             className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
           />
-          <div className="relative grid gap-10 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
-            {course.videoUrl ? (
-              <a
-                href={course.videoUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full border-2 border-white/50 transition-all duration-500 hover:scale-105 hover:border-white md:h-40 md:w-40"
-                aria-label={`Watch sample teaching for ${course.title}`}
-              >
-                <Play className="h-10 w-10 translate-x-0.5 fill-white/90 text-white transition-transform duration-500 group-hover:scale-110" />
-                <span className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/60">Intro</span>
-              </a>
-            ) : (
-              <button
-                type="button"
-                className="group mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full border-2 border-white/50 transition-all duration-500 hover:scale-105 hover:border-white md:h-40 md:w-40"
-                aria-label={`Play intro for ${course.title}`}
-              >
-                <Play className="h-10 w-10 translate-x-0.5 fill-white/90 text-white transition-transform duration-500 group-hover:scale-110" />
-                <span className="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/60">Intro</span>
-              </button>
-            )}
-
+          <div className="relative">
             <div className="min-w-0">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur">
                 <Sparkles className="h-3 w-3 text-gold" /> {course.tag}
@@ -122,6 +115,27 @@ function CoursePage() {
             </div>
           </div>
         </motion.section>
+
+        {videoEmbedUrl && (
+          <section aria-labelledby="course-video-heading" className="mt-10">
+            <h2 id="course-video-heading" className="sr-only">
+              {course.title} video
+            </h2>
+            <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-border/60 bg-card shadow-card">
+              <div className="relative aspect-video w-full">
+                <iframe
+                  src={videoEmbedUrl}
+                  title={`${course.title} course video`}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  className="absolute inset-0 h-full w-full border-0"
+                />
+              </div>
+            </div>
+          </section>
+        )}
 
         <div className="mt-12 max-w-3xl space-y-5">
           {course.summary.split("\n\n").map((para) => (
