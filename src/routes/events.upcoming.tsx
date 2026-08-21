@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Sparkles, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 import { timeline } from "@/data/events";
 
@@ -106,9 +106,6 @@ function PosterSection() {
     <>
       <section className="gradient-hero pt-36 pb-20 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium backdrop-blur-md">
-            <Sparkles className="h-3.5 w-3.5 text-[oklch(0.82_0.14_180)]" /> Events · Upcoming
-          </span>
           <h1 className="font-serif text-5xl font-medium leading-[1.05] md:text-7xl">
             Upcoming events
           </h1>
@@ -120,13 +117,6 @@ function PosterSection() {
 
       <section className="px-6 py-16 bg-background text-center md:text-left">
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="mx-auto max-w-4xl">
-
-        {/* FEATURED EVENT EYEBROW */}
-        <div className="mb-6">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-teal-deep shadow-card">
-            Next Up
-          </span>
-        </div>
 
         {/* TITLE */}
         <div className="mb-10 w-full overflow-hidden">
@@ -269,11 +259,7 @@ function Speakers() {
     <section className="px-6 py-20 bg-cream">
       <div className="mx-auto max-w-5xl">
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-teal-deep shadow-card">
-            <Sparkles className="h-3.5 w-3.5 text-gold" />
-            Who You'll Hear From
-          </span>
-          <h2 className="mt-5 font-serif text-3xl font-bold text-primary md:text-4xl">
+          <h2 className="font-serif text-3xl font-bold text-primary md:text-4xl">
             Meet Your Facilitator
           </h2>
         </motion.div>
@@ -339,11 +325,7 @@ function Timeline() {
     <section className="px-6 py-20 bg-cream">
       <div className="mx-auto max-w-4xl">
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-teal-deep shadow-card">
-            <Sparkles className="h-3.5 w-3.5 text-gold" />
-            The Season Ahead
-          </span>
-          <h2 className="mt-5 font-serif text-3xl font-bold text-primary md:text-4xl">
+          <h2 className="font-serif text-3xl font-bold text-primary md:text-4xl">
             What's coming, month by month.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">

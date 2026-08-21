@@ -194,10 +194,6 @@ function AssessmentPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide backdrop-blur-md">
-              <Sparkles className="h-3.5 w-3.5 text-[oklch(0.82_0.14_180)]" />
-              Resources · Assessment
-            </span>
             <h1 className="font-serif text-5xl font-medium leading-[1.05] md:text-7xl">
               Ministry Calling Assessment
             </h1>

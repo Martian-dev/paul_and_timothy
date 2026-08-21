@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
-import { ArrowRight, Sparkles, Send, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Send, CheckCircle2 } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 
 export const Route = createFileRoute("/apest-assessment")({
@@ -99,9 +99,6 @@ function ApestAssessment() {
 
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="mx-auto max-w-3xl px-6 pt-32 pb-24 md:pt-40">
         <div className="text-center">
-          <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-teal-deep/30 bg-teal/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-teal-deep">
-            <Sparkles className="h-3.5 w-3.5" /> Diagnostic Quiz
-          </span>
           <h1 className="font-serif text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
             APEST Spiritual Gifts
           </h1>

@@ -33,9 +33,6 @@ function PartnerPage() {
       {/* 1. HERO */}
       <section className="gradient-hero pt-36 pb-32 text-white text-center">
         <div className="mx-auto max-w-5xl px-6">
-          <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold backdrop-blur-md text-white shadow-sm">
-            <Handshake className="h-3.5 w-3.5 text-teal" /> Partner With Us
-          </span>
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-[5.5rem] font-bold leading-[1.05] tracking-tight">
             The harvest needs workers.<br />
             <span className="text-gradient font-bold leading-tight block mt-2">The workers… need training.</span>

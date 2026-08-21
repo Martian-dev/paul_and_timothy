@@ -4,7 +4,6 @@ import { Play } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 
 import trainerImage from "@/assets/Trainer_image.jpg";
-import speaker2 from "@/assets/speaker-2.jpg";
 import videoBg from "@/assets/calling.jpg";
 
 export const Route = createFileRoute("/why-we-exist")({
@@ -114,8 +113,8 @@ function WhyWeExistPage() {
                       
                       {/* Card */}
                       <div className={`ml-12 w-full md:ml-0 md:w-1/2 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
-                        <div className="rounded-3xl bg-white p-8 shadow-sm border border-border/40 hover:shadow-md transition-shadow">
-                           <div className="text-xs font-bold uppercase tracking-[.22em] text-teal/80 mb-2">Step {index + 1}</div>
+                        <div className="rounded-3xl bg-[oklch(0.95_0.045_88)] p-8 shadow-sm border border-gold/30 hover:shadow-md transition-shadow">
+                           <div className="text-xs font-bold uppercase tracking-[.22em] text-teal-deep mb-2">Step {index + 1}</div>
                            <h3 className="font-serif text-xl font-bold text-primary">{item}</h3>
                         </div>
                       </div>
@@ -141,7 +140,7 @@ function WhyWeExistPage() {
                 Anyone can do ministry.
               </h2>
               <div className="mt-10 space-y-6 text-lg leading-relaxed text-white/80 max-w-2xl mx-auto">
-                <p>Every believer is called to take part in God's Kingdom work — not just a chosen few.</p>
+                <p>Every believer is called to take part in God's Kingdom work —<br />not just a chosen few.</p>
                 <p>We want to raise confident, competent and committed believers who carry the Gospel beyond the church: to their families, their workplaces, their communities, and the nations. Because anyone can do ministry — with a heart to serve, and the right training to back it.</p>
               </div>
               <div className="mt-14 pt-10 border-t border-white/10 max-w-3xl mx-auto">
@@ -161,14 +160,14 @@ function WhyWeExistPage() {
               Our Team
             </div>
             <h2 className="font-serif text-3xl font-bold text-primary md:text-4xl mb-16 text-center">
-              Meet your trainers
+              Meet your trainer
             </h2>
             
             <div className="space-y-16">
               <div className="flex flex-col md:flex-row gap-10 items-start group">
                 <div className="w-full md:w-1/3 shrink-0">
                   <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-muted shadow-soft transition-transform duration-500 group-hover:-translate-y-2">
-                     <img src={trainerImage} alt="Trainer" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                     <img src={trainerImage} alt="Trainer" className="w-full h-full object-cover object-[38%_35%] transition-transform duration-700 group-hover:scale-105" />
                   </div>
                 </div>
                 <div className="flex-1 pt-4">
@@ -177,27 +176,6 @@ function WhyWeExistPage() {
                   <p className="text-sm font-bold text-primary mt-6">Word Life Foundation</p>
                   <p className="mt-2 text-base leading-relaxed text-muted-foreground">
                     3 decades serving in youth & Teens ministry.
-                  </p>
-                  <div className="mt-8">
-                    <Link to="/courses" className="inline-flex items-center text-sm font-bold text-primary hover:text-teal-deep transition-colors">
-                      Explore courses by them &gt;
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col md:flex-row gap-10 items-start group">
-                <div className="w-full md:w-1/3 shrink-0">
-                  <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-muted shadow-soft transition-transform duration-500 group-hover:-translate-y-2">
-                     <img src={speaker2} alt="Trainer" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  </div>
-                </div>
-                <div className="flex-1 pt-4">
-                  <h3 className="font-serif text-2xl font-bold text-primary">Name</h3>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-teal-deep mt-2">Location</p>
-                  <p className="text-sm font-bold text-primary mt-6">Experience:</p>
-                  <p className="mt-2 text-base leading-relaxed text-muted-foreground">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
                   </p>
                   <div className="mt-8">
                     <Link to="/courses" className="inline-flex items-center text-sm font-bold text-primary hover:text-teal-deep transition-colors">

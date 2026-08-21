@@ -1,39 +1,272 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import { useState, useMemo } from "react";
+import { ArrowRight, Send, CheckCircle2 } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 
 export const Route = createFileRoute("/spiritual-gifts")({
   head: () => ({
     meta: [
-      { title: "Spiritual Gifts Assessment" },
-      { name: "description", content: "Discover your spiritual gifts." },
+      { title: "Type of Calling Assessment" },
+      { name: "description", content: "Identify the type of Christian calling that best describes God's present direction for your life." },
     ],
   }),
-  component: SpiritualGiftsPage,
+  component: TypeOfCallAssessment,
 });
 
-function SpiritualGiftsPage() {
+const QUESTIONS = [
+  "I desire to use my everyday occupation, family responsibilities, relationships, and available time to serve God.",
+  "I have a strong and persistent conviction that God is calling me to make Christian ministry my primary vocation.",
+  "I see my workplace or profession as an opportunity to demonstrate Christ and influence people for the Gospel.",
+  "I experience joy and fulfilment when serving God through hospitality, encouragement, relationships, practical service, or caring for others.",
+  "I am willing to surrender my career plans, ambitions, and personal goals if God clearly calls me into full-time ministry.",
+  "I desire to remain in or pursue a profession while intentionally using it as a platform for Christian ministry.",
+  "I believe I can faithfully serve God alongside my present occupation, studies, family, or other regular responsibilities.",
+  "I feel that God is placing a deep & continuing burden to preach, teach, evangelise, disciple, shepherd, or serve for a people who live far off.",
+  "I can support myself financially through my profession while also actively engaging in Christian ministry.",
+  "I see my daily responsibilities as opportunities to represent Christ rather than as separate from my Christian service.",
+  "I am willing to make significant sacrifices, including financial or lifestyle changes, even to resign my job to obey God's call to ministry.",
+  "My professional skills and workplace relationships give me regular opportunities to reach people who may not ordinarily attend church.",
+];
+
+const SCALE = [
+  { label: "Not at all true of me", val: 1 },
+  { label: "Slightly true of me", val: 2 },
+  { label: "Sometimes true / Unsure", val: 3 },
+  { label: "Mostly true of me", val: 4 },
+  { label: "Very true of me", val: 5 },
+];
+
+const CALLS = ["Part-Time Call", "Full-Time Call", "Tentmakers' Call"] as const;
+type Call = (typeof CALLS)[number];
+
+const MAPPING: Record<Call, number[]> = {
+  "Part-Time Call": [1, 4, 7, 10],
+  "Full-Time Call": [2, 5, 8, 11],
+  "Tentmakers' Call": [3, 6, 9, 12],
+};
+
+const DESCRIPTIONS: Record<Call, string> = {
+  "Part-Time Call":
+    "A part-time call describes a believer who has a regular occupation or other responsibilities while also actively serving God in their available time and sphere of influence. You do not have to be employed by a church or ministry organisation to serve God — your home, workplace, family, business, and relationships can all become places of Christian service. Biblical example: Philemon, whose ministry included hospitality, relationships, encouragement, and caring for fellow believers (Philemon 1–2, 7; Colossians 3:23).",
+  "Full-Time Call":
+    "A full-time call refers to a person called by God who must leave their primary occupation to devote themselves entirely to Christian ministry. It involves making Christian ministry the primary vocational focus of one's life and being willing to surrender personal plans and career ambitions for God's purpose. Biblical example: Peter, who left his fishing occupation to follow Christ in total surrender and availability (Luke 5:10–11; Matthew 4:19–20; Mark 8:34).",
+  "Tentmakers' Call":
+    "A tentmaker's call refers to a form of bi-vocational ministry, where a person works in a profession or trade to financially support themselves while also engaging in Christian ministry. Workplaces can be mission fields: Christian professionals engage with people who may not attend church, demonstrating Christ's character and sharing the Gospel naturally. Your profession itself can become a platform for ministry. Biblical example: the Apostle Paul, who worked as a tentmaker while preaching the Gospel (Acts 18:2–4; 20:33–35; Colossians 3:17).",
+};
+
+function bandFor(score: number): { label: string; text: string } {
+  if (score >= 16)
+    return {
+      label: "Strong Indication",
+      text: "Your responses show a strong indication toward this type of calling. Continue seeking God through prayer, Scripture, wise counsel, and practical opportunities to serve.",
+    };
+  if (score >= 11)
+    return {
+      label: "Possible Indication",
+      text: "Your responses show some evidence of this type of calling. Spend more time discerning your gifts, desires, opportunities, and God's direction.",
+    };
+  if (score >= 6)
+    return {
+      label: "Limited Indication",
+      text: "Some aspects of this calling may be present, but your responses currently show limited evidence that this is your primary calling.",
+    };
+  return {
+    label: "Little Indication",
+    text: "Your responses show little indication toward this type of calling at this stage. This does not mean God cannot lead you differently in the future.",
+  };
+}
+
+function TypeOfCallAssessment() {
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [personalInfo, setPersonalInfo] = useState({ name: "", email: "" });
+
+  const isQuizComplete = useMemo(() => Object.keys(answers).length === QUESTIONS.length, [answers]);
+
+  const handleAnswer = (qIndex: number, value: number) => {
+    setAnswers((prev) => ({ ...prev, [qIndex]: value }));
+  };
+
+  const results = useMemo(() => {
+    if (step !== 3) return null;
+
+    const scores = { "Part-Time Call": 0, "Full-Time Call": 0, "Tentmakers' Call": 0 } as Record<Call, number>;
+    for (const call of CALLS) {
+      MAPPING[call].forEach((qNum) => {
+        scores[call] += answers[qNum - 1] || 0;
+      });
+    }
+
+    const sorted = [...CALLS].sort((a, b) => scores[b] - scores[a]);
+    const primary = sorted[0];
+
+    return { scores, primary, band: bandFor(scores[primary]) };
+  }, [answers, step]);
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background">
       <SiteNav alwaysSolid />
 
-      <main className="flex-1 px-6 pt-36 pb-24 md:pt-48">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-serif text-5xl font-medium leading-[1.05] md:text-7xl text-primary">
-            Spiritual Gifts Assessment
+      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="mx-auto max-w-3xl px-6 pt-32 pb-24 md:pt-40">
+        <div className="text-center">
+          <h1 className="font-serif text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
+            Type of Calling
           </h1>
-          <p className="mt-8 text-lg text-muted-foreground">
-            This assessment is coming soon. Please check back later.
+          <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+            This assessment is designed to help you prayerfully identify the type of Christian calling that may best describe God's present direction for your life: Part-Time Call, Full-Time Call, or Tentmakers' Call. Read each statement carefully and select the response that best describes you.
           </p>
-
-          <Link
-            to="/assessment"
-            className="mt-12 inline-flex items-center gap-2 rounded-full border border-primary/20 px-6 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back to Assessments
-          </Link>
         </div>
-      </main>
+
+        {/* STEP 1: Quiz */}
+        {step === 1 && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-12">
+            <div className="space-y-10">
+              {QUESTIONS.map((q, idx) => (
+                <div key={idx} className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
+                  <p className="text-[15px] font-medium text-primary">
+                    <span className="mr-2 text-teal-deep font-semibold">{idx + 1}.</span> {q}
+                  </p>
+                  <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                    {SCALE.map((opt) => {
+                      const isSelected = answers[idx] === opt.val;
+                      return (
+                        <button
+                          key={opt.val}
+                          type="button"
+                          onClick={() => handleAnswer(idx, opt.val)}
+                          className={`rounded-xl border px-3 py-2.5 text-xs font-semibold transition-all ${
+                            isSelected
+                              ? "border-teal-deep bg-teal/10 text-teal-deep shadow-sm"
+                              : "border-border/60 bg-background text-muted-foreground hover:bg-muted"
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 flex justify-end">
+              <button
+                type="button"
+                disabled={!isQuizComplete}
+                onClick={() => setStep(2)}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:shadow-card disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
+              >
+                Continue <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* STEP 2: Info */}
+        {step === 2 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="mt-12 max-w-md mx-auto rounded-3xl border border-border/60 bg-card p-8 shadow-card">
+            <h2 className="font-serif text-2xl font-medium text-primary">Almost there</h2>
+            <p className="mt-2 text-sm text-muted-foreground">Provide your details to see your results.</p>
+
+            <div className="mt-8 space-y-5">
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">Name</label>
+                <input
+                  type="text"
+                  value={personalInfo.name}
+                  onChange={(e) => setPersonalInfo({ ...personalInfo, name: e.target.value })}
+                  className="h-12 w-full rounded-xl border border-border/60 bg-background px-4 text-sm focus:border-teal-deep focus:outline-none focus:ring-1 focus:ring-teal-deep"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">Email</label>
+                <input
+                  type="email"
+                  value={personalInfo.email}
+                  onChange={(e) => setPersonalInfo({ ...personalInfo, email: e.target.value })}
+                  className="h-12 w-full rounded-xl border border-border/60 bg-background px-4 text-sm focus:border-teal-deep focus:outline-none focus:ring-1 focus:ring-teal-deep"
+                />
+              </div>
+            </div>
+
+            <div className="mt-8 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="text-sm font-semibold text-muted-foreground hover:text-primary"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                disabled={!personalInfo.name || !personalInfo.email}
+                onClick={() => setStep(3)}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:shadow-soft disabled:opacity-50"
+              >
+                View Results <Send className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* STEP 3: Results */}
+        {step === 3 && results && (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-12 space-y-8">
+            <div className="rounded-[2rem] gradient-hero p-8 text-center text-white shadow-soft md:p-12">
+              <CheckCircle2 className="mx-auto h-12 w-12 text-gold mb-6" />
+              <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">Your Result</h2>
+              <div className="mt-6">
+                <div className="text-[11px] uppercase tracking-widest text-teal">Your Possible Calling</div>
+                <div className="mt-1 font-serif text-3xl font-medium md:text-4xl">{results.primary}</div>
+                <div className="mt-3 inline-block rounded-full bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
+                  {results.scores[results.primary]} / 20 — {results.band.label}
+                </div>
+              </div>
+              <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/80">{results.band.text}</p>
+            </div>
+
+            <div className="rounded-3xl border border-border/60 bg-card p-8 shadow-sm">
+              <h3 className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-teal-deep">
+                <span className="h-px w-6 bg-teal-deep" /> Your Calling Description
+              </h3>
+              <h4 className="mt-4 text-2xl font-medium text-primary">{results.primary}</h4>
+              <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{DESCRIPTIONS[results.primary]}</p>
+            </div>
+
+            <div className="rounded-3xl bg-cream p-8 md:p-10">
+              <h3 className="font-serif text-2xl font-medium text-primary">All Scores</h3>
+              <p className="mt-2 text-[15px] text-muted-foreground max-w-2xl">
+                Each category is scored out of 20. 16–20 is a strong indication, 11–15 a possible indication, 6–10 a limited indication, and 4–5 little indication.
+              </p>
+
+              <div className="mt-8 space-y-6">
+                {CALLS.map((call) => (
+                  <div key={call} className="border-b border-border/60 pb-6 last:border-0 last:pb-0">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <div className="font-semibold text-primary">{call}</div>
+                      <div className="text-sm font-semibold text-teal-deep">
+                        {results.scores[call]} / 20 · {bandFor(results.scores[call]).label}
+                      </div>
+                    </div>
+                    <div className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{DESCRIPTIONS[call]}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-center text-[15px] leading-relaxed text-muted-foreground max-w-2xl mx-auto">
+              God calls us in different ways. Some serve in full-time ministry, others through regular jobs while being involved in ministry, and some work as tentmakers, combining both. Know your specific call and remain faithful to it.
+            </p>
+
+            <div className="text-center pt-8">
+              <button onClick={() => { setStep(1); setAnswers({}); }} className="text-sm font-semibold text-primary underline underline-offset-4 hover:text-teal-deep transition-colors">
+                Retake Assessment
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </motion.main>
     </div>
   );
 }

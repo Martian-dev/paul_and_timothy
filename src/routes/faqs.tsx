@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, HelpCircle, Plus } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import { SiteNav } from "@/components/SiteNav";
 
 export const Route = createFileRoute("/faqs")({
@@ -171,9 +171,6 @@ function FaqsPage() {
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
       <section className="gradient-hero pt-36 pb-20 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium backdrop-blur-md">
-            <HelpCircle className="h-3.5 w-3.5 text-[oklch(0.82_0.14_180)]" /> Resources · FAQs
-          </span>
           <h1 className="font-serif text-[1.8rem] sm:text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.05] whitespace-nowrap tracking-tight">Questions people bring us.</h1>
           <p className="mx-auto mt-4 max-w-xl text-white/80">
             Honest questions about calling, ministry and walking with God — answered from Scripture. If your question isn't here, ask us.

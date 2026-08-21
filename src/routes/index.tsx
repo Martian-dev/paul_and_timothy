@@ -3,7 +3,6 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
-  BookOpen,
   Compass,
   Users,
   Heart,
@@ -857,9 +856,6 @@ function MentorCTA() {
 
         <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest">
-              <BookOpen className="h-3.5 w-3.5" /> Get one-on-one guidance
-            </div>
             <h2 className="text-4xl font-medium leading-tight md:text-5xl">
               Need help understanding <br /> where you fit?
             </h2>

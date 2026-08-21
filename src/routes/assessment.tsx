@@ -23,13 +23,20 @@ function AssessmentHubPage() {
 
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="flex-1 px-6 pt-32 pb-24 md:pt-40">
         <div className="mx-auto max-w-4xl text-center">
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             className="font-serif text-5xl font-bold text-primary md:text-6xl"
           >
-            Assessment page
-          </motion.h1>
+            Three quick assessments. One clear direction.
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground"
+          >
+            Our three assessments help you identify what God has already been forming in you: the people you're drawn to, the shape your calling takes, and the gifts you've been given to carry it. Take each one, and you'll move from a general sense that God is asking something of you to a specific understanding of what it is… and which course to begin with.
+          </motion.p>
 
           <div className="mt-16 grid gap-4 sm:grid-cols-3">
             <Link
@@ -66,29 +73,6 @@ function AssessmentHubPage() {
             </Link>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mt-20 text-center sm:text-left mx-auto max-w-3xl"
-          >
-            <h3 className="font-serif text-3xl md:text-4xl font-bold text-primary text-center">
-              About the assessment
-            </h3>
-            
-            <p className="mt-8 text-base md:text-lg leading-relaxed text-muted-foreground">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummyLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-            </p>
-
-            <div className="mt-10 flex justify-center">
-              <Link
-                to="/ministry-calling"
-                className="inline-flex items-center justify-center rounded-full border border-border bg-white px-8 py-3.5 text-base md:text-lg font-semibold text-primary transition-colors hover:bg-accent hover:text-teal-deep shadow-sm"
-              >
-                Take the assessment
-              </Link>
-            </div>
-          </motion.div>
         </div>
       </motion.main>
     </div>
