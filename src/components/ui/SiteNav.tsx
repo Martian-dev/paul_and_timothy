@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Show, SignInButton, UserButton } from "@clerk/tanstack-react-start";
+import { Show, UserButton } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import logoImg from "@/assets/logo.png";
@@ -127,11 +127,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
 
         <div className="hidden items-center gap-3 lg:flex">
           <Show when="signed-out">
-            <SignInButton mode="modal">
-              <button type="button" className={linkCls}>
-                Login
-              </button>
-            </SignInButton>
+            <Link to="/login" search={{ course: undefined }} className={linkCls}>
+              Login
+            </Link>
           </Show>
           <Show when="signed-in">
             <UserButton />
@@ -286,15 +284,14 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             </Link>
 
             <Show when="signed-out">
-              <SignInButton mode="modal">
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
-                >
-                  Login
-                </button>
-              </SignInButton>
+              <Link
+                to="/login"
+                search={{ course: undefined }}
+                onClick={() => setOpen(false)}
+                className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
+              >
+                Login
+              </Link>
             </Show>
             <Show when="signed-in">
               <div className="flex items-center gap-3 px-3 py-2.5">
