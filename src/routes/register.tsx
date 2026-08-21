@@ -3,7 +3,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 
+// Events open for registration. Add future events here — linking to
+// /register?event=<slug> pre-selects that event directly.
+const REGISTRABLE_EVENTS = [
+  { slug: "alethia", label: "Alethia — Online Training (November 7–14)" },
+];
+
 export const Route = createFileRoute("/register")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    event: typeof search.event === "string" ? search.event : undefined,
+  }),
   head: () => ({
     meta: [{ title: "Register — Paul & Timothy Training Centre" }],
   }),
@@ -12,6 +21,14 @@ export const Route = createFileRoute("/register")({
 
 function RegisterPage() {
   const [submitted, setSubmitted] = useState(false);
+  const { event } = Route.useSearch();
+
+  // Pre-select the event from ?event=<slug>; with a single open event, select it by default.
+  const selectedEvent = REGISTRABLE_EVENTS.some((e) => e.slug === event)
+    ? event
+    : REGISTRABLE_EVENTS.length === 1
+      ? REGISTRABLE_EVENTS[0].slug
+      : undefined;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,13 +125,15 @@ function RegisterPage() {
                     <select
                       id="event"
                       required
+                      defaultValue={selectedEvent ?? ""}
                       className="w-full rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
                     >
-                      <option value="">Select an event...</option>
-                      <option value="leadership">Leadership Workshop (September)</option>
-                      <option value="mission">Mission Conference (October)</option>
-                      <option value="youth">Youth Revival Night (November)</option>
-                      <option value="christmas">Christmas Outreach (December)</option>
+                      {REGISTRABLE_EVENTS.length > 1 && <option value="">Select an event...</option>}
+                      {REGISTRABLE_EVENTS.map((e) => (
+                        <option key={e.slug} value={e.slug}>
+                          {e.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 

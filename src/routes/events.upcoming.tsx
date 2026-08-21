@@ -167,7 +167,7 @@ function PosterSection() {
             Training for Youth Leaders, Teachers & Counsellors. Walk away with practical tools to reach and disciple the next generation.
           </p>
           <div className="mt-8">
-            <Link to="/register" className="inline-flex items-center justify-center rounded-sm bg-primary px-10 py-3.5 text-base md:text-lg font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md hover:shadow-lg">
+            <Link to="/register" search={{ event: "alethia" }} className="inline-flex items-center justify-center rounded-sm bg-primary px-10 py-3.5 text-base md:text-lg font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md hover:shadow-lg">
               Register Now
             </Link>
           </div>
@@ -288,7 +288,7 @@ function Speakers() {
         </div>
         
         <div className="mt-12 flex justify-center">
-          <Link to="/register" className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-base md:text-lg font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md">
+          <Link to="/register" search={{ event: "alethia" }} className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-base md:text-lg font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md">
             Register now
           </Link>
         </div>
