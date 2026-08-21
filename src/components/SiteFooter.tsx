@@ -62,11 +62,17 @@ export function SiteFooter() {
           </p>
 
           <div className="mt-8 flex gap-3">
-            {[Instagram, Youtube, Facebook].map((Icon, i) => (
+            {[
+              { Icon: Instagram, href: "https://www.instagram.com/wordlifefoundation?igsi=MXU4dm9rdmdpd243Zw==", label: "Instagram" },
+              { Icon: Youtube, href: "https://youtube.com/@roselindrex?si=CPGbrdWEXdPTEobu", label: "YouTube" },
+              { Icon: Facebook, href: "https://www.facebook.com/share/1ERBAxLiB5/?mibextid=wwXIfr", label: "Facebook" },
+            ].map(({ Icon, href, label }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="Social"
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
                 className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-primary-foreground/80 transition hover:bg-white/10 hover:text-white"
               >
                 <Icon className="h-4 w-4" />
