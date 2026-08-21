@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LearnerAccessPage } from "./login";
+import { SignUp } from "@clerk/tanstack-react-start";
 
 export const Route = createFileRoute("/signup")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -9,7 +9,9 @@ export const Route = createFileRoute("/signup")({
 });
 
 function SignupPage() {
-  const { course } = Route.useSearch();
-
-  return <LearnerAccessPage mode="signup" course={course} />;
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-24">
+      <SignUp />
+    </div>
+  );
 }

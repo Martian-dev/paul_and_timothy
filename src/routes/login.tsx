@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SignIn } from "@clerk/tanstack-react-start";
 import {
   ArrowLeft,
   BookOpen,
@@ -30,9 +31,11 @@ const learnerBenefits = [
 type AccessMode = "login" | "signup";
 
 function LoginPage() {
-  const { course } = Route.useSearch();
-
-  return <LearnerAccessPage mode="login" course={course} />;
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-24">
+      <SignIn />
+    </div>
+  );
 }
 
 const accessHref = (path: "/login" | "/signup", course?: string) =>
@@ -63,7 +66,12 @@ export function LearnerAccessPage({ mode, course }: { mode: AccessMode; course?:
         </div>
       </header>
 
-      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="px-6 py-12 md:py-20">
+      <motion.main
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+        className="px-6 py-12 md:py-20"
+      >
         <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] bg-card shadow-soft lg:grid-cols-[.9fr_1.1fr]">
           <section className="relative min-h-[28rem] overflow-hidden bg-primary p-8 text-white sm:p-12">
             <img
