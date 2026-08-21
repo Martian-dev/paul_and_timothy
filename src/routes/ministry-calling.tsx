@@ -3,7 +3,6 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import { motion } from "framer-motion";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { ArrowRight, Baby, Crown, HeartHandshake, RotateCcw, Sparkles, Users } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 
 export const Route = createFileRoute("/ministry-calling")({
   head: () => ({
@@ -183,7 +182,6 @@ function AssessmentPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav />
 
       {/* Hero */}
       <section className="relative overflow-hidden gradient-hero pt-36 pb-24 text-white">

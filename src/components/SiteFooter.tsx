@@ -28,7 +28,6 @@ const cols: { title: string; links: FooterLink[] }[] = [
     title: "Courses",
     links: [
       { label: "Course Overview", to: "/courses" },
-      { label: "Group Training", to: "/courses" },
       { label: "Talk to a Mentor", to: "/interaction" },
     ],
   },

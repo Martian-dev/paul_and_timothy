@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { SiteNav } from "@/components/ui/SiteNav";
 import { Mail, Phone, MapPin, Send, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -10,7 +9,6 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SiteNav alwaysSolid />
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-primary px-6 py-20 md:py-28 text-white mt-16 md:mt-0">

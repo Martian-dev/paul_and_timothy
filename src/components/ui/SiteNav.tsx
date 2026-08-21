@@ -10,11 +10,6 @@ const mainLinks = [
   { label: "Why we exist", to: "/why-we-exist" },
 ];
 
-const coursesLinks: NavLink[] = [
-  { label: "Course Overview", to: "/courses" },
-  { label: "Group Training", to: "/courses" },
-];
-
 const contactLinks: NavLink[] = [
   { label: "Contact Us", to: "/contact" },
   { label: "Talk to a mentor", to: "/interaction" },
@@ -64,7 +59,6 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
   
   // Mobile dropdown states
   const [eventsOpen, setEventsOpen] = useState(false);
-  const [coursesOpen, setCoursesOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
 
@@ -113,7 +107,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           )}
 
           <NavDropdown label="Events" links={eventLinks} linkCls={linkCls} />
-          <NavDropdown label="Courses" links={coursesLinks} linkCls={linkCls} />
+          <Link to="/courses" className={linkCls}>
+            Courses
+          </Link>
           <NavDropdown label="Resources" links={resources} linkCls={linkCls} />
           <NavDropdown label="Contact" links={contactLinks} linkCls={linkCls} />
           <Link to="/partner" className={linkCls}>
@@ -196,28 +192,14 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               </div>
             )}
 
-            {/* Mobile Courses Dropdown */}
-            <button
-              onClick={() => setCoursesOpen(!coursesOpen)}
-              className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
+            {/* Mobile Courses Link */}
+            <Link
+              to="/courses"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
             >
               Courses
-              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${coursesOpen ? "rotate-180" : ""}`} />
-            </button>
-            {coursesOpen && (
-              <div className="ml-3 flex flex-col gap-1 border-l-2 border-border/50 pl-3">
-                {coursesLinks.map((r) => (
-                  <Link
-                    key={r.label}
-                    to={r.to!}
-                    onClick={() => { setOpen(false); setCoursesOpen(false); }}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
-                  >
-                    {r.label}
-                  </Link>
-                ))}
-              </div>
-            )}
+            </Link>
 
             {/* Mobile Resources Dropdown */}
             <button

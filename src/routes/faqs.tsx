@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Plus } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 
 export const Route = createFileRoute("/faqs")({
   head: () => ({
@@ -167,7 +166,6 @@ function FaqsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav />
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
       <section className="gradient-hero pt-36 pb-20 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">

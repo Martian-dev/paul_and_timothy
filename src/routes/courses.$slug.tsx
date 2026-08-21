@@ -2,7 +2,6 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Clock, Lock, Play, Plus, Signal, Sparkles, BookOpen } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 import { courses, getCourse, type Course } from "@/data/courses";
 
 export const Route = createFileRoute("/courses/$slug")({
@@ -42,7 +41,6 @@ function CoursePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav alwaysSolid />
 
       <div className="mx-auto max-w-6xl px-6 pt-28 pb-24 md:pt-32">
         {/* Breadcrumb */}

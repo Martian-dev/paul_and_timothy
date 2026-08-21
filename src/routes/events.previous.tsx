@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Play, X } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 
 import a2017_1 from "@/assets/Alethia2018/IMG-20171002-WA0017.jpg";
 import a2017_2 from "@/assets/Alethia2018/IMG-20171002-WA0019.jpg";
@@ -219,7 +218,6 @@ function Testimonials() {
 function PreviousEventsPage() {
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav alwaysSolid />
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
         <HighlightsGrid />
         <Gallery />

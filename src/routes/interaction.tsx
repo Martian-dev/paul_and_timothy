@@ -10,7 +10,6 @@ import {
   Video,
 } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { SiteNav } from "@/components/SiteNav";
 import mentorshipImg from "@/assets/mentorship.jpg";
 
 export const Route = createFileRoute("/interaction")({ component: InteractionPage });
@@ -45,7 +44,6 @@ function InteractionPage() {
   };
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav alwaysSolid />
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
         <section className="relative overflow-hidden bg-cream px-6 py-18 md:py-24">
           <div className="absolute inset-y-0 right-0 hidden w-1/2 lg:block">

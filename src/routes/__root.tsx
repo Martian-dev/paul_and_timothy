@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
 function NotFoundComponent() {
@@ -149,21 +150,12 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useRouter().state.location;
 
-  useEffect(() => {
-    // Increase overall base font size by 2px for all pages except homepage
-    if (location.pathname === "/") {
-      document.documentElement.style.fontSize = "16px";
-    } else {
-      document.documentElement.style.fontSize = "18px";
-    }
-    
-    return () => {
-      document.documentElement.style.fontSize = "";
-    };
-  }, [location.pathname]);
+  // Pages with a dark hero keep the transparent-over-hero nav; all others get the solid nav.
+  const transparentNavPaths = ["/", "/articles", "/faqs", "/partner", "/ministry-calling"];
 
   return (
     <QueryClientProvider client={queryClient}>
+      <SiteNav alwaysSolid={!transparentNavPaths.includes(location.pathname)} />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <SiteFooter />

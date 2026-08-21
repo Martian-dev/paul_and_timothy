@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 import a2017_1 from "@/assets/Alethia2018/IMG-20171002-WA0017.jpg";
 import a2017_2 from "@/assets/Alethia2018/IMG-20171002-WA0019.jpg";
 import a2017_3 from "@/assets/Alethia2018/IMG-20171002-WA0020.jpg";
@@ -29,7 +28,6 @@ const galleryData = [
 function GalleryPage() {
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav alwaysSolid />
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="pt-32 pb-24">
         <div className="mx-auto max-w-7xl px-6">
           <Link

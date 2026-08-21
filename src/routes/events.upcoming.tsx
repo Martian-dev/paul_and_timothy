@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 import { timeline } from "@/data/events";
 
 import trainerImage from "@/assets/Trainer_image.jpg";
@@ -389,7 +388,6 @@ function EmptyState() {
 function UpcomingEventsPage() {
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav alwaysSolid />
       <main>
         <PosterSection />
         <Speakers />

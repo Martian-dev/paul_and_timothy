@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Handshake, Heart, Globe, Send, ArrowRight, Quote, User, Church, Building } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 import { useState, useRef } from "react";
 
 import mentorshipImg from "@/assets/pttc-mentorship.png";
@@ -27,7 +26,6 @@ function PartnerPage() {
 
   return (
     <div className="min-h-screen bg-background font-sans">
-      <SiteNav />
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
       
       {/* 1. HERO */}

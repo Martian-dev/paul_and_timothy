@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
-import { SiteNav } from "@/components/SiteNav";
 
 import trainerImage from "@/assets/Trainer_image.jpg";
 import videoBg from "@/assets/calling.jpg";
@@ -24,7 +23,6 @@ const fadeUp = {
 function WhyWeExistPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SiteNav alwaysSolid />
       
       <main className="flex-1 pb-20">
         {/* Header & Video Section */}

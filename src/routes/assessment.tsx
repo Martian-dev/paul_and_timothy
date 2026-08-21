@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { SiteNav } from "@/components/SiteNav";
 
 import callingImg from "@/assets/calling.jpg";
 import courseTeachingImg from "@/assets/course-teaching.jpg";
@@ -19,7 +18,6 @@ export const Route = createFileRoute("/assessment")({
 function AssessmentHubPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SiteNav alwaysSolid />
 
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="flex-1 px-6 pt-32 pb-24 md:pt-40">
         <div className="mx-auto max-w-4xl text-center">

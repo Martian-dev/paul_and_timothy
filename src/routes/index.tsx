@@ -29,7 +29,6 @@ import callingImg from "@/assets/calling.jpg";
 import courseBibleImg from "@/assets/course-bible.jpg";
 import courseTeachingImg from "@/assets/course-teaching.jpg";
 import logoImg from "@/assets/logo.png";
-import { SiteNav } from "@/components/SiteNav";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -468,9 +467,9 @@ function Audience() {
     {
       title: "Help my team grow.",
       desc: "Train your leaders together. For churches, ministries and teams who need to be equipped and trained.",
-      cta: "Group Training",
+      cta: "Explore Courses",
       img: courseTeachingImg,
-      link: "/assessment",
+      link: "/courses",
     },
   ];
   return (
@@ -868,7 +867,6 @@ function MentorCTA() {
 function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav />
       <main>
         <Hero />
         <AssessmentCards />

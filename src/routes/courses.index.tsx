@@ -17,7 +17,6 @@ import {
   X,
 } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
-import { SiteNav } from "@/components/SiteNav";
 import equipmentImg from "@/assets/pttc-equipment.png";
 import mentorshipImg from "@/assets/pttc-mentorship.png";
 import communityImg from "@/assets/pttc-community-learning.png";
@@ -182,7 +181,6 @@ function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteNav alwaysSolid />
       <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
         <section className="relative overflow-hidden gradient-hero px-6 py-20 text-white md:py-28">
           <div className="absolute -right-28 top-10 h-96 w-96 rounded-full bg-teal/20 blur-3xl" />
