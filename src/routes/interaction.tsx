@@ -1,20 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import {
-  CalendarDays,
-  CheckCircle2,
-  ChevronDown,
-  Clock3,
-  MessageCircle,
-  ShieldCheck,
-  Video,
-} from "lucide-react";
-import { FormEvent, useState } from "react";
+import { CalendarDays, ChevronDown, Clock3, ShieldCheck, Video } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import mentorshipImg from "@/assets/mentorship.jpg";
 
 export const Route = createFileRoute("/interaction")({ component: InteractionPage });
 
-const topics = ["Calling clarity", "Bible study help", "Ministry coaching", "Spiritual formation"];
 const faqs = [
   [
     "Who leads the conversation?",
@@ -34,17 +25,91 @@ const faqs = [
   ],
 ];
 
+const calendlyUrl =
+  "https://calendly.com/wordlifefoundation/30min?background_color=ebebeb&primary_color=402158";
+const calendlyScriptUrl = "https://assets.calendly.com/assets/external/widget.js";
+
+type CalendlyApi = {
+  initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void;
+};
+
+let calendlyScriptPromise: Promise<void> | null = null;
+
+function loadCalendlyScript() {
+  if (typeof window !== "undefined" && (window as Window & { Calendly?: CalendlyApi }).Calendly) {
+    return Promise.resolve();
+  }
+
+  if (calendlyScriptPromise) return calendlyScriptPromise;
+
+  calendlyScriptPromise = new Promise<void>((resolve, reject) => {
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${calendlyScriptUrl}"]`,
+    );
+
+    if (existingScript) {
+      existingScript.addEventListener("load", () => resolve(), { once: true });
+      existingScript.addEventListener("error", () => reject(new Error("Calendly failed to load")), {
+        once: true,
+      });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = calendlyScriptUrl;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Calendly failed to load"));
+    document.body.appendChild(script);
+  });
+
+  return calendlyScriptPromise;
+}
+
+function CalendlyEmbed() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    loadCalendlyScript()
+      .then(() => {
+        if (cancelled || !containerRef.current || containerRef.current.querySelector("iframe")) {
+          return;
+        }
+
+        const calendly = (window as Window & { Calendly?: CalendlyApi }).Calendly;
+        calendly?.initInlineWidget({ url: calendlyUrl, parentElement: containerRef.current });
+      })
+      .catch(() => {
+        // Keep the booking area available if a browser extension or network policy blocks Calendly.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="calendly-inline-widget overflow-hidden rounded-[1.5rem]"
+      data-url={calendlyUrl}
+      data-auto-load="false"
+      style={{ minWidth: "320px", height: "700px" }}
+    />
+  );
+}
+
 function InteractionPage() {
   const [openFaq, setOpenFaq] = useState(0);
-  const [sent, setSent] = useState(false);
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSent(true);
-    event.currentTarget.reset();
-  };
   return (
     <div className="min-h-screen bg-background">
-      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}>
+      <motion.main
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+      >
         <section className="relative overflow-hidden bg-cream px-6 py-18 md:py-24">
           <div className="absolute inset-y-0 right-0 hidden w-1/2 lg:block">
             <img
@@ -105,55 +170,8 @@ function InteractionPage() {
                 </li>
               </ul>
             </div>
-            <div className="rounded-[2rem] bg-card p-6 shadow-soft md:p-9">
-              {sent ? (
-                <div className="py-14 text-center">
-                  <CheckCircle2 className="mx-auto h-12 w-12 text-teal-deep" />
-                  <h3 className="mt-5 text-3xl text-primary">Your request is on its way.</h3>
-                  <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
-                    A mentor will reply within 48 hours to arrange a time with you.
-                  </p>
-                  <button
-                    onClick={() => setSent(false)}
-                    className="mt-7 text-sm font-semibold text-teal-deep underline underline-offset-4"
-                  >
-                    Send another request
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={submit} className="space-y-5">
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <Field label="Full name" name="name" required />
-                    <Field label="Email address" name="email" type="email" required />
-                  </div>
-                  <Field label="Country / timezone" name="timezone" />
-                  <label className="block text-sm font-medium text-primary">
-                    What would you like to discuss?
-                    <select
-                      name="topic"
-                      className="mt-2 h-12 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal/30"
-                    >
-                      <option>Choose a topic</option>
-                      {topics.map((topic) => (
-                        <option key={topic}>{topic}</option>
-                      ))}
-                      <option>Something else</option>
-                    </select>
-                  </label>
-                  <label className="block text-sm font-medium text-primary">
-                    A few words about your season
-                    <textarea
-                      name="message"
-                      rows={4}
-                      className="mt-2 w-full rounded-xl border border-border bg-background p-4 text-sm text-foreground outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal/30"
-                      placeholder="Share only what feels helpful…"
-                    />
-                  </label>
-                  <button className="flex min-h-12 w-full items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring">
-                    Request conversation
-                  </button>
-                </form>
-              )}
+            <div className="rounded-[2rem] bg-card p-2 shadow-soft sm:p-3 md:p-4">
+              <CalendlyEmbed />
             </div>
           </div>
         </section>
@@ -167,7 +185,10 @@ function InteractionPage() {
             </div>
             <div className="mt-10 space-y-3">
               {faqs.map(([question, answer], index) => (
-                <div key={question} className="rounded-3xl bg-white shadow-sm border border-border/50 overflow-hidden transition-all duration-300">
+                <div
+                  key={question}
+                  className="rounded-3xl bg-white shadow-sm border border-border/50 overflow-hidden transition-all duration-300"
+                >
                   <button
                     onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
                     className="flex w-full items-center justify-between gap-4 px-8 py-6 text-left text-xl font-medium text-primary"
@@ -179,9 +200,7 @@ function InteractionPage() {
                   </button>
                   {openFaq === index && (
                     <div className="px-8 pb-6">
-                      <p className="text-sm leading-relaxed text-muted-foreground">
-                        {answer}
-                      </p>
+                      <p className="text-sm leading-relaxed text-muted-foreground">{answer}</p>
                     </div>
                   )}
                 </div>
@@ -191,29 +210,5 @@ function InteractionPage() {
         </section>
       </motion.main>
     </div>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type = "text",
-  required = false,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-}) {
-  return (
-    <label className="block text-sm font-medium text-primary">
-      {label}
-      <input
-        name={name}
-        type={type}
-        required={required}
-        className="mt-2 h-12 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:border-teal-deep focus:ring-2 focus:ring-teal/30"
-      />
-    </label>
   );
 }
