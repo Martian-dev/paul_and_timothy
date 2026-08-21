@@ -19,7 +19,9 @@ export const Route = createFileRoute("/login")({
   validateSearch: (search: Record<string, unknown>) => ({
     course: typeof search.course === "string" ? search.course : undefined,
     redirect:
-      typeof search.redirect === "string" && search.redirect.startsWith("/")
+      typeof search.redirect === "string" &&
+      search.redirect.startsWith("/") &&
+      !search.redirect.startsWith("//")
         ? search.redirect
         : undefined,
   }),
@@ -36,10 +38,11 @@ type AccessMode = "login" | "signup";
 
 function LoginPage() {
   const { redirect } = Route.useSearch();
+  const signUpUrl = redirect ? `/signup?redirect=${encodeURIComponent(redirect)}` : "/signup";
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-24">
-      <SignIn signUpUrl="/signup" forceRedirectUrl={redirect ?? "/"} />
+      <SignIn signUpUrl={signUpUrl} forceRedirectUrl={redirect ?? "/"} />
     </div>
   );
 }

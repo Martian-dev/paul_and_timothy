@@ -122,7 +122,7 @@ function RegisterPage() {
                 <p className="text-muted-foreground text-lg mb-8">
                   {alreadyRegistered
                     ? "Your registration details are up to date."
-                    : "Thank you for registering. We've sent the event details to your email address."}
+                    : "Your registration is saved. Event details will be shared with your Clerk account email."}
                 </p>
                 <Link
                   to="/"

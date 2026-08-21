@@ -19,4 +19,6 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Vercel is the production target; Lovable builds still force their own preset.
+  nitro: { preset: "vercel" },
 });

@@ -55,20 +55,15 @@ export const registerForEvent = createServerFn({ method: "POST" })
       WHERE event_id = ${event.id} AND user_id = ${appUserId}
       LIMIT 1
     `) as unknown as DatabaseRow[];
-    const existing = existingRows[0] as { id?: string } | undefined;
-
-    if (existing?.id) {
-      await sql`
-        UPDATE event_registrations
-        SET full_name = ${data.fullName}, phone = ${data.phone}, updated_at = NOW()
-        WHERE id = ${existing.id}
-      `;
-      return { registrationId: existing.id, alreadyRegistered: true };
-    }
 
     const registrationRows = (await sql`
       INSERT INTO event_registrations (event_id, user_id, full_name, phone)
       VALUES (${event.id}, ${appUserId}, ${data.fullName}, ${data.phone})
+      ON CONFLICT (event_id, user_id) DO UPDATE SET
+        full_name = EXCLUDED.full_name,
+        phone = EXCLUDED.phone,
+        registration_status = 'registered',
+        updated_at = NOW()
       RETURNING id
     `) as unknown as DatabaseRow[];
     const registrationId = registrationRows[0]?.id as string | undefined;
@@ -76,5 +71,5 @@ export const registerForEvent = createServerFn({ method: "POST" })
       throw new Error("REGISTRATION_FAILED");
     }
 
-    return { registrationId, alreadyRegistered: false };
+    return { registrationId, alreadyRegistered: existingRows.length > 0 };
   });
