@@ -105,7 +105,7 @@ function PartnerPage() {
               <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-teal-deep text-white shadow-md">
                 <Heart className="h-5 w-5" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-primary mb-3">Pray With Us</h3>
+              <h3 className="font-serif text-2xl font-bold text-primary mb-3">Prayer Partner</h3>
               <p className="text-teal font-medium mb-6 text-sm">Ministry work relies on the support of people who pray.</p>
               <p className="text-sm leading-relaxed text-muted-foreground mb-8 flex-1">
                 Join our prayer network and we'll send you what to pray for: the believers currently in training, the training programs coming up, the places we're being invited into, and the specific needs of the team. No obligation beyond prayer, and no fundraising in disguise.
@@ -120,7 +120,7 @@ function PartnerPage() {
               <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-teal-deep text-white shadow-md">
                 <Globe className="h-5 w-5" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-primary mb-3">Host a Training</h3>
+              <h3 className="font-serif text-2xl font-bold text-primary mb-3">Training Partner</h3>
               <p className="text-teal font-medium mb-6 text-sm">Bring PTTC to your church, your community or your organisation.</p>
               <p className="text-sm leading-relaxed text-muted-foreground mb-8 flex-1">
                 You provide the people and the venue; we bring the curriculum, the trainers and the structure. Our courses are built to be short and intensive — so your members can attend without stepping away from work and family for weeks or months. This is often how a whole church begins to change: not by sending one person away to be trained, but by being trained together.
@@ -135,15 +135,25 @@ function PartnerPage() {
               <div className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-teal-deep text-white shadow-md">
                 <Handshake className="h-5 w-5" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-primary mb-3">Give</h3>
+              <h3 className="font-serif text-2xl font-bold text-primary mb-3">Giving Partner</h3>
               
               <p className="text-teal font-medium mb-6 text-sm">
                 Our fees are kept deliberately low, so that cost is never the reason someone with a calling stays untrained.
               </p>
 
-              <p className="text-sm leading-relaxed text-muted-foreground mb-8 flex-1">
+              <p className="text-sm leading-relaxed text-muted-foreground mb-6">
                 Giving is what makes that possible. Your support goes towards training materials, travel to reach churches outside the city, subsidised course fees for those who can't afford it, and translation into Tamil.
               </p>
+              <div className="mb-8 flex-1 rounded-2xl bg-cream/60 p-5">
+                <div className="text-[11px] font-bold uppercase tracking-widest text-primary/70 mb-3">You can sponsor</div>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-baseline justify-between gap-3"><span>A participant — Beginner course</span><span className="font-semibold text-primary">₹500</span></li>
+                  <li className="flex items-baseline justify-between gap-3"><span>A participant — Intermediate course</span><span className="font-semibold text-primary">₹750</span></li>
+                  <li className="flex items-baseline justify-between gap-3"><span>A participant — Advance course</span><span className="font-semibold text-primary">₹1,000</span></li>
+                  <li className="flex items-baseline justify-between gap-3"><span>A course video</span><span className="font-semibold text-primary">₹2,500</span></li>
+                  <li className="flex items-baseline justify-between gap-3"><span>A full course module (12 videos)</span><span className="font-semibold text-primary">₹30,000</span></li>
+                </ul>
+              </div>
               <button onClick={() => scrollToForm("Give")} className="text-primary font-bold text-sm hover:underline inline-flex items-center gap-1 group mt-auto">
                 Talk to us about giving <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
@@ -200,7 +210,7 @@ function PartnerPage() {
             
             <div className="grid gap-8 md:grid-cols-2 mt-8">
               <div className="space-y-3">
-                <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground" htmlFor="phone">Phone number</label>
+                <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground" htmlFor="phone">WhatsApp number</label>
                 <input id="phone" type="tel" className="w-full rounded-2xl border border-border/40 bg-cream/30 px-5 py-4 text-sm focus:border-teal focus:outline-none focus:ring-1 focus:ring-teal" placeholder="+91 ..." />
               </div>
               <div className="space-y-3">
@@ -237,6 +247,24 @@ function PartnerPage() {
       </section>
 
       </motion.main>
+
+      {/* 6. CLOSING */}
+      <section className="gradient-hero px-6 py-24 text-center text-white">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="font-serif text-4xl font-bold md:text-5xl leading-[1.1]">
+            Anyone can do ministry, but not everyone gets the chance.
+          </h2>
+          <p className="mt-6 text-lg text-white/80 font-medium">Help us change that.</p>
+          <div className="mt-10">
+            <button
+              onClick={() => scrollToForm("Something else")}
+              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-primary transition-colors hover:bg-white/90 shadow-md uppercase tracking-wider"
+            >
+              Partner with us today <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

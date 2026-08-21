@@ -169,11 +169,14 @@ function WhyWeExistPage() {
                   </div>
                 </div>
                 <div className="flex-1 pt-4">
-                  <h3 className="font-serif text-2xl font-bold text-primary">Roselind Rex</h3>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-teal-deep mt-2">Trainer</p>
-                  <p className="text-sm font-bold text-primary mt-6">Word Life Foundation</p>
-                  <p className="mt-2 text-base leading-relaxed text-muted-foreground">
-                    3 decades serving in youth & Teens ministry.
+                  <h3 className="font-serif text-2xl font-bold text-primary">Sis. Roselind Rex</h3>
+                  <p className="text-sm font-semibold uppercase tracking-wider text-teal-deep mt-2">Founder, Word Life Foundation</p>
+                  <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
+                    <p><span className="font-bold text-primary">Location:</span> <span className="text-muted-foreground">Chennai, India</span></p>
+                    <p><span className="font-bold text-primary">Experience:</span> <span className="text-muted-foreground">31+ years</span></p>
+                  </div>
+                  <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                    Founded Word Life Foundation, comes with over 31 years in ministry. She has mentored more than 10,000 young leaders and equipped 2,000+ families through evangelism, discipleship, and leadership training across India.
                   </p>
                   <div className="mt-8">
                     <Link to="/courses" className="inline-flex items-center text-sm font-bold text-primary hover:text-teal-deep transition-colors">

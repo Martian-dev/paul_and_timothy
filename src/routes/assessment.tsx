@@ -49,7 +49,7 @@ function AssessmentHubPage() {
             </Link>
 
             <Link
-              to="/apest-assessment"
+              to="/spiritual-gifts"
               className="group relative flex aspect-[4/3] flex-col items-center justify-center rounded-[2.5rem] overflow-hidden p-6 text-center shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg sm:aspect-square"
             >
               <img src={courseTeachingImg} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -60,7 +60,7 @@ function AssessmentHubPage() {
             </Link>
 
             <Link
-              to="/spiritual-gifts"
+              to="/apest-assessment"
               className="group relative flex aspect-[4/3] flex-col items-center justify-center rounded-[2.5rem] overflow-hidden p-6 text-center shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg sm:aspect-square"
             >
               <img src={mentorshipImg} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />

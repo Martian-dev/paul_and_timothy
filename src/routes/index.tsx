@@ -30,7 +30,6 @@ import courseBibleImg from "@/assets/course-bible.jpg";
 import courseTeachingImg from "@/assets/course-teaching.jpg";
 import logoImg from "@/assets/logo.png";
 import { MentorCTA } from "@/components/MentorCTA";
-import { TestimonialVideoGrid } from "@/components/TestimonialVideos";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -220,16 +219,19 @@ function AssessmentCards() {
       icon: Users,
       title: "Who should I serve?",
       desc: "Discover the people and the places you've been designed to carry the Gospel to.",
+      to: "/ministry-calling",
     },
     {
       icon: Heart,
       title: "What is my call?",
       desc: "Move from a general sense of purpose to a specific next step you can actually take this year.",
+      to: "/spiritual-gifts",
     },
     {
       icon: Compass,
       title: "What is my role?",
       desc: "Find out which gifts God has placed in you, and how they shape the way you're meant to serve.",
+      to: "/apest-assessment",
     },
   ];
   return (
@@ -253,7 +255,7 @@ function AssessmentCards() {
               {c.desc}
             </p>
             <Link
-              to="/assessment"
+              to={c.to}
               className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors group-hover:text-teal-deep"
             >
               Start Assessment
@@ -748,6 +750,23 @@ function Courses() {
 }
 
 function Testimonials() {
+  const quotes = [
+    {
+      quote: "I now feel prepared and confident to step into ministry — and to strengthen my own family along the way.",
+      name: "Bro. Akash",
+      role: "Kingdom Shakers 2026",
+    },
+    {
+      quote: "I've been encouraged and equipped to serve young people more effectively.",
+      name: "Sis. Lilly",
+      role: "Aletheia 2026, Tirunelveli",
+    },
+    {
+      quote: "This training gave me a clear understanding of what counselling is, and helped me see the importance of this ministry.",
+      name: "Pastor S. Joe Vimal",
+      role: "Counsellors Training 2025, Coimbatore",
+    },
+  ];
   return (
     <Section id="stories" className="bg-cream pt-12 md:pt-16">
       <div className="flex flex-wrap items-end justify-between gap-6">
@@ -759,8 +778,24 @@ function Testimonials() {
         </div>
       </div>
 
-      <div className="mt-14">
-        <TestimonialVideoGrid />
+      <div className="mt-14 grid gap-6 md:grid-cols-3">
+        {quotes.map((t, i) => (
+          <motion.figure
+            key={t.name}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ delay: i * 0.1, duration: 0.6 }}
+            className="hover-lift flex flex-col rounded-3xl bg-card p-8 shadow-card"
+          >
+            <blockquote className="flex-1 font-serif text-lg leading-snug text-primary">
+              “{t.quote}”
+            </blockquote>
+            <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-teal-deep">
+              {t.name} · <span className="text-muted-foreground">{t.role}</span>
+            </p>
+          </motion.figure>
+        ))}
       </div>
     </Section>
   );
