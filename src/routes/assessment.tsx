@@ -50,7 +50,7 @@ function AssessmentHubPage() {
               <img src={courseTeachingImg} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-primary/60 backdrop-blur-[3px] transition-colors duration-500 group-hover:bg-primary/40" />
               <h2 className="relative z-10 font-serif text-2xl font-bold leading-tight text-white transition-colors group-hover:text-teal">
-                APEST
+                Ministry<br />Type
               </h2>
             </Link>
 
@@ -61,7 +61,7 @@ function AssessmentHubPage() {
               <img src={mentorshipImg} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-primary/60 backdrop-blur-[3px] transition-colors duration-500 group-hover:bg-primary/40" />
               <h2 className="relative z-10 font-serif text-2xl font-bold leading-tight text-white transition-colors group-hover:text-teal">
-                Spiritual<br />gifts
+                Ministry<br />Role
               </h2>
             </Link>
           </div>

@@ -200,7 +200,7 @@ function CoursesPage() {
             <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 backdrop-blur-md">
               <div className="text-sm font-semibold">A focused season of training</div>
               <p className="mt-2 text-sm leading-relaxed text-white/70">
-                Our short-term courses run for 3 to 6 months, with weekly and monthly online
+                Our short-term courses run for 3 to 6 weeks, with weekly and monthly online
                 learning. Begin by naming the calling God has placed on your life.
               </p>
               <a

@@ -191,14 +191,16 @@ function Section({
   children,
   id,
   className = "",
+  containerClassName = "",
 }: {
   children: React.ReactNode;
   id?: string;
   className?: string;
+  containerClassName?: string;
 }) {
   return (
     <section id={id} className={`px-6 py-24 md:py-32 ${className}`}>
-      <div className="mx-auto max-w-7xl">{children}</div>
+      <div className={`mx-auto ${containerClassName || "max-w-7xl"}`}>{children}</div>
     </section>
   );
 }
@@ -215,11 +217,6 @@ function SectionEyebrow({ children }: { children: React.ReactNode }) {
 function AssessmentCards() {
   const cards = [
     {
-      icon: Compass,
-      title: "What is my role?",
-      desc: "Find out which gifts God has placed in you, and how they shape the way you're meant to serve.",
-    },
-    {
       icon: Users,
       title: "Who should I serve?",
       desc: "Discover the people and the places you've been designed to carry the Gospel to.",
@@ -228,6 +225,11 @@ function AssessmentCards() {
       icon: Heart,
       title: "What is my call?",
       desc: "Move from a general sense of purpose to a specific next step you can actually take this year.",
+    },
+    {
+      icon: Compass,
+      title: "What is my role?",
+      desc: "Find out which gifts God has placed in you, and how they shape the way you're meant to serve.",
     },
   ];
   return (
@@ -385,7 +387,9 @@ function JourneyTimeline() {
                     </div>
                     <div className="my-3 h-[2px] w-5 bg-gold/30" />
                     <h3 className="mb-2.5 font-serif text-xl font-bold text-primary leading-tight">
-                      {step.title}
+                      {step.title.split(" ").slice(0, -1).join(" ")}
+                      <br />
+                      {step.title.split(" ").slice(-1)}
                     </h3>
                     <p className="text-[15px] text-muted-foreground/90 leading-relaxed max-w-[200px]">
                       {step.desc}
@@ -433,7 +437,9 @@ function JourneyTimeline() {
                     </div>
                     <div className={`my-3 h-[2px] w-5 bg-gold/30 ${isEven ? 'sm:ml-auto' : ''} ${!isEven ? 'sm:mr-auto' : ''}`} />
                     <h3 className="mb-2 font-serif text-xl font-bold text-primary leading-tight">
-                      {step.title}
+                      {step.title.split(" ").slice(0, -1).join(" ")}
+                      <br />
+                      {step.title.split(" ").slice(-1)}
                     </h3>
                     <p className="text-[15px] text-muted-foreground/90 leading-relaxed max-w-[220px] inline-block">
                       {step.desc}
@@ -587,11 +593,11 @@ function Counter({
 
 function Mission() {
   return (
-    <Section id="mission" className="relative overflow-hidden gradient-hero text-white">
+    <Section id="mission" className="relative overflow-hidden gradient-hero text-white" containerClassName="max-w-[90rem]">
       <div className="absolute inset-0 opacity-20">
         <img src={communityImg} alt="" className="h-full w-full object-cover" loading="lazy" />
       </div>
-      <div className="relative grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div className="relative grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-24">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -632,12 +638,12 @@ function Mission() {
                 label: "Years of ground experience",
                 format: (n: number) => `${n}+`,
               },
-              { value: 2020, label: "Training believers", format: (n: number) => `Since ${n}` },
+              { value: 2017, label: "Training believers", format: (n: number) => `Since ${n}` },
               { value: 2439, label: "Participants trained", format: (n: number) => `${n}` },
             ].map((stat) => (
-              <div key={stat.label}>
-                <div className="text-3xl font-medium text-white md:text-4xl">
-                  <Counter target={stat.value} format={stat.format} duration={stat.value === 2020 ? 1500 : 900} />
+              <div key={stat.label} className="flex flex-col items-center text-center">
+                <div className="text-3xl font-medium text-[oklch(0.85_0.12_180)] md:text-4xl">
+                  <Counter target={stat.value} format={stat.format} duration={stat.value === 2017 ? 1500 : stat.value === 2439 ? 2500 : 900} />
                 </div>
                 <div className="mt-2 text-xs uppercase tracking-widest text-white/60 leading-snug">
                   {stat.label}
@@ -648,7 +654,16 @@ function Mission() {
 
           <div className="mt-8 space-y-3 rounded-2xl bg-white/5 p-6 backdrop-blur-sm border border-white/10 text-sm text-white/80">
             <p>
-              <strong className="text-white">Training programs:</strong> 9 Online & 4 In-person Training
+              <strong className="text-white">Training programs:</strong>{" "}
+              <motion.strong
+                initial={{ opacity: 0, scale: 0.7 }}
+                whileInView={{ opacity: 1, scale: [1.15, 1] }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ delay: 0.4, duration: 0.6, type: "spring", stiffness: 260, damping: 14 }}
+                className="inline-block text-[oklch(0.85_0.12_180)]"
+              >
+                9 Online & 4 In-person Training
+              </motion.strong>
             </p>
             <p>
               <strong className="text-white">Places Covered:</strong> Various parts of Tamil Nadu, Maharashtra, Karnataka, Pune, Gujarat, Singapore & UK
@@ -690,7 +705,7 @@ function Courses() {
         <div>
           <SectionEyebrow>Explore Courses</SectionEyebrow>
           <h2 className="text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-            Training that shapes both <br /> the messenger and the message.
+            Get Equipped… <br /> … Without Pressing “Pause” on Life.
           </h2>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
             All Paul & Timothy Training Centre courses are built for people with lives, jobs and families already in motion.
