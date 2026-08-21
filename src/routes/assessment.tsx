@@ -46,6 +46,9 @@ function AssessmentHubPage() {
               <h2 className="relative z-10 font-serif text-2xl font-bold leading-tight text-white transition-colors group-hover:text-teal">
                 Ministry<br />Calling
               </h2>
+              <p className="relative z-10 mt-3 max-w-[16rem] text-sm leading-relaxed text-white/85 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                Discover who you're called to serve.
+              </p>
             </Link>
 
             <Link
@@ -57,6 +60,9 @@ function AssessmentHubPage() {
               <h2 className="relative z-10 font-serif text-2xl font-bold leading-tight text-white transition-colors group-hover:text-teal">
                 Ministry<br />Type
               </h2>
+              <p className="relative z-10 mt-3 max-w-[16rem] text-sm leading-relaxed text-white/85 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                Understand what your call actually looks like.
+              </p>
             </Link>
 
             <Link
@@ -68,6 +74,9 @@ function AssessmentHubPage() {
               <h2 className="relative z-10 font-serif text-2xl font-bold leading-tight text-white transition-colors group-hover:text-teal">
                 Ministry<br />Role
               </h2>
+              <p className="relative z-10 mt-3 max-w-[16rem] text-sm leading-relaxed text-white/85 opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                Identify the gifts God has placed in you.
+              </p>
             </Link>
           </div>
 
