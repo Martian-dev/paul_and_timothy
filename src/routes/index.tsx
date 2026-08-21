@@ -678,7 +678,7 @@ function Courses() {
       img: courseBibleImg,
       tag: "Module One",
       slug: "bible-exposition",
-      title: "Bible Exposition",
+      title: "Bible Explosion",
       desc: "Ten hours. Ten days. A daily practice that moves you from knowing about Scripture to knowing God's will and your calling within it.",
     },
     {
