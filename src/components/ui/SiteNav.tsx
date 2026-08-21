@@ -127,7 +127,11 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
 
         <div className="hidden items-center gap-3 lg:-ml-4 lg:flex">
           <Show when="signed-out" treatPendingAsSignedOut>
-            <Link to="/login" search={{ course: undefined }} className={linkCls}>
+            <Link
+              to="/login"
+              search={{ course: undefined, redirect: undefined }}
+              className={linkCls}
+            >
               Login
             </Link>
           </Show>
@@ -286,7 +290,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             <Show when="signed-out" treatPendingAsSignedOut>
               <Link
                 to="/login"
-                search={{ course: undefined }}
+                search={{ course: undefined, redirect: undefined }}
                 onClick={() => setOpen(false)}
                 className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
               >

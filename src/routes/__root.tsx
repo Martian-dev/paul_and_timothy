@@ -1,4 +1,4 @@
-import { ClerkProvider } from "@clerk/tanstack-react-start";
+import { ClerkProvider, useAuth } from "@clerk/tanstack-react-start";
 import { shadcn } from "@clerk/ui/themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -9,13 +9,14 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { FirstLoadConfetti } from "@/components/FirstLoadConfetti";
+import { syncCurrentUser } from "@/lib/user-sync";
 
 function NotFoundComponent() {
   return (
@@ -147,6 +148,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <UserRecordSync />
       <SiteNav alwaysSolid={!transparentNavPaths.includes(location.pathname)} />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
@@ -155,4 +157,20 @@ function RootComponent() {
       <FirstLoadConfetti />
     </QueryClientProvider>
   );
+}
+
+function UserRecordSync() {
+  const { isLoaded, isSignedIn, userId } = useAuth();
+  const syncedUserId = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn || !userId || syncedUserId.current === userId) return;
+
+    syncedUserId.current = userId;
+    void syncCurrentUser().catch(() => {
+      syncedUserId.current = null;
+    });
+  }, [isLoaded, isSignedIn, userId]);
+
+  return null;
 }

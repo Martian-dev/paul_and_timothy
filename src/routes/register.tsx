@@ -1,7 +1,21 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { auth } from "@clerk/tanstack-react-start/server";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/tanstack-react-start";
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { registerForEvent } from "@/lib/registrations";
+
+const requireRegistrationAuth = createServerFn({ method: "GET" }).handler(async () => {
+  const { isAuthenticated } = await auth();
+  if (!isAuthenticated) {
+    throw redirect({
+      to: "/login",
+      search: { course: undefined, redirect: "/register?event=alethia" },
+    });
+  }
+});
 
 // Events open for registration. Add future events here — linking to
 // /register?event=<slug> pre-selects that event directly.
@@ -10,6 +24,9 @@ const REGISTRABLE_EVENTS = [
 ];
 
 export const Route = createFileRoute("/register")({
+  beforeLoad: async () => {
+    await requireRegistrationAuth();
+  },
   validateSearch: (search: Record<string, unknown>) => ({
     event: typeof search.event === "string" ? search.event : undefined,
   }),
@@ -20,28 +37,71 @@ export const Route = createFileRoute("/register")({
 });
 
 function RegisterPage() {
-  const [submitted, setSubmitted] = useState(false);
   const { event } = Route.useSearch();
-
-  // Pre-select the event from ?event=<slug>; with a single open event, select it by default.
-  const selectedEvent = REGISTRABLE_EVENTS.some((e) => e.slug === event)
+  const selectedEvent = REGISTRABLE_EVENTS.some((item) => item.slug === event)
     ? event
     : REGISTRABLE_EVENTS.length === 1
       ? REGISTRABLE_EVENTS[0].slug
       : undefined;
+  const { user } = useUser();
+  const [submitted, setSubmitted] = useState(false);
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [selectedEventSlug, setSelectedEventSlug] = useState(selectedEvent ?? "");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const email =
+    user?.primaryEmailAddress?.emailAddress ?? user?.emailAddresses[0]?.emailAddress ?? "";
+
+  useEffect(() => {
+    if (!user || fullName) return;
+    setFullName([user.firstName, user.lastName].filter(Boolean).join(" "));
+  }, [fullName, user]);
+
+  useEffect(() => {
+    setSelectedEventSlug(selectedEvent ?? "");
+  }, [selectedEvent]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simulate form submission delay
-    setTimeout(() => {
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const result = await registerForEvent({
+        data: {
+          eventSlug: selectedEventSlug || "alethia",
+          fullName,
+          phone,
+        },
+      });
+      setAlreadyRegistered(result.alreadyRegistered);
       setSubmitted(true);
-    }, 500);
+    } catch (submissionError) {
+      const message =
+        submissionError instanceof Error ? submissionError.message : "REGISTRATION_FAILED";
+      setError(
+        {
+          EVENT_CLOSED: "Registration for this event is currently closed.",
+          EVENT_NOT_FOUND: "That event could not be found.",
+          ACCOUNT_EMAIL_REQUIRED: "Your Clerk account needs a verified email before registering.",
+        }[message] ?? "We couldn't complete your registration. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-cream flex flex-col">
-      
-      <motion.main initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className="flex-1 px-6 py-32 md:py-40">
+      <motion.main
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+        className="flex-1 px-6 py-32 md:py-40"
+      >
         <div className="mx-auto max-w-xl">
           <Link
             to="/events/upcoming"
@@ -57,10 +117,12 @@ function RegisterPage() {
                   <CheckCircle2 className="h-10 w-10 text-teal-deep" />
                 </div>
                 <h2 className="font-serif text-3xl font-bold text-primary mb-4">
-                  Registration Successful!
+                  {alreadyRegistered ? "Registration Updated!" : "Registration Successful!"}
                 </h2>
                 <p className="text-muted-foreground text-lg mb-8">
-                  Thank you for registering. We've sent the event details to your email address.
+                  {alreadyRegistered
+                    ? "Your registration details are up to date."
+                    : "Thank you for registering. We've sent the event details to your email address."}
                 </p>
                 <Link
                   to="/"
@@ -87,48 +149,66 @@ function RegisterPage() {
                       type="text"
                       id="name"
                       required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
                       className="w-full rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Enter your full name"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-primary mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-semibold text-primary mb-2"
+                    >
                       Email Address
                     </label>
                     <input
                       type="email"
                       id="email"
-                      required
+                      value={email}
+                      readOnly
+                      disabled
                       className="w-full rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Enter your email address"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-primary mb-2">
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-semibold text-primary mb-2"
+                    >
                       Phone Number
                     </label>
                     <input
                       type="tel"
                       id="phone"
                       required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                       className="w-full rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Enter your phone number"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="event" className="block text-sm font-semibold text-primary mb-2">
+                    <label
+                      htmlFor="event"
+                      className="block text-sm font-semibold text-primary mb-2"
+                    >
                       Which event are you registering for?
                     </label>
                     <select
                       id="event"
                       required
-                      defaultValue={selectedEvent ?? ""}
+                      value={selectedEventSlug}
+                      onChange={(e) => setSelectedEventSlug(e.target.value)}
                       className="w-full rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
                     >
-                      {REGISTRABLE_EVENTS.length > 1 && <option value="">Select an event...</option>}
+                      {REGISTRABLE_EVENTS.length > 1 && (
+                        <option value="">Select an event...</option>
+                      )}
                       {REGISTRABLE_EVENTS.map((e) => (
                         <option key={e.slug} value={e.slug}>
                           {e.label}
@@ -137,11 +217,21 @@ function RegisterPage() {
                     </select>
                   </div>
 
+                  {error && (
+                    <p
+                      role="alert"
+                      className="rounded-2xl bg-destructive/10 px-4 py-3 text-sm text-destructive"
+                    >
+                      {error}
+                    </p>
+                  )}
+
                   <button
                     type="submit"
+                    disabled={submitting}
                     className="w-full mt-4 rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md"
                   >
-                    Confirm Registration
+                    {submitting ? "Saving your registration…" : "Confirm Registration"}
                   </button>
                 </form>
               </>
