@@ -21,6 +21,7 @@ import equipmentImg from "@/assets/pttc-equipment.png";
 import mentorshipImg from "@/assets/pttc-mentorship.png";
 import communityImg from "@/assets/pttc-community-learning.png";
 import callingImg from "@/assets/pttc-purpose-calling.png";
+import { MentorCTA } from "@/components/MentorCTA";
 
 export const Route = createFileRoute("/courses/")({ component: CoursesPage });
 
@@ -485,16 +486,16 @@ function CoursesPage() {
           </div>
         </section>
 
-        <section className="bg-primary px-6 py-20 text-white md:py-28">
+        <section className="bg-cream px-6 py-20 md:py-28">
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.8fr_1.2fr]">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[.22em] text-teal">
+              <div className="text-xs font-semibold uppercase tracking-[.22em] text-teal-deep">
                 Frequently asked questions
               </div>
-              <h2 className="mt-4 text-4xl font-medium leading-tight md:text-5xl">
-                What to know <em className="text-teal not-italic">before you begin.</em>
+              <h2 className="mt-4 text-4xl font-medium leading-tight text-primary md:text-5xl">
+                What to know <em className="text-teal-deep not-italic">before you begin.</em>
               </h2>
-              <p className="mt-5 max-w-md leading-relaxed text-white/65">
+              <p className="mt-5 max-w-md leading-relaxed text-muted-foreground">
                 Find quick answers about course access, timing, experience, and certification.
               </p>
             </div>
@@ -502,19 +503,20 @@ function CoursesPage() {
               {faqs.map((faq, index) => (
                 <details
                   key={faq.question}
-                  className="group rounded-2xl border border-white/15 bg-white/7"
+                  className="group rounded-2xl border border-border/60 bg-card shadow-sm"
                   open={index === 0}
                 >
-                  <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 text-left text-lg font-medium marker:content-none">
+                  <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 text-left text-lg font-medium text-primary marker:content-none">
                     <span>{faq.question}</span>
-                    <ChevronDown className="h-5 w-5 shrink-0 text-teal transition-transform group-open:rotate-180" />
+                    <ChevronDown className="h-5 w-5 shrink-0 text-teal-deep transition-transform group-open:rotate-180" />
                   </summary>
-                  <p className="px-6 pb-6 text-sm leading-relaxed text-white/65">{faq.answer}</p>
+                  <p className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
                 </details>
               ))}
             </div>
           </div>
         </section>
+        <MentorCTA />
       </motion.main>
     </div>
   );
