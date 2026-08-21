@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/tanstack-react-start";
+import { Show, SignInButton, UserButton } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
-import logoColored from "@/assets/logo_colored_text.png";
-import logoWhite from "@/assets/logo_white_text.png";
+import logoImg from "@/assets/logo.png";
 
 type NavLink = { label: string; to?: string; href?: string; desc?: string };
 
@@ -93,9 +92,11 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
           <img
-            src={solid ? logoColored : logoWhite}
+            src={logoImg}
             alt="Paul & Timothy Training Centre"
-            className="h-14 w-auto md:h-16"
+            className={`h-11 w-auto md:h-12 transition-[filter] duration-500 ${
+              solid ? "" : "brightness-0 invert"
+            }`}
           />
         </Link>
 
@@ -128,21 +129,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           <Show when="signed-out">
             <SignInButton mode="modal">
               <button type="button" className={linkCls}>
-                Sign in
+                Login
               </button>
             </SignInButton>
-            <SignUpButton mode="modal">
-              <button
-                type="button"
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-500 hover:-translate-y-0.5 ${
-                  solid
-                    ? "border-primary/20 text-primary hover:border-primary/40"
-                    : "border-white/40 text-white hover:border-white"
-                }`}
-              >
-                Create account
-              </button>
-            </SignUpButton>
           </Show>
           <Show when="signed-in">
             <UserButton />
@@ -303,18 +292,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
                   onClick={() => setOpen(false)}
                   className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
                 >
-                  Sign in
+                  Login
                 </button>
               </SignInButton>
-              <SignUpButton mode="modal">
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
-                >
-                  Create account
-                </button>
-              </SignUpButton>
             </Show>
             <Show when="signed-in">
               <div className="flex items-center gap-3 px-3 py-2.5">
