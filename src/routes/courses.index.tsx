@@ -28,26 +28,22 @@ export const Route = createFileRoute("/courses/")({ component: CoursesPage });
 const courseImages = [equipmentImg, communityImg, mentorshipImg, callingImg];
 const courses = [
   {
-    title: "Bible Exposition",
+    title: "Bible Explosion",
     slug: "bible-exposition",
     category: "Module One",
-    level: "Beginner",
-    skills: [
-      "The Shape of the Biblical Narrative",
-      "Reading the Old Testament",
-      "The Gospels and the Kingdom",
-    ],
+    level: "Foundational",
+    desc: "A fast, guided journey through all 66 books from Genesis to Revelation, until the whole story fits together.",
+    sessions: "14 sessions",
+    tag: "Foundational",
   },
   {
     title: "Kingdom Shakers (Knowing Your Call)",
     slug: "kingdom-shakers",
-    category: "Calling & spiritual gifts",
-    level: "Intermediate",
-    skills: [
-      "Identify your calling and gifts",
-      "Discern a faithful next step",
-      "Build rhythms for spiritual growth",
-    ],
+    category: "Module Two",
+    level: "Foundational",
+    desc: "Discover your calling, understand how God has designed you, and take your first real step into ministry.",
+    sessions: "10 sessions over 10 days",
+    tag: "Foundational",
   },
 ].map((course, index) => ({
   ...course,
@@ -85,27 +81,27 @@ const faqs = [
   {
     question: "How do I access a course?",
     answer:
-      'Choose "Watch now" on any course. You will be taken to the separate learner access page, where you can sign in or create an account for the learning platform.',
+      'Choose "Start course" on either module. You\'ll be taken to the page where you can sign up and get started.',
   },
   {
-    question: "How long does each training pathway take?",
+    question: "How long does each module take?",
     answer:
-      "Courses are short-term and usually run for 3 to 6 months. The exact weekly or monthly learning rhythm is confirmed before you begin.",
+      "Bible Explosion runs across 14 sessions. Kingdom Shakers runs across 10 sessions, and is designed to be taken one a day, over ten days.",
   },
   {
     question: "Do I need previous ministry experience?",
     answer:
-      "No. Some pathways are designed for people beginning to explore their calling, while others support those already serving in leadership or ministry.",
+      "No. Both modules are built for believers beginning to explore their calling, as well as those already serving who want a stronger foundation.",
   },
   {
     question: "Will I receive a certificate?",
     answer:
-      "Eligible pathways can include a certificate after you complete the required lessons and assessments. The requirements for your chosen course will be shown before enrolment.",
+      "Yes: on completing the required lessons for your module.",
   },
   {
     question: "Are the courses online?",
     answer:
-      "Yes. The training is designed for online learning, with weekly or monthly lessons and guidance depending on the course.",
+      "Both modules are available online. We also run in-person training programs. See Upcoming Events for dates.",
   },
 ];
 
@@ -113,7 +109,7 @@ const faqs = [
 
 function CoursesPage() {
   const [query, setQuery] = useState("");
-  const levels = ["All", "Beginner", "Intermediate", "Advance"];
+  const levels = ["All", "Foundational", "Advance"];
   const [level, setLevel] = useState<string>(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -130,7 +126,7 @@ function CoursesPage() {
 
     return courses.filter((course) =>
       (level === "All" || course.level === level) &&
-      [course.title, course.category, ...course.skills]
+      [course.title, course.category, course.desc]
         .join(" ")
         .toLowerCase()
         .includes(normalisedQuery),
@@ -189,18 +185,16 @@ function CoursesPage() {
             <div>
               
               <h1 className="mt-6 max-w-3xl text-5xl font-medium leading-[1.04] md:text-7xl">
-                Train. Be equipped. <em className="text-teal not-italic">Be sent.</em>
+                Get trained. Get equipped. <em className="text-teal not-italic">Get sent.</em>
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
-                Paul & Timothy Training Centre equips ordinary people for an extraordinary mission:
-                faithful, confident witnesses for Christ, prepared through intentional training.
+                Short, focused training for ordinary believers with a heart to serve: built for people with jobs, families and lives already in motion.
               </p>
             </div>
             <div className="rounded-[2rem] border border-white/15 bg-white/10 p-6 backdrop-blur-md">
-              <div className="text-sm font-semibold">A focused season of training</div>
+              <div className="text-sm font-semibold">Two modules to begin with.</div>
               <p className="mt-2 text-sm leading-relaxed text-white/70">
-                Our short-term courses run for 3 to 6 weeks, with weekly and monthly online
-                learning. Begin by naming the calling God has placed on your life.
+                Start by understanding the whole of Scripture, or by naming the calling God has already placed on you.
               </p>
               <a
                 href="/interaction"
@@ -217,7 +211,7 @@ function CoursesPage() {
             <div className="flex flex-col gap-8">
               <div>
                 <div className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.22em] text-teal-deep">
-                  <span className="h-px w-8 bg-teal-deep" /> Training specialisations
+                  <span className="h-px w-8 bg-teal-deep" /> Our Modules
                 </div>
                 <h2 className="text-4xl font-medium leading-tight text-primary md:text-5xl">
                   Training for the work{" "}
@@ -314,24 +308,16 @@ function CoursesPage() {
                       <div className="mt-5 flex gap-4 border-y border-border/60 py-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1.5">
                           <Clock3 className="h-4 w-4 text-teal-deep" />
-                          3–6 months
+                          {course.sessions}
                         </span>
                         <span className="flex items-center gap-1.5">
                           <BookOpen className="h-4 w-4 text-teal-deep" />
-                          Online learning
+                          {course.tag}
                         </span>
                       </div>
-                      <div className="mt-5 text-[11px] font-semibold uppercase tracking-[.16em] text-primary">
-                        Skills you will gain
-                      </div>
-                      <ul className="mt-3 space-y-2 text-xs text-foreground/75">
-                        {course.skills.map((skill) => (
-                          <li key={skill} className="flex items-start gap-2">
-                            <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-teal-deep" />
-                            {skill}
-                          </li>
-                        ))}
-                      </ul>
+                      <p className="mt-5 text-sm leading-relaxed text-foreground/75">
+                        {course.desc}
+                      </p>
                       <span
                         className="mt-7 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition group-hover:-translate-y-0.5 group-hover:shadow-card"
                       >

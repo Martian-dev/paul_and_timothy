@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, Clock, Lock, Play, Plus, Signal, Sparkles, BookOpen } from "lucide-react";
+import { ArrowRight, Clock, Play, Plus, Signal, Sparkles } from "lucide-react";
 import { courses, getCourse, type Course } from "@/data/courses";
+import { TestimonialVideoGrid } from "@/components/TestimonialVideos";
 
 export const Route = createFileRoute("/courses/$slug")({
   loader: ({ params }) => {
@@ -35,7 +36,6 @@ export const Route = createFileRoute("/courses/$slug")({
 function CoursePage() {
   const { course } = Route.useLoaderData() as { course: Course };
   const [open, setOpen] = useState<number | null>(0);
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const allowedSlugs = ["bible-exposition", "kingdom-shakers"];
   const similar = courses.filter((c) => allowedSlugs.includes(c.slug) && c.slug !== course.slug).slice(0, 2);
 
@@ -99,14 +99,14 @@ function CoursePage() {
               <h1 className="mt-4 font-serif text-4xl font-medium leading-[1.05] md:text-5xl">
                 {course.title}
               </h1>
+              {course.subtitle && (
+                <div className="mt-2 font-serif text-xl text-teal md:text-2xl">{course.subtitle}</div>
+              )}
               <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75">{course.desc}</p>
 
               <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-white/70">
                 <span className="inline-flex items-center gap-1.5">
                   <Clock className="h-3.5 w-3.5 text-teal" /> {course.duration}
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <BookOpen className="h-3.5 w-3.5 text-teal" /> {course.lessons}
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <Signal className="h-3.5 w-3.5 text-teal" /> {course.level}
@@ -117,17 +117,41 @@ function CoursePage() {
                 to="/assessment"
                 className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/60 px-7 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-primary"
               >
-                <Lock className="h-4 w-4" /> Unlock Course
+                <ArrowRight className="h-4 w-4" /> Start this module
               </Link>
             </div>
           </div>
         </motion.section>
 
-        <p className="mt-12 max-w-3xl text-lg leading-relaxed text-muted-foreground">{course.summary}</p>
+        <div className="mt-12 max-w-3xl space-y-5">
+          {course.summary.split("\n\n").map((para) => (
+            <p key={para.slice(0, 24)} className="text-lg leading-relaxed text-muted-foreground">{para}</p>
+          ))}
+        </div>
+
+        {/* What You'll Gain */}
+        {course.gains && (
+          <section className="mt-16">
+            <h2 className="font-serif text-2xl font-medium text-primary md:text-3xl">{course.gainsHeadline ?? "By completing this module, you will:"}</h2>
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+              {course.gains.map((gain) => (
+                <li key={gain} className="flex items-start gap-3 rounded-2xl border border-border/60 bg-card p-5 text-sm leading-relaxed text-foreground/80 shadow-sm">
+                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-teal-deep" />
+                  {gain}
+                </li>
+              ))}
+            </ul>
+            {course.gainsClosing && (
+              <p className="mt-6 max-w-3xl text-[15px] font-medium leading-relaxed text-primary">
+                {course.gainsClosing}
+              </p>
+            )}
+          </section>
+        )}
 
         {/* Outline */}
         <section className="mt-16">
-          <h2 className="font-serif text-2xl font-medium text-primary md:text-3xl">Course Outline</h2>
+          <h2 className="font-serif text-2xl font-medium text-primary md:text-3xl">{course.outlineHeadline ?? "Course Outline"}</h2>
           <div className="mt-6 space-y-3">
             {course.outline.map((o, i) => (
               <motion.div
@@ -178,8 +202,13 @@ function CoursePage() {
         {/* Testimonials */}
         <section className="mt-20">
           <h2 className="font-serif text-2xl font-medium text-primary md:text-3xl">
-            Hear from people who have finished the course
+            {course.testimonialsHeadline ?? "Hear from people who have finished the course"}
           </h2>
+          {course.sharedTestimonials ? (
+            <div className="mt-6">
+              <TestimonialVideoGrid />
+            </div>
+          ) : (
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
             {course.testimonials.map((t) => (
               <motion.figure
@@ -188,63 +217,18 @@ function CoursePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6 }}
-                className="hover-lift group overflow-hidden rounded-3xl bg-card shadow-card"
+                className="hover-lift rounded-3xl bg-card p-7 shadow-card"
               >
-                {t.videoUrl ? (
-                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">
-                    {activeVideo === t.videoUrl ? (
-                      <iframe 
-                        src={`${t.videoUrl.replace('youtu.be/', 'www.youtube.com/embed/').split('?')[0]}?autoplay=1`} 
-                        title={`Testimony from ${t.name}`}
-                        className="absolute inset-0 h-full w-full border-0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowFullScreen
-                      ></iframe>
-                    ) : (
-                      <div 
-                        className="relative h-full w-full cursor-pointer group" 
-                        onClick={() => setActiveVideo(t.videoUrl!)}
-                      >
-                        <img
-                          src={`https://img.youtube.com/vi/${t.videoUrl.split('youtu.be/')[1]?.split('?')[0]}/hqdefault.jpg`}
-                          alt={t.name}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
-                        />
-                        <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors group-hover:bg-black/10">
-                          <span className="grid h-16 w-16 place-items-center rounded-full bg-black/50 backdrop-blur-sm border-2 border-white/70 transition-transform duration-500 group-hover:scale-110">
-                            <Play className="h-6 w-6 translate-x-0.5 fill-white text-white" />
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                      src={t.img}
-                      alt={t.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 grid place-items-center bg-primary/40">
-                      <span className="grid h-16 w-16 place-items-center rounded-full border-2 border-white/70 transition-transform duration-500 group-hover:scale-110">
-                        <Play className="h-6 w-6 translate-x-0.5 fill-white text-white" />
-                      </span>
-                    </div>
-                  </div>
-                )}
-                <figcaption className="p-7">
-                  <blockquote className="font-serif text-lg leading-snug text-primary">
-                    “{t.quote}”
-                  </blockquote>
-                  <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-teal-deep">
-                    {t.name} · <span className="text-muted-foreground">{t.role}</span>
-                  </p>
-                </figcaption>
+                <blockquote className="font-serif text-lg leading-snug text-primary">
+                  “{t.quote}”
+                </blockquote>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-teal-deep">
+                  {t.name} · <span className="text-muted-foreground">{t.role}</span>
+                </p>
               </motion.figure>
             ))}
           </div>
+          )}
         </section>
 
         {/* Similar courses */}

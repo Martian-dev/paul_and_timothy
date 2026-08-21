@@ -18,6 +18,13 @@ export type Course = {
   lessons: string;
   level: string;
   outline: CourseOutline[];
+  subtitle?: string;
+  gains?: string[];
+  gainsHeadline?: string;
+  gainsClosing?: string;
+  outlineHeadline?: string;
+  testimonialsHeadline?: string;
+  sharedTestimonials?: boolean;
   testimonials: { name: string; role: string; quote: string; img: string; videoUrl?: string }[];
   videoUrl?: string;
 };
@@ -167,48 +174,57 @@ export const courses: Course[] = [
     slug: "kingdom-shakers",
     videoUrl: "https://youtu.be/wiy2VrrMylU",
     img: callingImg,
-    tag: "Calling & Spiritual Gifts",
-    title: "Kingdom Shakers (Knowing Your Call)",
-    desc: "Identify your calling and gifts, discern a faithful next step, and build rhythms for spiritual growth.",
+    tag: "Course #2",
+    title: "Kingdom Shakers",
+    subtitle: "Knowing Your Call",
+    desc: "Discover your calling, understand how God has designed you, and take your first real step into ministry.",
     summary:
-      "You sense God is stirring something in your heart — but what is it, and what do you do next? This pathway helps you identify your spiritual gifts, test your calling through Scripture and community, and build the rhythms of spiritual growth that sustain a life of faithful service.",
-    duration: "3 months",
-    lessons: "14 lessons",
+      "Kingdom Shakers is a practical journey that helps you discover your God-given calling, understand your unique gifts and experiences, identify the people God has called you to reach, and take your first steps into ministry… whether in full-time ministry, the workplace, or both.\n\nIf you sense that God is stirring something, this module helps you name it, test it, and act on it.",
+    duration: "10 sessions over 10 days",
+    lessons: "10 sessions",
     level: "Foundational",
-    outline: [
-      {
-        title: "The God Who Calls",
-        body: "Understanding calling not as a career move but as a response to the voice of a living God.",
-      },
-      {
-        title: "Identifying Your Gifts",
-        body: "Discovering your spiritual gifts through Scripture, self-reflection, and honest community feedback.",
-      },
-      {
-        title: "Discerning Your Next Step",
-        body: "How to test what you are sensing — through prayer, counsel, Scripture and circumstance.",
-      },
-      {
-        title: "Rhythms for Spiritual Growth",
-        body: "Building sustainable habits of prayer, study and service that keep your roots deep.",
-      },
-      {
-        title: "Stepping Out in Faith",
-        body: "Moving from clarity to courage — taking the first step and staying faithful along the way.",
-      },
+    gainsHeadline: "What You'll Gain",
+    gains: [
+      "Discover your calling — discern whether God is calling you to full-time ministry, marketplace ministry, or both.",
+      "Understand your unique design — explore your heart, spiritual gifts, natural abilities, experiences and passions.",
+      "Know your message — understand the Gospel clearly, and learn to communicate it effectively.",
+      "Know the foundations — Holy Spirit-led ministry, the model of Jesus, spiritual warfare, and the real challenges of doing ministry.",
+      "Identify your mission field — discern the people and the community God has already placed in front of you.",
+      "Start where you are — practical ways to begin a prayer cell in your home, neighbourhood, workplace or sphere of influence.",
+      "Begin ministering — move from discovering your calling to actively serving the people God has entrusted to you.",
     ],
+    outlineHeadline: "Ten sessions. One a day. From calling to first step.",
+    outline: [
+      { title: "The Call from God", body: "What a calling is — and what it isn't." },
+      { title: "Discovering Your Call", body: "The signs to look for, and how to test what you're sensing." },
+      { title: "The Ministry of Jesus", body: "How Jesus actually did ministry, and why it still sets the pattern." },
+      { title: "Jesus' Ministry Principles", body: "The convictions underneath the model — and how to carry them." },
+      { title: "The Holy Spirit, Our Helper", body: "Ministry in your own strength, and ministry in His." },
+      { title: "Spiritual Warfare", body: "The opposition you will meet, and the authority you've been given." },
+      { title: "The Gospel Message", body: "Knowing clearly what you're carrying before you carry it." },
+      { title: "Sharing the Gospel", body: "How to speak it — to the person actually in front of you." },
+      { title: "Prayer Fellowship", body: "Starting and sustaining a prayer cell where you already are." },
+      { title: "Royal Messenger", body: "Stepping out as one sent — and staying faithful in it." },
+    ],
+    testimonialsHeadline: "Feedback from previous course attendees",
     testimonials: [
       {
-        name: "Grace K.",
-        role: "Campus minister",
-        quote: "I stopped running events and started walking with people. Everything changed.",
+        name: "Sis. Mahila Jenifer",
+        role: "Kingdom Shakers 2026",
+        quote: "The program encouraged me to share the Gospel more boldly and to reflect Christ in my daily life. I'm committed to sharing the Gospel with at least three people this year.",
         img: callingImg,
       },
       {
-        name: "Samuel O.",
-        role: "New church volunteer",
-        quote: "For the first time, I understood what God has wired me for. I am no longer sitting on the sidelines.",
+        name: "Sis. Aritta",
+        role: "Kingdom Shakers 2026",
+        quote: "This program gave me the confidence to share the Gospel and helped me overcome my hesitation about sharing it one-to-one. I'm planning to share the Gospel with at least eight people this year.",
         img: mentorshipImg,
+      },
+      {
+        name: "Bro. Akash",
+        role: "Kingdom Shakers 2026",
+        quote: "Through Samuel Brother, God spoke to me and many of my doubts were cleared. I now feel more prepared and confident to step into ministry, especially among teenagers.",
+        img: courseTeachingImg,
       },
     ],
   },
@@ -312,50 +328,46 @@ export const courses: Course[] = [
     slug: "bible-exposition",
     videoUrl: "https://youtu.be/OStIz1o-YM0?si=i9GAuhFnzwHHJW55",
     img: courseBibleImg,
-    tag: "Module One",
-    title: "Bible Exposition",
-    desc: "A guided exploration of Genesis to Revelation — see the redemptive story as one whole.",
-    summary: "Understand the overarching narrative of Scripture. This module takes you from Genesis to Revelation, tracing the redemptive work of God and equipping you to read, interpret, and teach the Bible with clarity and faithful context.",
-    duration: "4 months",
-    lessons: "16 lessons",
+    tag: "Course #1",
+    title: "Bible Explosion",
+    desc: "A fast, guided journey through all 66 books of the Bible: until the whole story finally fits together.",
+    summary:
+      "Bible Explosion takes you on a quick and exciting journey through the entire Bible, from Genesis to Revelation.\n\nYou'll come to understand the context, purpose and key message of all 66 books, and discover the big picture: the one great story running through the whole of Scripture. The Bible tells of humanity's fall through sin and God's remarkable plan to redeem it: a plan unfolding from the first page, and fulfilled in Jesus Christ.\n\nBy the end, you won't just know more Bible passages. You'll understand how they connect.",
+    duration: "14 sessions",
+    lessons: "14 sessions",
     level: "Foundational",
-    outline: [
-      { title: "The Shape of the Biblical Narrative", body: "Understanding the Bible as one unified story pointing to Christ." },
-      { title: "Reading the Old Testament", body: "Navigating law, history, poetry, and prophecy." },
-      { title: "The Gospels and the Kingdom", body: "The life, death, and resurrection of Jesus as the climax of history." },
-      { title: "The Epistles and the Church", body: "Applying apostolic teaching to the life of the early and modern church." },
-      { title: "Faithful Interpretation", body: "Principles for studying the text accurately and avoiding common pitfalls." },
+    gains: [
+      "Gain a clear overview and understanding of all 66 books of the Bible",
+      "Understand the central message and big story of Scripture",
+      "Clearly understand God's plan of salvation",
+      "Develop a strong biblical foundation for preaching and teaching",
+      "Be equipped to share the Gospel confidently",
+      "Be able to explain and defend your faith when people ask questions",
+      "Grow deeper in your personal faith and understanding of God",
+      "Gain greater clarity about God's character, His Word, and His will for your life",
     ],
-    testimonials: [
-      { 
-        name: "Student 1", 
-        role: "Participant", 
-        quote: "A powerful testimony from my time in the Bible Exposition course.", 
-        img: courseTeachingImg,
-        videoUrl: "https://youtu.be/K_K6RJXPcb4"
-      },
-      { 
-        name: "Student 2", 
-        role: "Participant", 
-        quote: "This training completely changed how I read Scripture.", 
-        img: mentorshipImg,
-        videoUrl: "https://youtu.be/wgdw9JGcoyc"
-      },
-      { 
-        name: "Student 3", 
-        role: "Participant", 
-        quote: "The connections across the Old and New Testament finally make sense.", 
-        img: courseBibleImg,
-        videoUrl: "https://youtu.be/HTctnx-ONPg"
-      },
-      { 
-        name: "Student 4", 
-        role: "Participant", 
-        quote: "I highly recommend this to anyone looking to deepen their faith.", 
-        img: communityImg,
-        videoUrl: "https://youtu.be/ODgcXT-bvrk"
-      }
-    ]
+    gainsClosing:
+      "Bible Explosion gives you a strong foundation to understand the whole Bible, live out your faith, and confidently become a witness for Christ.",
+    outlineHeadline: "Fourteen sessions. One unfolding story.",
+    outline: [
+      { title: "Creation (Parts 1 & 2)", body: "Where everything begins — and where everything breaks." },
+      { title: "Chosen People: Abraham", body: "God's promise to one man, and the nation it begins." },
+      { title: "Chosen People: Joseph", body: "Betrayal, providence, and a family preserved." },
+      { title: "Chosen People: Moses", body: "Deliverance, the Law, and a people led out of slavery." },
+      { title: "Chosen People: Joshua", body: "Entering the promise, and what faithfulness costs." },
+      { title: "Chosen Nation: Anarchy", body: "The age of the judges — everyone doing what is right in their own eyes." },
+      { title: "Chosen Nation: Royalty", body: "Kings, thrones, and the rise and fall of a kingdom." },
+      { title: "Chosen Nation: Captivity", body: "Exile, discipline, and the God who does not abandon." },
+      { title: "Chosen Messengers: Poetry", body: "The books that teach God's people how to pray, grieve and worship." },
+      { title: "Chosen Messengers: Prophets", body: "Warning, hope, and the promise of a coming Redeemer." },
+      { title: "The Creator's Silence", body: "Four hundred years between the testaments, and what God was doing in them." },
+      { title: "The Chosen Sacrifice", body: "The cross, the resurrection, and the centre of the whole story." },
+      { title: "The Church & the Epistles", body: "How the first believers lived, and what they wrote to one another." },
+      { title: "The Coming of Jesus", body: "How the story ends - and what we are waiting for." },
+    ],
+    testimonialsHeadline: "Hear from people who have finished the course",
+    sharedTestimonials: true,
+    testimonials: [],
   },
   {
     slug: "foundations-of-discipleship",
