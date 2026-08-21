@@ -232,20 +232,8 @@ function AssessmentCards() {
     },
   ];
   return (
-    <Section id="assessment" className="bg-cream">
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:items-end">
-        <div>
-          <SectionEyebrow>Begin Here</SectionEyebrow>
-          <h2 className="text-4xl font-medium leading-[1.05] text-primary md:text-5xl">
-            Three questions <br /> to clarify your calling.
-          </h2>
-        </div>
-        <p className="max-w-xl text-lg leading-relaxed text-muted-foreground lg:text-right lg:ml-auto">
-          Most believers who want to serve God are willing, but lack clarity. Stop guessing today: use these assessments to help uncover God’s calling on your life.
-        </p>
-      </div>
-
-      <div className="mt-16 grid gap-6 md:grid-cols-3">
+    <Section id="assessment" className="bg-cream pt-4">
+      <div className="relative z-10 -mt-40 grid gap-6 md:grid-cols-3">
         {cards.map((c, i) => (
           <motion.div
             key={c.title}

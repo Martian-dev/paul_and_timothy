@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Mail, Youtube } from "lucide-react";
+import { Facebook, Instagram, Youtube } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 
 type FooterLink = { label: string; to?: string; href?: string };
@@ -61,24 +61,6 @@ export function SiteFooter() {
             Equipping ordinary people for an extraordinary mission. Rooted in Scripture. Sent in
             love.
           </p>
-
-          <form className="mt-8 flex max-w-sm flex-col gap-4">
-            <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 p-1.5 backdrop-blur">
-              <Mail className="ml-3 h-4 w-4 text-primary-foreground/60" />
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="flex-1 bg-transparent px-2 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none"
-                aria-label="Email address"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-fit rounded-full bg-white px-8 py-2.5 text-sm font-semibold text-primary transition hover:bg-cream"
-            >
-              Subscribe
-            </button>
-          </form>
 
           <div className="mt-8 flex gap-3">
             {[Instagram, Youtube, Facebook].map((Icon, i) => (
