@@ -6,8 +6,6 @@ import { timeline } from "@/data/events";
 import { TestimonialVideoGrid } from "@/components/TestimonialVideos";
 
 import trainerImage from "@/assets/Trainer_image.jpg";
-import speaker2 from "@/assets/speaker-2.jpg";
-import speaker3 from "@/assets/speaker-3.jpg";
 
 import poster1 from "@/assets/Alethia poster/Alethia_training_topics.jpeg";
 import poster2 from "@/assets/Alethia poster/Alethia_training_topics_tamil.jpeg";
