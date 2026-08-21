@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
-import logoImg from "@/assets/logo.png";
+import logoColored from "@/assets/logo_colored_text.png";
+import logoWhite from "@/assets/logo_white_text.png";
 
 type NavLink = { label: string; to?: string; href?: string; desc?: string };
 
-const mainLinks = [
+const mainLinks: NavLink[] = [
   { label: "Home", to: "/" },
   { label: "Why we exist", to: "/why-we-exist" },
 ];
@@ -26,7 +28,15 @@ const resources: NavLink[] = [
   { label: "FAQs", to: "/faqs" },
 ];
 
-function NavDropdown({ label, links, linkCls }: { label: string; links: NavLink[]; linkCls: string }) {
+function NavDropdown({
+  label,
+  links,
+  linkCls,
+}: {
+  label: string;
+  links: NavLink[];
+  linkCls: string;
+}) {
   return (
     <div className="group relative">
       <button className={`inline-flex items-center gap-1 ${linkCls}`}>
@@ -44,7 +54,6 @@ function NavDropdown({ label, links, linkCls }: { label: string; links: NavLink[
               <span className="block text-sm font-medium text-primary transition-colors group-hover/item:text-teal-deep">
                 {r.label}
               </span>
-
             </Link>
           ))}
         </div>
@@ -56,7 +65,7 @@ function NavDropdown({ label, links, linkCls }: { label: string; links: NavLink[
 export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
   const [scrolled, setScrolled] = useState(alwaysSolid);
   const [open, setOpen] = useState(false);
-  
+
   // Mobile dropdown states
   const [eventsOpen, setEventsOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
@@ -84,11 +93,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
           <img
-            src={logoImg}
+            src={solid ? logoColored : logoWhite}
             alt="Paul & Timothy Training Centre"
-            className={`h-11 w-auto md:h-12 transition-[filter] duration-500 ${
-              solid ? "" : "brightness-0 invert"
-            }`}
+            className="h-14 w-auto md:h-16"
           />
         </Link>
 
@@ -118,9 +125,28 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <Link to="/login" search={{ course: undefined }} className={linkCls}>
-            Login
-          </Link>
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <button type="button" className={linkCls}>
+                Sign in
+              </button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button
+                type="button"
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-500 hover:-translate-y-0.5 ${
+                  solid
+                    ? "border-primary/20 text-primary hover:border-primary/40"
+                    : "border-white/40 text-white hover:border-white"
+                }`}
+              >
+                Create account
+              </button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
           <Link
             to="/assessment"
             className={`group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 hover:-translate-y-0.5 hover:shadow-soft ${
@@ -175,7 +201,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
             >
               Events
-              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${eventsOpen ? "rotate-180" : ""}`} />
+              <ChevronDown
+                className={`h-4 w-4 transition-transform duration-300 ${eventsOpen ? "rotate-180" : ""}`}
+              />
             </button>
             {eventsOpen && (
               <div className="ml-3 flex flex-col gap-1 border-l-2 border-border/50 pl-3">
@@ -183,7 +211,10 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
                   <Link
                     key={r.label}
                     to={r.to!}
-                    onClick={() => { setOpen(false); setEventsOpen(false); }}
+                    onClick={() => {
+                      setOpen(false);
+                      setEventsOpen(false);
+                    }}
                     className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
                   >
                     {r.label}
@@ -207,7 +238,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
             >
               Resources
-              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${resourcesOpen ? "rotate-180" : ""}`} />
+              <ChevronDown
+                className={`h-4 w-4 transition-transform duration-300 ${resourcesOpen ? "rotate-180" : ""}`}
+              />
             </button>
             {resourcesOpen && (
               <div className="ml-3 flex flex-col gap-1 border-l-2 border-border/50 pl-3">
@@ -215,7 +248,10 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
                   <Link
                     key={r.label}
                     to={r.to!}
-                    onClick={() => { setOpen(false); setResourcesOpen(false); }}
+                    onClick={() => {
+                      setOpen(false);
+                      setResourcesOpen(false);
+                    }}
                     className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
                   >
                     {r.label}
@@ -230,7 +266,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
             >
               Contact
-              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${contactOpen ? "rotate-180" : ""}`} />
+              <ChevronDown
+                className={`h-4 w-4 transition-transform duration-300 ${contactOpen ? "rotate-180" : ""}`}
+              />
             </button>
             {contactOpen && (
               <div className="ml-3 flex flex-col gap-1 border-l-2 border-border/50 pl-3">
@@ -238,7 +276,10 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
                   <Link
                     key={r.label}
                     to={r.to!}
-                    onClick={() => { setOpen(false); setContactOpen(false); }}
+                    onClick={() => {
+                      setOpen(false);
+                      setContactOpen(false);
+                    }}
                     className="rounded-lg px-3 py-2 text-sm font-medium text-primary/80 hover:bg-primary/5"
                   >
                     {r.label}
@@ -255,14 +296,32 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               Partner with us
             </Link>
 
-            <Link
-              to="/login"
-              search={{ course: undefined }}
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary/80 hover:bg-primary/5"
-            >
-              Login
-            </Link>
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
+                >
+                  Sign in
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
+                >
+                  Create account
+                </button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <div className="flex items-center gap-3 px-3 py-2.5">
+                <span className="text-sm font-medium text-primary/80">Your account</span>
+                <UserButton />
+              </div>
+            </Show>
 
             <Link
               to="/assessment"

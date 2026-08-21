@@ -9,100 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApestAssessmentRouteImport } from './routes/apest-assessment'
-import { Route as ArticlesRouteImport } from './routes/articles'
-import { Route as AssessmentRouteImport } from './routes/assessment'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CoursesRouteImport } from './routes/courses'
-import { Route as EventsRouteImport } from './routes/events'
-import { Route as FaqsRouteImport } from './routes/faqs'
-import { Route as InteractionRouteImport } from './routes/interaction'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as MinistryCallingRouteImport } from './routes/ministry-calling'
-import { Route as PartnerRouteImport } from './routes/partner'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as SpiritualGiftsRouteImport } from './routes/spiritual-gifts'
 import { Route as WhyWeExistRouteImport } from './routes/why-we-exist'
-import { Route as ArticlesCallingRouteImport } from './routes/articles_.calling'
-import { Route as ArticlesRheniusRouteImport } from './routes/articles_.rhenius'
-import { Route as ArticlesScudderRouteImport } from './routes/articles_.scudder'
-import { Route as ArticlesSpiritualGiftsRouteImport } from './routes/articles_.spiritual-gifts'
+import { Route as SpiritualGiftsRouteImport } from './routes/spiritual-gifts'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as MinistryCallingRouteImport } from './routes/ministry-calling'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as InteractionRouteImport } from './routes/interaction'
+import { Route as FaqsRouteImport } from './routes/faqs'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as CoursesRouteImport } from './routes/courses'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AssessmentRouteImport } from './routes/assessment'
+import { Route as ArticlesRouteImport } from './routes/articles'
+import { Route as ApestAssessmentRouteImport } from './routes/apest-assessment'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
-import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
-import { Route as EventsGalleryRouteImport } from './routes/events.gallery'
-import { Route as EventsPreviousRouteImport } from './routes/events.previous'
+import { Route as SignUpSplatRouteImport } from './routes/sign-up.$'
+import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
 import { Route as EventsUpcomingRouteImport } from './routes/events.upcoming'
+import { Route as EventsPreviousRouteImport } from './routes/events.previous'
+import { Route as EventsGalleryRouteImport } from './routes/events.gallery'
+import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
+import { Route as ArticlesSpiritualGiftsRouteImport } from './routes/articles_.spiritual-gifts'
+import { Route as ArticlesScudderRouteImport } from './routes/articles_.scudder'
+import { Route as ArticlesRheniusRouteImport } from './routes/articles_.rhenius'
+import { Route as ArticlesCallingRouteImport } from './routes/articles_.calling'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApestAssessmentRoute = ApestAssessmentRouteImport.update({
-  id: '/apest-assessment',
-  path: '/apest-assessment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArticlesRoute = ArticlesRouteImport.update({
-  id: '/articles',
-  path: '/articles',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AssessmentRoute = AssessmentRouteImport.update({
-  id: '/assessment',
-  path: '/assessment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CoursesRoute = CoursesRouteImport.update({
-  id: '/courses',
-  path: '/courses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EventsRoute = EventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqsRoute = FaqsRouteImport.update({
-  id: '/faqs',
-  path: '/faqs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InteractionRoute = InteractionRouteImport.update({
-  id: '/interaction',
-  path: '/interaction',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MinistryCallingRoute = MinistryCallingRouteImport.update({
-  id: '/ministry-calling',
-  path: '/ministry-calling',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PartnerRoute = PartnerRouteImport.update({
-  id: '/partner',
-  path: '/partner',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
+const WhyWeExistRoute = WhyWeExistRouteImport.update({
+  id: '/why-we-exist',
+  path: '/why-we-exist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SpiritualGiftsRoute = SpiritualGiftsRouteImport.update({
@@ -110,29 +47,74 @@ const SpiritualGiftsRoute = SpiritualGiftsRouteImport.update({
   path: '/spiritual-gifts',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WhyWeExistRoute = WhyWeExistRouteImport.update({
-  id: '/why-we-exist',
-  path: '/why-we-exist',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArticlesCallingRoute = ArticlesCallingRouteImport.update({
-  id: '/articles_/calling',
-  path: '/articles/calling',
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArticlesRheniusRoute = ArticlesRheniusRouteImport.update({
-  id: '/articles_/rhenius',
-  path: '/articles/rhenius',
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArticlesScudderRoute = ArticlesScudderRouteImport.update({
-  id: '/articles_/scudder',
-  path: '/articles/scudder',
+const MinistryCallingRoute = MinistryCallingRouteImport.update({
+  id: '/ministry-calling',
+  path: '/ministry-calling',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArticlesSpiritualGiftsRoute = ArticlesSpiritualGiftsRouteImport.update({
-  id: '/articles_/spiritual-gifts',
-  path: '/articles/spiritual-gifts',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InteractionRoute = InteractionRouteImport.update({
+  id: '/interaction',
+  path: '/interaction',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesRoute = CoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssessmentRoute = AssessmentRouteImport.update({
+  id: '/assessment',
+  path: '/assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesRoute = ArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApestAssessmentRoute = ApestAssessmentRouteImport.update({
+  id: '/apest-assessment',
+  path: '/apest-assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoursesIndexRoute = CoursesIndexRouteImport.update({
@@ -140,14 +122,19 @@ const CoursesIndexRoute = CoursesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => CoursesRoute,
 } as any)
-const CoursesSlugRoute = CoursesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CoursesRoute,
+const SignUpSplatRoute = SignUpSplatRouteImport.update({
+  id: '/sign-up/$',
+  path: '/sign-up/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const EventsGalleryRoute = EventsGalleryRouteImport.update({
-  id: '/gallery',
-  path: '/gallery',
+const SignInSplatRoute = SignInSplatRouteImport.update({
+  id: '/sign-in/$',
+  path: '/sign-in/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsUpcomingRoute = EventsUpcomingRouteImport.update({
+  id: '/upcoming',
+  path: '/upcoming',
   getParentRoute: () => EventsRoute,
 } as any)
 const EventsPreviousRoute = EventsPreviousRouteImport.update({
@@ -155,10 +142,35 @@ const EventsPreviousRoute = EventsPreviousRouteImport.update({
   path: '/previous',
   getParentRoute: () => EventsRoute,
 } as any)
-const EventsUpcomingRoute = EventsUpcomingRouteImport.update({
-  id: '/upcoming',
-  path: '/upcoming',
+const EventsGalleryRoute = EventsGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
   getParentRoute: () => EventsRoute,
+} as any)
+const CoursesSlugRoute = CoursesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CoursesRoute,
+} as any)
+const ArticlesSpiritualGiftsRoute = ArticlesSpiritualGiftsRouteImport.update({
+  id: '/articles_/spiritual-gifts',
+  path: '/articles/spiritual-gifts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesScudderRoute = ArticlesScudderRouteImport.update({
+  id: '/articles_/scudder',
+  path: '/articles/scudder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesRheniusRoute = ArticlesRheniusRouteImport.update({
+  id: '/articles_/rhenius',
+  path: '/articles/rhenius',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesCallingRoute = ArticlesCallingRouteImport.update({
+  id: '/articles_/calling',
+  path: '/articles/calling',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -186,6 +198,8 @@ export interface FileRoutesByFullPath {
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -212,6 +226,8 @@ export interface FileRoutesByTo {
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/courses': typeof CoursesIndexRoute
 }
 export interface FileRoutesById {
@@ -240,6 +256,8 @@ export interface FileRoutesById {
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRouteTypes {
@@ -269,6 +287,8 @@ export interface FileRouteTypes {
     | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/courses/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -295,6 +315,8 @@ export interface FileRouteTypes {
     | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/courses'
   id:
     | '__root__'
@@ -322,6 +344,8 @@ export interface FileRouteTypes {
     | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/courses/'
   fileRoutesById: FileRoutesById
 }
@@ -346,106 +370,17 @@ export interface RootRouteChildren {
   ArticlesRheniusRoute: typeof ArticlesRheniusRoute
   ArticlesScudderRoute: typeof ArticlesScudderRoute
   ArticlesSpiritualGiftsRoute: typeof ArticlesSpiritualGiftsRoute
+  SignInSplatRoute: typeof SignInSplatRoute
+  SignUpSplatRoute: typeof SignUpSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/apest-assessment': {
-      id: '/apest-assessment'
-      path: '/apest-assessment'
-      fullPath: '/apest-assessment'
-      preLoaderRoute: typeof ApestAssessmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/articles': {
-      id: '/articles'
-      path: '/articles'
-      fullPath: '/articles'
-      preLoaderRoute: typeof ArticlesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/assessment': {
-      id: '/assessment'
-      path: '/assessment'
-      fullPath: '/assessment'
-      preLoaderRoute: typeof AssessmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/courses': {
-      id: '/courses'
-      path: '/courses'
-      fullPath: '/courses'
-      preLoaderRoute: typeof CoursesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/events': {
-      id: '/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faqs': {
-      id: '/faqs'
-      path: '/faqs'
-      fullPath: '/faqs'
-      preLoaderRoute: typeof FaqsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/interaction': {
-      id: '/interaction'
-      path: '/interaction'
-      fullPath: '/interaction'
-      preLoaderRoute: typeof InteractionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ministry-calling': {
-      id: '/ministry-calling'
-      path: '/ministry-calling'
-      fullPath: '/ministry-calling'
-      preLoaderRoute: typeof MinistryCallingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/partner': {
-      id: '/partner'
-      path: '/partner'
-      fullPath: '/partner'
-      preLoaderRoute: typeof PartnerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
+    '/why-we-exist': {
+      id: '/why-we-exist'
+      path: '/why-we-exist'
+      fullPath: '/why-we-exist'
+      preLoaderRoute: typeof WhyWeExistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/spiritual-gifts': {
@@ -455,39 +390,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpiritualGiftsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/why-we-exist': {
-      id: '/why-we-exist'
-      path: '/why-we-exist'
-      fullPath: '/why-we-exist'
-      preLoaderRoute: typeof WhyWeExistRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/articles_/calling': {
-      id: '/articles_/calling'
-      path: '/articles/calling'
-      fullPath: '/articles/calling'
-      preLoaderRoute: typeof ArticlesCallingRouteImport
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/articles_/rhenius': {
-      id: '/articles_/rhenius'
-      path: '/articles/rhenius'
-      fullPath: '/articles/rhenius'
-      preLoaderRoute: typeof ArticlesRheniusRouteImport
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/articles_/scudder': {
-      id: '/articles_/scudder'
-      path: '/articles/scudder'
-      fullPath: '/articles/scudder'
-      preLoaderRoute: typeof ArticlesScudderRouteImport
+    '/ministry-calling': {
+      id: '/ministry-calling'
+      path: '/ministry-calling'
+      fullPath: '/ministry-calling'
+      preLoaderRoute: typeof MinistryCallingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/articles_/spiritual-gifts': {
-      id: '/articles_/spiritual-gifts'
-      path: '/articles/spiritual-gifts'
-      fullPath: '/articles/spiritual-gifts'
-      preLoaderRoute: typeof ArticlesSpiritualGiftsRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/interaction': {
+      id: '/interaction'
+      path: '/interaction'
+      fullPath: '/interaction'
+      preLoaderRoute: typeof InteractionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses': {
+      id: '/courses'
+      path: '/courses'
+      fullPath: '/courses'
+      preLoaderRoute: typeof CoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assessment': {
+      id: '/assessment'
+      path: '/assessment'
+      fullPath: '/assessment'
+      preLoaderRoute: typeof AssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apest-assessment': {
+      id: '/apest-assessment'
+      path: '/apest-assessment'
+      fullPath: '/apest-assessment'
+      preLoaderRoute: typeof ApestAssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/courses/': {
@@ -497,18 +495,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoursesIndexRouteImport
       parentRoute: typeof CoursesRoute
     }
-    '/courses/$slug': {
-      id: '/courses/$slug'
-      path: '/$slug'
-      fullPath: '/courses/$slug'
-      preLoaderRoute: typeof CoursesSlugRouteImport
-      parentRoute: typeof CoursesRoute
+    '/sign-up/$': {
+      id: '/sign-up/$'
+      path: '/sign-up/$'
+      fullPath: '/sign-up/$'
+      preLoaderRoute: typeof SignUpSplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/events/gallery': {
-      id: '/events/gallery'
-      path: '/gallery'
-      fullPath: '/events/gallery'
-      preLoaderRoute: typeof EventsGalleryRouteImport
+    '/sign-in/$': {
+      id: '/sign-in/$'
+      path: '/sign-in/$'
+      fullPath: '/sign-in/$'
+      preLoaderRoute: typeof SignInSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/upcoming': {
+      id: '/events/upcoming'
+      path: '/upcoming'
+      fullPath: '/events/upcoming'
+      preLoaderRoute: typeof EventsUpcomingRouteImport
       parentRoute: typeof EventsRoute
     }
     '/events/previous': {
@@ -518,12 +523,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsPreviousRouteImport
       parentRoute: typeof EventsRoute
     }
-    '/events/upcoming': {
-      id: '/events/upcoming'
-      path: '/upcoming'
-      fullPath: '/events/upcoming'
-      preLoaderRoute: typeof EventsUpcomingRouteImport
+    '/events/gallery': {
+      id: '/events/gallery'
+      path: '/gallery'
+      fullPath: '/events/gallery'
+      preLoaderRoute: typeof EventsGalleryRouteImport
       parentRoute: typeof EventsRoute
+    }
+    '/courses/$slug': {
+      id: '/courses/$slug'
+      path: '/$slug'
+      fullPath: '/courses/$slug'
+      preLoaderRoute: typeof CoursesSlugRouteImport
+      parentRoute: typeof CoursesRoute
+    }
+    '/articles_/spiritual-gifts': {
+      id: '/articles_/spiritual-gifts'
+      path: '/articles/spiritual-gifts'
+      fullPath: '/articles/spiritual-gifts'
+      preLoaderRoute: typeof ArticlesSpiritualGiftsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles_/scudder': {
+      id: '/articles_/scudder'
+      path: '/articles/scudder'
+      fullPath: '/articles/scudder'
+      preLoaderRoute: typeof ArticlesScudderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles_/rhenius': {
+      id: '/articles_/rhenius'
+      path: '/articles/rhenius'
+      fullPath: '/articles/rhenius'
+      preLoaderRoute: typeof ArticlesRheniusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles_/calling': {
+      id: '/articles_/calling'
+      path: '/articles/calling'
+      fullPath: '/articles/calling'
+      preLoaderRoute: typeof ArticlesCallingRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -577,6 +617,8 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesRheniusRoute: ArticlesRheniusRoute,
   ArticlesScudderRoute: ArticlesScudderRoute,
   ArticlesSpiritualGiftsRoute: ArticlesSpiritualGiftsRoute,
+  SignInSplatRoute: SignInSplatRoute,
+  SignUpSplatRoute: SignUpSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

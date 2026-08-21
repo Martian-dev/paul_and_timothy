@@ -28,7 +28,6 @@ import communityImg from "@/assets/community.jpg";
 import callingImg from "@/assets/calling.jpg";
 import courseBibleImg from "@/assets/course-bible.jpg";
 import courseTeachingImg from "@/assets/course-teaching.jpg";
-import logoImg from "@/assets/logo.png";
 import { MentorCTA } from "@/components/MentorCTA";
 
 export const Route = createFileRoute("/")({
