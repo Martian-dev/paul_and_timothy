@@ -1,0 +1,1 @@
+var e=`/assets/Trainer_image-DBbkFvO8.jpg`;export{e as t};

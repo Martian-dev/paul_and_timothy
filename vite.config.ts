@@ -8,6 +8,9 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
   vite: {
+    // Keep Vite's mutable optimizer cache off the WSL-mounted Windows drive.
+    // Atomic directory renames under /mnt/c can be locked by Windows tooling.
+    cacheDir: "/tmp/paul-and-timothy-vite",
     server: {
       // Files live on /mnt/c (Windows drive via WSL); inotify events don't fire
       // there, so the dev server never sees changes without polling.

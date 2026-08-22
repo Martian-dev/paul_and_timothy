@@ -1,0 +1,1 @@
+import{s as e,t}from"./jsx-runtime-CdArH33I.js";import{N as n}from"./index-tvSrv62q.js";var r=e(t());function i(){return(0,r.jsx)(n,{})}export{i as component};

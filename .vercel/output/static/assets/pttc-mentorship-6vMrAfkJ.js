@@ -1,0 +1,1 @@
+var e=`/assets/pttc-mentorship-CMQA8kig.webp`;export{e as t};
