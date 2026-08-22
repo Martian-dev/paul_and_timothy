@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import logoColored from "@/assets/logo_colored_text.webp";
 import logoWhite from "@/assets/logo_white_text.webp";
+import { AuthRuntimeBoundary } from "@/components/AuthRuntimeBoundary";
 import { currentPath } from "@/lib/auth-redirect";
 
 type NavLink = { label: string; to?: string; href?: string; desc?: string };
@@ -60,6 +61,57 @@ function NavDropdown({
         </div>
       </div>
     </div>
+  );
+}
+
+function AuthNavControls({
+  authDestination,
+  linkCls,
+  mobile = false,
+  onNavigate,
+}: {
+  authDestination?: string;
+  linkCls: string;
+  mobile?: boolean;
+  onNavigate?: () => void;
+}) {
+  const loginClass = mobile
+    ? "w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
+    : linkCls;
+  const fallback = (
+    <Link
+      to="/login"
+      search={{ course: undefined, redirect: authDestination }}
+      onClick={onNavigate}
+      className={loginClass}
+    >
+      Login
+    </Link>
+  );
+
+  return (
+    <AuthRuntimeBoundary boundary="site_nav_auth_controls" fallback={fallback}>
+      <Show when="signed-out" treatPendingAsSignedOut>
+        <Link
+          to="/login"
+          search={{ course: undefined, redirect: authDestination }}
+          onClick={onNavigate}
+          className={loginClass}
+        >
+          Login
+        </Link>
+      </Show>
+      <Show when="signed-in">
+        {mobile ? (
+          <div className="flex items-center gap-3 px-3 py-2.5">
+            <span className="text-sm font-medium text-primary/80">Your account</span>
+            <UserButton />
+          </div>
+        ) : (
+          <UserButton showName />
+        )}
+      </Show>
+    </AuthRuntimeBoundary>
   );
 }
 
@@ -151,18 +203,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
         </nav>
 
         <div className="hidden items-center gap-3 min-[1180px]:-ml-4 min-[1180px]:flex">
-          <Show when="signed-out" treatPendingAsSignedOut>
-            <Link
-              to="/login"
-              search={{ course: undefined, redirect: authDestination }}
-              className={linkCls}
-            >
-              Login
-            </Link>
-          </Show>
-          <Show when="signed-in">
-            <UserButton showName />
-          </Show>
+          <AuthNavControls authDestination={authDestination} linkCls={linkCls} />
           <Link
             to="/assessment"
             className={`group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 hover:-translate-y-0.5 hover:shadow-soft ${
@@ -317,22 +358,12 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               Partner with us
             </Link>
 
-            <Show when="signed-out" treatPendingAsSignedOut>
-              <Link
-                to="/login"
-                search={{ course: undefined, redirect: authDestination }}
-                onClick={() => setOpen(false)}
-                className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
-              >
-                Login
-              </Link>
-            </Show>
-            <Show when="signed-in">
-              <div className="flex items-center gap-3 px-3 py-2.5">
-                <span className="text-sm font-medium text-primary/80">Your account</span>
-                <UserButton />
-              </div>
-            </Show>
+            <AuthNavControls
+              authDestination={authDestination}
+              linkCls={linkCls}
+              mobile
+              onNavigate={() => setOpen(false)}
+            />
 
             <Link
               to="/assessment"

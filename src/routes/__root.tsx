@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { FirstLoadConfetti } from "@/components/FirstLoadConfetti";
+import { AuthRuntimeBoundary } from "@/components/AuthRuntimeBoundary";
 import { syncCurrentUser } from "@/lib/user-sync";
 
 function NotFoundComponent() {
@@ -148,7 +149,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <UserRecordSync />
+      <AuthRuntimeBoundary boundary="user_record_sync" fallback={null}>
+        <UserRecordSync />
+      </AuthRuntimeBoundary>
       <SiteNav alwaysSolid={!transparentNavPaths.includes(location.pathname)} />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
