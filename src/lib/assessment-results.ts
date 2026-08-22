@@ -26,8 +26,8 @@ export const saveAssessmentResult = createServerFn({ method: "POST" })
 
     const { appUserId } = await upsertAppUser(userId);
     const rows = (await getDb()`
-      INSERT INTO assessment_results (user_id, assessment_type, answers, result)
-      VALUES (${appUserId}, ${data.assessmentType}, ${JSON.stringify(data.answers)}::jsonb, ${JSON.stringify(data.result)}::jsonb)
+      INSERT INTO assessment_results (user_id, clerk_user_id, assessment_type, answers, result)
+      VALUES (${appUserId}, ${userId}, ${data.assessmentType}, ${JSON.stringify(data.answers)}::jsonb, ${JSON.stringify(data.result)}::jsonb)
       RETURNING id
     `) as unknown as Array<{ id?: string }>;
 

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
-import { ArrowRight, Send, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { AssessmentResultGate } from "@/components/AssessmentResultGate";
 
 export const Route = createFileRoute("/spiritual-gifts")({
@@ -82,22 +82,19 @@ function bandFor(score: number): { label: string; text: string } {
 }
 
 function TypeOfCallAssessment() {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 3>(1);
   const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [personalInfo, setPersonalInfo] = useState({ name: "", email: "" });
 
   const answered = Object.keys(answers).length;
-  const progress =
-    step === 1 ? Math.round((answered / QUESTIONS.length) * 80) : step === 2 ? 90 : 100;
-  const progressLabel =
-    step === 1 ? `${answered}/${QUESTIONS.length}` : step === 2 ? "Details" : "Complete";
+  const progress = step === 1 ? Math.round((answered / QUESTIONS.length) * 100) : 100;
+  const progressLabel = step === 1 ? `${answered}/${QUESTIONS.length}` : "Complete";
   const isQuizComplete = useMemo(() => Object.keys(answers).length === QUESTIONS.length, [answers]);
 
   const handleAnswer = (qIndex: number, value: number) => {
     setAnswers((prev) => ({ ...prev, [qIndex]: value }));
   };
 
-  const showStep = (nextStep: 1 | 2 | 3) => {
+  const showStep = (nextStep: 1 | 3) => {
     setStep(nextStep);
     window.setTimeout(
       () => document.querySelector("#assessment-content")?.scrollIntoView({ behavior: "smooth" }),
@@ -205,67 +202,10 @@ function TypeOfCallAssessment() {
               <button
                 type="button"
                 disabled={!isQuizComplete}
-                onClick={() => showStep(2)}
+                onClick={() => showStep(3)}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:shadow-card disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
               >
-                Continue <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 2: Info */}
-        {step === 2 && (
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 shadow-card"
-          >
-            <h2 className="font-serif text-2xl font-medium text-primary">Almost there</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Provide your details to see your results.
-            </p>
-
-            <div className="mt-8 space-y-5">
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  value={personalInfo.name}
-                  onChange={(e) => setPersonalInfo({ ...personalInfo, name: e.target.value })}
-                  className="h-12 w-full rounded-xl border border-border/60 bg-background px-4 text-sm focus:border-teal-deep focus:outline-none focus:ring-1 focus:ring-teal-deep"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-primary/70">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={personalInfo.email}
-                  onChange={(e) => setPersonalInfo({ ...personalInfo, email: e.target.value })}
-                  className="h-12 w-full rounded-xl border border-border/60 bg-background px-4 text-sm focus:border-teal-deep focus:outline-none focus:ring-1 focus:ring-teal-deep"
-                />
-              </div>
-            </div>
-
-            <div className="mt-8 flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => showStep(1)}
-                className="text-sm font-semibold text-muted-foreground hover:text-primary"
-              >
-                Back
-              </button>
-              <button
-                type="button"
-                disabled={!personalInfo.name || !personalInfo.email}
-                onClick={() => showStep(3)}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:shadow-soft disabled:opacity-50"
-              >
-                View Results <Send className="h-4 w-4" />
+                View Results <ArrowRight className="h-4 w-4" />
               </button>
             </div>
           </motion.div>
@@ -280,7 +220,6 @@ function TypeOfCallAssessment() {
               scores: results.scores,
               primary: results.primary,
               band: results.band,
-              personalInfo,
             }}
           >
             <motion.div
