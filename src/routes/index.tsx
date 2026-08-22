@@ -345,7 +345,7 @@ function JourneyTimeline() {
                         className="flex items-center w-full overflow-visible"
                         initial={{ width: "0%", opacity: 0 }}
                         whileInView={{ width: "100%", opacity: 1 }}
-                        viewport={{ once: true, margin: "-100px" }}
+                        viewport={{ once: true, amount: 0.1 }}
                         transition={{ delay: index * 0.35 + 0.2, duration: 0.5, ease: "easeInOut" }}
                       >
                         <div className="h-[2px] flex-grow bg-gold/60" />
@@ -358,7 +358,7 @@ function JourneyTimeline() {
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ delay: index * 0.15, duration: 0.5, type: "spring" }}
                     className="relative z-10 flex h-28 w-28 items-center justify-center rounded-full bg-background border-4 border-background ring-[3px] ring-gold/15 shadow-sm"
                   >
@@ -373,7 +373,7 @@ function JourneyTimeline() {
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ delay: index * 0.15 + 0.2, duration: 0.5 }}
                     className="mt-8 flex flex-col items-center text-center px-4"
                   >
@@ -412,7 +412,7 @@ function JourneyTimeline() {
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ delay: index * 0.15, duration: 0.5, type: "spring" }}
                     className="relative z-10 flex h-24 w-24 items-center justify-center rounded-full bg-background border-[5px] border-background ring-[3px] ring-gold/15 shadow-sm"
                   >
@@ -427,7 +427,7 @@ function JourneyTimeline() {
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ delay: index * 0.15 + 0.2, duration: 0.5 }}
                     className="min-w-0 pt-2"
                   >
