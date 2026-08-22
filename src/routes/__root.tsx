@@ -123,7 +123,13 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <ClerkProvider appearance={{ theme: shadcn }} prefetchUI={false}>
+        {/*
+         * This app uses Clerk's prebuilt UserButton/SignIn/SignUp components.
+         * Keep the UI bundle enabled so those components mount against the
+         * same Clerk instance instead of failing after hydration with
+         * "Clerk was not loaded with Ui components".
+         */}
+        <ClerkProvider appearance={{ theme: shadcn }} prefetchUI>
           {children}
           <Scripts />
         </ClerkProvider>

@@ -78,21 +78,15 @@ function AuthNavControls({
   const loginClass = mobile
     ? "w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
     : linkCls;
-  const fallback = (
-    <Link
-      to="/login/$"
-      params={{ _splat: "" }}
-      search={{ course: undefined, redirect: authDestination }}
-      onClick={onNavigate}
-      className={loginClass}
-    >
-      Login
-    </Link>
-  );
-
   return (
-    <AuthRuntimeBoundary boundary="site_nav_auth_controls" fallback={fallback}>
-      <Show when="signed-out" treatPendingAsSignedOut>
+    <AuthRuntimeBoundary boundary="site_nav_auth_controls" fallback={null}>
+      {/*
+       * A pending Clerk session is not the same as a signed-out session. In
+       * particular, a server-rendered route may already have user-scoped data
+       * while the browser is still restoring its session cookie. Keeping this
+       * false prevents a misleading Login button during that short window.
+       */}
+      <Show when="signed-out" treatPendingAsSignedOut={false}>
         <Link
           to="/login/$"
           params={{ _splat: "" }}
@@ -103,7 +97,7 @@ function AuthNavControls({
           Login
         </Link>
       </Show>
-      <Show when="signed-in">
+      <Show when="signed-in" treatPendingAsSignedOut={false}>
         {mobile ? (
           <div className="flex items-center gap-3 px-3 py-2.5">
             <span className="text-sm font-medium text-primary/80">Your account</span>

@@ -189,6 +189,21 @@ function RegisterPage() {
     setSelectedEventSlug(selectedEvent ?? "");
   }, [selectedEvent]);
 
+  // The loader is authorized on the server, but Clerk still has to restore
+  // the browser session before it is safe to render user-scoped form data.
+  // Without this gate, a stale server loader result can appear alongside a
+  // signed-out Login button in the nav.
+  if (!isUserLoaded) {
+    return <RegistrationAuthLoading />;
+  }
+
+  if (!user) {
+    const returnTo = selectedEvent
+      ? `/register?event=${encodeURIComponent(selectedEvent)}`
+      : "/register";
+    return <RegistrationAuthRequired returnTo={returnTo} />;
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
@@ -505,6 +520,38 @@ function RegisterPage() {
           </div>
         </div>
       </motion.main>
+    </div>
+  );
+}
+
+function RegistrationAuthLoading() {
+  return (
+    <div className="min-h-screen bg-cream px-6 py-40">
+      <div className="mx-auto max-w-xl rounded-[2.5rem] border border-border/60 bg-card p-12 text-center shadow-card">
+        <div className="mx-auto mb-6 h-10 w-10 animate-pulse rounded-full bg-teal-deep/20" />
+        <p className="text-muted-foreground">Checking your account…</p>
+      </div>
+    </div>
+  );
+}
+
+function RegistrationAuthRequired({ returnTo }: { returnTo: string }) {
+  return (
+    <div className="min-h-screen bg-cream px-6 py-40">
+      <div className="mx-auto max-w-xl rounded-[2.5rem] border border-border/60 bg-card p-10 text-center shadow-card md:p-12">
+        <h1 className="font-serif text-3xl font-bold text-primary">Sign in to continue</h1>
+        <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+          Your registration is linked to your account. Sign in to view or update these details.
+        </p>
+        <Link
+          to="/login/$"
+          params={{ _splat: "" }}
+          search={{ course: undefined, redirect: returnTo }}
+          className="mt-8 inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md"
+        >
+          Sign in to continue
+        </Link>
+      </div>
     </div>
   );
 }

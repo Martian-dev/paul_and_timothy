@@ -37,4 +37,40 @@ assert.match(
   "the course CTA must preserve the course route after authentication",
 );
 
+const rootSource = fs.readFileSync("src/routes/__root.tsx", "utf8");
+assert.doesNotMatch(
+  rootSource,
+  /prefetchUI=\{false\}/,
+  "prebuilt Clerk UI components must be loadable for UserButton and SignIn",
+);
+assert.match(
+  rootSource,
+  /<ClerkProvider[^>]*prefetchUI>/,
+  "the Clerk UI bundle must be prefetched for prebuilt auth components",
+);
+
+const siteNavSource = fs.readFileSync("src/components/ui/SiteNav.tsx", "utf8");
+assert.match(
+  siteNavSource,
+  /<Show when="signed-out" treatPendingAsSignedOut=\{false\}>/,
+  "pending Clerk sessions must not render a misleading signed-out nav",
+);
+assert.match(
+  siteNavSource,
+  /<Show when="signed-in" treatPendingAsSignedOut=\{false\}>/,
+  "pending Clerk sessions must not render signed-in controls prematurely",
+);
+
+const registerSource = fs.readFileSync("src/routes/register.tsx", "utf8");
+assert.match(
+  registerSource,
+  /if \(!isUserLoaded\) \{\s*return <RegistrationAuthLoading \/>;\s*\}/,
+  "registration must wait for the browser Clerk session before rendering form data",
+);
+assert.match(
+  registerSource,
+  /if \(!user\) \{[\s\S]*return <RegistrationAuthRequired returnTo=/,
+  "registration must not render user-scoped data for a signed-out browser session",
+);
+
 console.log("auth redirect smoke: PASS");
