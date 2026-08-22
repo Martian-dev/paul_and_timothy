@@ -34,8 +34,10 @@ import { Route as CoursesSlugRouteImport } from './routes/courses.$slug'
 import { Route as EventsGalleryRouteImport } from './routes/events.gallery'
 import { Route as EventsPreviousRouteImport } from './routes/events.previous'
 import { Route as EventsUpcomingRouteImport } from './routes/events.upcoming'
+import { Route as LoginSplatRouteImport } from './routes/login.$'
 import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
 import { Route as SignUpSplatRouteImport } from './routes/sign-up.$'
+import { Route as SignupSplatRouteImport } from './routes/signup.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -162,6 +164,11 @@ const EventsUpcomingRoute = EventsUpcomingRouteImport.update({
   path: '/upcoming',
   getParentRoute: () => EventsRoute,
 } as any)
+const LoginSplatRoute = LoginSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => LoginRoute,
+} as any)
 const SignInSplatRoute = SignInSplatRouteImport.update({
   id: '/sign-in/$',
   path: '/sign-in/$',
@@ -171,6 +178,11 @@ const SignUpSplatRoute = SignUpSplatRouteImport.update({
   id: '/sign-up/$',
   path: '/sign-up/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SignupSplatRoute = SignupSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => SignupRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -183,11 +195,11 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginRouteWithChildren
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
-  '/signup': typeof SignupRoute
+  '/signup': typeof SignupRouteWithChildren
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/why-we-exist': typeof WhyWeExistRoute
   '/articles/calling': typeof ArticlesCallingRoute
@@ -198,8 +210,10 @@ export interface FileRoutesByFullPath {
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
+  '/login/$': typeof LoginSplatRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
+  '/signup/$': typeof SignupSplatRoute
   '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -211,11 +225,11 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginRouteWithChildren
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
-  '/signup': typeof SignupRoute
+  '/signup': typeof SignupRouteWithChildren
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/why-we-exist': typeof WhyWeExistRoute
   '/articles/calling': typeof ArticlesCallingRoute
@@ -226,8 +240,10 @@ export interface FileRoutesByTo {
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
+  '/login/$': typeof LoginSplatRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
+  '/signup/$': typeof SignupSplatRoute
   '/courses': typeof CoursesIndexRoute
 }
 export interface FileRoutesById {
@@ -241,11 +257,11 @@ export interface FileRoutesById {
   '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginRouteWithChildren
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
-  '/signup': typeof SignupRoute
+  '/signup': typeof SignupRouteWithChildren
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/why-we-exist': typeof WhyWeExistRoute
   '/articles_/calling': typeof ArticlesCallingRoute
@@ -256,8 +272,10 @@ export interface FileRoutesById {
   '/events/gallery': typeof EventsGalleryRoute
   '/events/previous': typeof EventsPreviousRoute
   '/events/upcoming': typeof EventsUpcomingRoute
+  '/login/$': typeof LoginSplatRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
+  '/signup/$': typeof SignupSplatRoute
   '/courses/': typeof CoursesIndexRoute
 }
 export interface FileRouteTypes {
@@ -287,8 +305,10 @@ export interface FileRouteTypes {
     | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
+    | '/login/$'
     | '/sign-in/$'
     | '/sign-up/$'
+    | '/signup/$'
     | '/courses/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -315,8 +335,10 @@ export interface FileRouteTypes {
     | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
+    | '/login/$'
     | '/sign-in/$'
     | '/sign-up/$'
+    | '/signup/$'
     | '/courses'
   id:
     | '__root__'
@@ -344,8 +366,10 @@ export interface FileRouteTypes {
     | '/events/gallery'
     | '/events/previous'
     | '/events/upcoming'
+    | '/login/$'
     | '/sign-in/$'
     | '/sign-up/$'
+    | '/signup/$'
     | '/courses/'
   fileRoutesById: FileRoutesById
 }
@@ -359,11 +383,11 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRouteWithChildren
   FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
-  LoginRoute: typeof LoginRoute
+  LoginRoute: typeof LoginRouteWithChildren
   MinistryCallingRoute: typeof MinistryCallingRoute
   PartnerRoute: typeof PartnerRoute
   RegisterRoute: typeof RegisterRoute
-  SignupRoute: typeof SignupRoute
+  SignupRoute: typeof SignupRouteWithChildren
   SpiritualGiftsRoute: typeof SpiritualGiftsRoute
   WhyWeExistRoute: typeof WhyWeExistRoute
   ArticlesCallingRoute: typeof ArticlesCallingRoute
@@ -551,6 +575,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsUpcomingRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/login/$': {
+      id: '/login/$'
+      path: '/$'
+      fullPath: '/login/$'
+      preLoaderRoute: typeof LoginSplatRouteImport
+      parentRoute: typeof LoginRoute
+    }
     '/sign-in/$': {
       id: '/sign-in/$'
       path: '/sign-in/$'
@@ -564,6 +595,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/sign-up/$'
       preLoaderRoute: typeof SignUpSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/signup/$': {
+      id: '/signup/$'
+      path: '/$'
+      fullPath: '/signup/$'
+      preLoaderRoute: typeof SignupSplatRouteImport
+      parentRoute: typeof SignupRoute
     }
   }
 }
@@ -596,6 +634,27 @@ const EventsRouteChildren: EventsRouteChildren = {
 const EventsRouteWithChildren =
   EventsRoute._addFileChildren(EventsRouteChildren)
 
+interface LoginRouteChildren {
+  LoginSplatRoute: typeof LoginSplatRoute
+}
+
+const LoginRouteChildren: LoginRouteChildren = {
+  LoginSplatRoute: LoginSplatRoute,
+}
+
+const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
+
+interface SignupRouteChildren {
+  SignupSplatRoute: typeof SignupSplatRoute
+}
+
+const SignupRouteChildren: SignupRouteChildren = {
+  SignupSplatRoute: SignupSplatRoute,
+}
+
+const SignupRouteWithChildren =
+  SignupRoute._addFileChildren(SignupRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApestAssessmentRoute: ApestAssessmentRoute,
@@ -606,11 +665,11 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRouteWithChildren,
   FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
-  LoginRoute: LoginRoute,
+  LoginRoute: LoginRouteWithChildren,
   MinistryCallingRoute: MinistryCallingRoute,
   PartnerRoute: PartnerRoute,
   RegisterRoute: RegisterRoute,
-  SignupRoute: SignupRoute,
+  SignupRoute: SignupRouteWithChildren,
   SpiritualGiftsRoute: SpiritualGiftsRoute,
   WhyWeExistRoute: WhyWeExistRoute,
   ArticlesCallingRoute: ArticlesCallingRoute,
