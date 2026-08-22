@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { motion } from "framer-motion";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ArrowRight, Baby, Crown, HeartHandshake, RotateCcw, Sparkles, Users } from "lucide-react";
 import { AssessmentResultGate } from "@/components/AssessmentResultGate";
 
@@ -225,16 +225,16 @@ function AssessmentPage() {
         <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
           <p className="font-serif text-lg font-semibold text-primary">How to answer</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            For each statement, move the slider to the number that best describes you.
+            For each statement, slide to the number and description that best describes you.
           </p>
-          <div className="mt-4 grid gap-2 sm:grid-cols-5">
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
             {SCALE.map((s) => (
               <div
                 key={s.value}
-                className="rounded-2xl bg-accent/60 px-3 py-2 text-center text-xs text-accent-foreground"
+                className="flex min-h-20 flex-col items-center justify-center rounded-2xl bg-accent/60 px-2 py-3 text-center text-xs leading-tight text-accent-foreground sm:min-h-24"
               >
-                <span className="block font-serif text-lg font-bold">{s.value}</span>
-                {s.label}
+                <span className="font-serif text-lg font-bold leading-none">{s.value}</span>
+                <span className="mt-1.5">{s.label}</span>
               </div>
             ))}
           </div>
@@ -289,13 +289,13 @@ function AssessmentPage() {
                         </span>
                         {q}
                       </p>
-                      <div className="mt-5 rounded-2xl bg-accent/35 px-4 py-3 sm:px-5">
-                        <div className="flex min-h-7 items-center justify-between gap-3">
+                      <div className="mt-5 rounded-2xl bg-accent/35 p-3 sm:p-4">
+                        <div className="flex min-h-7 items-center justify-between gap-3 px-1">
                           <span className="text-xs font-medium text-muted-foreground">
                             {currentScale ? "Your answer" : "Slide to answer"}
                           </span>
                           <span
-                            className={`text-sm font-semibold transition-colors duration-200 ${
+                            className={`text-right text-sm font-semibold transition-colors duration-200 ${
                               currentScale ? "text-teal-deep" : "text-muted-foreground/70"
                             }`}
                             aria-live="polite"
@@ -306,43 +306,47 @@ function AssessmentPage() {
                           </span>
                         </div>
 
-                        <SliderPrimitive.Root
-                          min={1}
-                          max={5}
-                          step={1}
-                          value={[current ?? 3]}
-                          onValueChange={([value]) => setAnswer(id, value)}
-                          className="relative mt-2 flex h-11 w-full touch-none select-none items-center"
-                        >
-                          <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-primary/12">
-                            <SliderPrimitive.Range
-                              className={`absolute h-full rounded-full ${
-                                currentScale ? "gradient-brand" : "bg-transparent"
-                              }`}
-                            />
-                          </SliderPrimitive.Track>
-                          <SliderPrimitive.Thumb
+                        <div className="relative mt-3">
+                          <SliderPrimitive.Root
+                            min={1}
+                            max={5}
+                            step={1}
+                            value={[current ?? 3]}
+                            onValueChange={([value]) => setAnswer(id, value)}
                             aria-label={`Question ${questionNumber}: ${q}`}
-                            aria-valuetext={currentScale?.label ?? "Not answered"}
-                            className={`grid h-8 w-8 place-items-center rounded-full border-2 text-xs font-bold shadow-card transition-[background-color,border-color,color,box-shadow] duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal/25 ${
-                              currentScale
-                                ? "border-background gradient-brand text-white shadow-soft"
-                                : "border-primary/25 bg-background text-primary/55"
-                            }`}
+                            className="relative flex h-10 w-full touch-none select-none items-center [--radix-slider-thumb-transform:translateX(-50%)]"
                           >
-                            {current ?? "?"}
-                          </SliderPrimitive.Thumb>
-                        </SliderPrimitive.Root>
+                            <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-primary/12 shadow-inner">
+                              <SliderPrimitive.Range
+                                className={`absolute h-full rounded-full transition-colors duration-200 ${
+                                  currentScale ? "gradient-brand" : "bg-transparent"
+                                }`}
+                              />
+                            </SliderPrimitive.Track>
+                            <SliderPrimitive.Thumb
+                              aria-label={`Question ${questionNumber}: ${q}`}
+                              aria-valuetext={currentScale?.label ?? "Not answered"}
+                              className={`relative grid h-9 w-9 place-items-center rounded-full border-2 text-xs font-bold shadow-card transition-[background-color,border-color,color,box-shadow,transform] duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal/25 ${
+                                currentScale
+                                  ? "border-background gradient-brand text-white shadow-soft"
+                                  : "border-primary/25 bg-background text-primary/55"
+                              }`}
+                            >
+                              {current ?? "?"}
+                            </SliderPrimitive.Thumb>
+                          </SliderPrimitive.Root>
+                        </div>
 
-                        <div className="grid grid-cols-5 px-1" aria-hidden="true">
-                          {SCALE.map((scale) => (
+                        <div className="relative mt-1 h-6" aria-hidden="true">
+                          {SCALE.map((scale, index) => (
                             <span
                               key={scale.value}
-                              className={`text-center text-xs font-semibold transition-colors duration-200 ${
+                              className={`absolute top-0 -translate-x-1/2 font-serif text-sm font-bold leading-tight transition-colors duration-200 ${
                                 current === scale.value
                                   ? "text-teal-deep"
-                                  : "text-muted-foreground/55"
+                                  : "text-muted-foreground/65"
                               }`}
+                              style={{ left: `${index * 25}%` }}
                             >
                               {scale.value}
                             </span>
