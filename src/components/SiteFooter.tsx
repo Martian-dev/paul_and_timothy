@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Youtube } from "lucide-react";
-import logoImg from "@/assets/logo.png";
+import logoWhite from "@/assets/logo_white_text.png";
 
 type FooterLink = { label: string; to?: string; href?: string };
 
@@ -55,9 +55,9 @@ export function SiteFooter() {
         <div>
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="block w-fit transition-transform hover:-translate-y-1">
             <img
-              src={logoImg}
+              src={logoWhite}
               alt="Paul & Timothy Training Centre"
-              className="h-14 w-auto brightness-0 invert"
+              className="h-16 w-auto"
             />
           </Link>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-primary-foreground/70">

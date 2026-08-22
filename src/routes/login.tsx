@@ -11,7 +11,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import { FormEvent, useState } from "react";
-import logoImg from "@/assets/logo.png";
+import logoColored from "@/assets/logo_colored_text.png";
 import equipmentImg from "@/assets/pttc-equipment.png";
 import { motion } from "framer-motion";
 
@@ -61,7 +61,11 @@ export function LearnerAccessPage({ mode, course }: { mode: AccessMode; course?:
       <header className="border-b border-border/60 bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <a href="/" className="rounded-xl focus:outline-none focus:ring-2 focus:ring-ring">
-            <img src={logoImg} className="h-10 w-auto" alt="Paul & Timothy Training Centre" />
+            <img
+              src={logoColored}
+              className="h-11 w-auto"
+              alt="Paul & Timothy Training Centre"
+            />
           </a>
           <a
             href="/courses"

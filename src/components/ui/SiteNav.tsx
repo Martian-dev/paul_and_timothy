@@ -2,7 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Show, UserButton } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
-import logoImg from "@/assets/logo.png";
+import logoColored from "@/assets/logo_colored_text.png";
+import logoWhite from "@/assets/logo_white_text.png";
 
 type NavLink = { label: string; to?: string; href?: string; desc?: string };
 
@@ -92,11 +93,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
           <img
-            src={logoImg}
+            src={solid ? logoColored : logoWhite}
             alt="Paul & Timothy Training Centre"
-            className={`h-11 w-auto md:h-12 transition-[filter] duration-500 ${
-              solid ? "" : "brightness-0 invert"
-            }`}
+            className="h-16 w-auto md:h-[4.5rem]"
           />
         </Link>
 
@@ -136,7 +135,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             </Link>
           </Show>
           <Show when="signed-in">
-            <UserButton />
+            <UserButton showName />
           </Show>
           <Link
             to="/assessment"
