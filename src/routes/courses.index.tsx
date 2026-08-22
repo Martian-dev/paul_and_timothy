@@ -17,10 +17,10 @@ import {
   X,
 } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
-import equipmentImg from "@/assets/pttc-equipment.png";
-import mentorshipImg from "@/assets/pttc-mentorship.png";
-import communityImg from "@/assets/pttc-community-learning.png";
-import callingImg from "@/assets/pttc-purpose-calling.png";
+import equipmentImg from "@/assets/pttc-equipment.webp";
+import mentorshipImg from "@/assets/pttc-mentorship.webp";
+import communityImg from "@/assets/pttc-community-learning.webp";
+import callingImg from "@/assets/pttc-purpose-calling.webp";
 import { MentorCTA } from "@/components/MentorCTA";
 
 export const Route = createFileRoute("/courses/")({ component: CoursesPage });
@@ -418,12 +418,13 @@ function CoursesPage() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="/login"
+              <Link
+                to="/login"
+                search={{ course: undefined, redirect: "/courses" }}
                 className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 Start an eligible course <ArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
             </div>
           </div>
         </section>

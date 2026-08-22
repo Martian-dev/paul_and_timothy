@@ -2,8 +2,8 @@ import courseBibleImg from "@/assets/course-bible.jpg";
 import courseTeachingImg from "@/assets/course-teaching.jpg";
 import mentorshipImg from "@/assets/mentorship.jpg";
 import callingImg from "@/assets/calling.jpg";
-import equipmentImg from "@/assets/pttc-equipment.png";
-import communityImg from "@/assets/pttc-community-learning.png";
+import equipmentImg from "@/assets/pttc-equipment.webp";
+import communityImg from "@/assets/pttc-community-learning.webp";
 
 export type CourseOutline = { title: string; body: string };
 

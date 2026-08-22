@@ -1,9 +1,10 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { Show, UserButton } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
-import logoColored from "@/assets/logo_colored_text.png";
-import logoWhite from "@/assets/logo_white_text.png";
+import logoColored from "@/assets/logo_colored_text.webp";
+import logoWhite from "@/assets/logo_white_text.webp";
+import { currentPath } from "@/lib/auth-redirect";
 
 type NavLink = { label: string; to?: string; href?: string; desc?: string };
 
@@ -63,6 +64,7 @@ function NavDropdown({
 }
 
 export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
+  const location = useLocation();
   const [scrolled, setScrolled] = useState(alwaysSolid);
   const [open, setOpen] = useState(false);
 
@@ -91,6 +93,16 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
   }, [open]);
 
   const solid = alwaysSolid || scrolled;
+  const isAuthRoute =
+    location.pathname === "/login" ||
+    location.pathname.startsWith("/login/") ||
+    location.pathname === "/signup" ||
+    location.pathname.startsWith("/signup/") ||
+    location.pathname === "/sign-in" ||
+    location.pathname.startsWith("/sign-in/") ||
+    location.pathname === "/sign-up" ||
+    location.pathname.startsWith("/sign-up/");
+  const authDestination = isAuthRoute ? undefined : currentPath(location);
   const linkCls = `text-sm font-medium transition-colors duration-500 ${
     solid ? "text-primary/80 hover:text-primary" : "text-white/90 hover:text-white"
   }`;
@@ -106,6 +118,9 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           <img
             src={solid ? logoColored : logoWhite}
             alt="Paul & Timothy Training Centre"
+            width={1774}
+            height={887}
+            fetchPriority="high"
             className="h-16 w-auto md:h-[4.5rem]"
           />
         </Link>
@@ -139,7 +154,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           <Show when="signed-out" treatPendingAsSignedOut>
             <Link
               to="/login"
-              search={{ course: undefined, redirect: undefined }}
+              search={{ course: undefined, redirect: authDestination }}
               className={linkCls}
             >
               Login
@@ -305,7 +320,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             <Show when="signed-out" treatPendingAsSignedOut>
               <Link
                 to="/login"
-                search={{ course: undefined, redirect: undefined }}
+                search={{ course: undefined, redirect: authDestination }}
                 onClick={() => setOpen(false)}
                 className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-primary/80 hover:bg-primary/5"
               >

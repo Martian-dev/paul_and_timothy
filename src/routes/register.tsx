@@ -1,11 +1,12 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { auth } from "@clerk/tanstack-react-start/server";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUser } from "@clerk/tanstack-react-start";
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
-import { registerForEvent } from "@/lib/registrations";
+import { z } from "zod";
+import { getEventRegistration, registerForEvent } from "@/lib/registrations";
 
 type AlethiaTrainingAnswer = "yes" | "no";
 type YouthMinistryAnswer = "yes" | "no" | "wants_to";
@@ -21,15 +22,17 @@ const YOUTH_MINISTRY_OPTIONS: Array<[YouthMinistryAnswer, string]> = [
   ["wants_to", "So far no, but wants to | இதுவரை இல்லை, ஆனால் விரும்புகிறேன்"],
 ];
 
-const requireRegistrationAuth = createServerFn({ method: "GET" }).handler(async () => {
-  const { isAuthenticated } = await auth();
-  if (!isAuthenticated) {
-    throw redirect({
-      to: "/login",
-      search: { course: undefined, redirect: "/register?event=alethia" },
-    });
-  }
-});
+const requireRegistrationAuth = createServerFn({ method: "GET" })
+  .validator(z.object({ returnTo: z.string().startsWith("/").max(2048) }))
+  .handler(async ({ data }) => {
+    const { isAuthenticated } = await auth();
+    if (!isAuthenticated) {
+      throw redirect({
+        to: "/login",
+        search: { course: undefined, redirect: data.returnTo },
+      });
+    }
+  });
 
 // Events open for registration. Add future events here — linking to
 // /register?event=<slug> pre-selects that event directly.
@@ -38,8 +41,27 @@ const REGISTRABLE_EVENTS = [
 ];
 
 export const Route = createFileRoute("/register")({
-  beforeLoad: async () => {
-    await requireRegistrationAuth();
+  // Registration data is user-scoped; never reuse a preloaded match across
+  // auth-session changes, even though public routes use a short cache window.
+  staleTime: 0,
+  preloadStaleTime: 0,
+  beforeLoad: async ({ search }) => {
+    const returnTo = search.event
+      ? `/register?event=${encodeURIComponent(search.event)}`
+      : "/register";
+    await requireRegistrationAuth({ data: { returnTo } });
+  },
+  loaderDeps: ({ search }) => ({ event: search.event }),
+  loader: async ({ deps }) => {
+    const eventSlug = REGISTRABLE_EVENTS.some((item) => item.slug === deps.event)
+      ? deps.event
+      : REGISTRABLE_EVENTS.length === 1
+        ? REGISTRABLE_EVENTS[0].slug
+        : undefined;
+
+    return {
+      registration: eventSlug ? await getEventRegistration({ data: { eventSlug } }) : null,
+    };
   },
   validateSearch: (search: Record<string, unknown>) => ({
     event: typeof search.event === "string" ? search.event : undefined,
@@ -52,27 +74,102 @@ export const Route = createFileRoute("/register")({
 
 function RegisterPage() {
   const { event } = Route.useSearch();
+  const { registration } = Route.useLoaderData();
   const selectedEvent = REGISTRABLE_EVENTS.some((item) => item.slug === event)
     ? event
     : REGISTRABLE_EVENTS.length === 1
       ? REGISTRABLE_EVENTS[0].slug
       : undefined;
-  const { user } = useUser();
+  const { isLoaded: isUserLoaded, user } = useUser();
+  const router = useRouter();
+  const observedUserId = useRef<string | null | undefined>(undefined);
   const [submitted, setSubmitted] = useState(false);
-  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+  const [alreadyRegistered, setAlreadyRegistered] = useState(
+    registration?.registrationStatus === "registered",
+  );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [fullName, setFullName] = useState(registration?.fullName ?? "");
+  const [phone, setPhone] = useState(registration?.phone ?? "");
   const [participatedInAlethiaTraining, setParticipatedInAlethiaTraining] = useState<
     AlethiaTrainingAnswer | ""
-  >("");
-  const [involvedInYouthMinistry, setInvolvedInYouthMinistry] = useState<YouthMinistryAnswer | "">(
-    "",
+  >(
+    registration?.additionalQuestions.participatedInAlethiaTraining === "yes" ||
+      registration?.additionalQuestions.participatedInAlethiaTraining === "no"
+      ? registration.additionalQuestions.participatedInAlethiaTraining
+      : "",
   );
-  const [churchNameArea, setChurchNameArea] = useState("");
-  const [youthMinistryQuestions, setYouthMinistryQuestions] = useState("");
+  const [involvedInYouthMinistry, setInvolvedInYouthMinistry] = useState<YouthMinistryAnswer | "">(
+    registration?.additionalQuestions.involvedInYouthMinistry === "yes" ||
+      registration?.additionalQuestions.involvedInYouthMinistry === "no" ||
+      registration?.additionalQuestions.involvedInYouthMinistry === "wants_to"
+      ? registration.additionalQuestions.involvedInYouthMinistry
+      : "",
+  );
+  const [churchNameArea, setChurchNameArea] = useState(
+    typeof registration?.additionalQuestions.churchNameArea === "string"
+      ? registration.additionalQuestions.churchNameArea
+      : "",
+  );
+  const [youthMinistryQuestions, setYouthMinistryQuestions] = useState(
+    typeof registration?.additionalQuestions.youthMinistryQuestions === "string"
+      ? registration.additionalQuestions.youthMinistryQuestions
+      : "",
+  );
   const [selectedEventSlug, setSelectedEventSlug] = useState(selectedEvent ?? "");
+
+  useEffect(() => {
+    if (!isUserLoaded) return;
+
+    const userId = user?.id ?? null;
+    if (observedUserId.current === undefined) {
+      observedUserId.current = userId;
+      return;
+    }
+    if (observedUserId.current === userId) return;
+
+    // Do not leave the previous account's registration details visible while
+    // TanStack reloads this user-scoped route.
+    observedUserId.current = userId;
+    setSubmitted(false);
+    setAlreadyRegistered(false);
+    setFullName("");
+    setPhone("");
+    setParticipatedInAlethiaTraining("");
+    setInvolvedInYouthMinistry("");
+    setChurchNameArea("");
+    setYouthMinistryQuestions("");
+    void router.invalidate();
+  }, [isUserLoaded, router, user?.id]);
+
+  useEffect(() => {
+    setAlreadyRegistered(registration?.registrationStatus === "registered");
+    setFullName(registration?.fullName ?? "");
+    setPhone(registration?.phone ?? "");
+    setParticipatedInAlethiaTraining(
+      registration?.additionalQuestions.participatedInAlethiaTraining === "yes" ||
+        registration?.additionalQuestions.participatedInAlethiaTraining === "no"
+        ? registration.additionalQuestions.participatedInAlethiaTraining
+        : "",
+    );
+    setInvolvedInYouthMinistry(
+      registration?.additionalQuestions.involvedInYouthMinistry === "yes" ||
+        registration?.additionalQuestions.involvedInYouthMinistry === "no" ||
+        registration?.additionalQuestions.involvedInYouthMinistry === "wants_to"
+        ? registration.additionalQuestions.involvedInYouthMinistry
+        : "",
+    );
+    setChurchNameArea(
+      typeof registration?.additionalQuestions.churchNameArea === "string"
+        ? registration.additionalQuestions.churchNameArea
+        : "",
+    );
+    setYouthMinistryQuestions(
+      typeof registration?.additionalQuestions.youthMinistryQuestions === "string"
+        ? registration.additionalQuestions.youthMinistryQuestions
+        : "",
+    );
+  }, [registration, selectedEvent]);
 
   const email =
     user?.primaryEmailAddress?.emailAddress ?? user?.emailAddresses[0]?.emailAddress ?? "";
@@ -171,8 +268,17 @@ function RegisterPage() {
               </div>
             ) : (
               <>
+                {alreadyRegistered && (
+                  <div
+                    className="mb-8 rounded-2xl border border-teal/30 bg-accent p-4 text-sm text-primary"
+                    role="status"
+                  >
+                    You are already registered for this event. Review your details below and submit
+                    to update them.
+                  </div>
+                )}
                 <h1 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-2">
-                  Event Registration
+                  {alreadyRegistered ? "Update your registration" : "Event Registration"}
                 </h1>
                 <p className="text-muted-foreground mb-8">
                   Fill out the form below to secure your spot for our upcoming gatherings.
@@ -241,7 +347,14 @@ function RegisterPage() {
                       id="event"
                       required
                       value={selectedEventSlug}
-                      onChange={(e) => setSelectedEventSlug(e.target.value)}
+                      onChange={(e) => {
+                        const nextEvent = e.target.value;
+                        setSelectedEventSlug(nextEvent);
+                        void router.navigate({
+                          to: "/register",
+                          search: { event: nextEvent || undefined },
+                        });
+                      }}
                       className="w-full rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
                     >
                       {REGISTRABLE_EVENTS.length > 1 && (
@@ -379,7 +492,11 @@ function RegisterPage() {
                     disabled={submitting}
                     className="w-full mt-4 rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md"
                   >
-                    {submitting ? "Saving your registration…" : "Confirm Registration"}
+                    {submitting
+                      ? "Saving your registration…"
+                      : alreadyRegistered
+                        ? "Update registration"
+                        : "Confirm Registration"}
                   </button>
                 </form>
               </>

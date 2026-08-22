@@ -8,8 +8,10 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    // No scrollRestoration: forward navigations always start at the top of the page.
-    defaultPreloadStaleTime: 0,
+    // Avoid refetching loaders repeatedly while a user is deciding whether to
+    // follow an intent-preloaded link. Individual loaders can opt into a
+    // shorter freshness window when their data is more volatile.
+    defaultPreloadStaleTime: 30_000,
   });
 
   return router;

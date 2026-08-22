@@ -37,6 +37,50 @@ export type RegistrationResult = {
   alreadyRegistered: boolean;
 };
 
+export type ExistingRegistration = {
+  registrationId: string;
+  fullName: string;
+  phone: string;
+  additionalQuestions: Record<string, string>;
+  registrationStatus: "registered" | "cancelled";
+};
+
+/** Load the current user's registration without creating or mutating records. */
+export const getEventRegistration = createServerFn({ method: "GET" })
+  .validator(z.object({ eventSlug: z.string().trim().min(1).max(100) }))
+  .handler(async ({ data }): Promise<ExistingRegistration | null> => {
+    const { isAuthenticated, userId } = await auth();
+    if (!isAuthenticated || !userId) {
+      throw new Error("UNAUTHORIZED");
+    }
+
+    const rows = (await getDb()`
+      SELECT
+        registrations.id,
+        registrations.full_name,
+        registrations.phone,
+        registrations.additional_questions,
+        registrations.registration_status
+      FROM event_registrations AS registrations
+      INNER JOIN app_users AS users ON users.id = registrations.user_id
+      INNER JOIN events ON events.id = registrations.event_id
+      WHERE users.clerk_user_id = ${userId}
+        AND events.slug = ${data.eventSlug}
+      LIMIT 1
+    `) as unknown as DatabaseRow[];
+    const row = rows[0];
+    if (!row?.id) return null;
+
+    return {
+      registrationId: row.id as string,
+      fullName: row.full_name as string,
+      phone: row.phone as string,
+      additionalQuestions:
+        (row.additional_questions as Record<string, string> | null | undefined) ?? {},
+      registrationStatus: row.registration_status as "registered" | "cancelled",
+    };
+  });
+
 /**
  * Register the current Clerk user for an event. The database only receives
  * this data from the server, and the email/identity fields come from Clerk,
@@ -73,7 +117,7 @@ export const registerForEvent = createServerFn({ method: "POST" })
       data.eventSlug === "alethia" ? (data.additionalQuestions ?? {}) : {};
 
     const existingRows = (await sql`
-      SELECT id
+      SELECT id, registration_status
       FROM event_registrations
       WHERE event_id = ${event.id} AND user_id = ${appUserId}
       LIMIT 1
@@ -107,5 +151,8 @@ export const registerForEvent = createServerFn({ method: "POST" })
       throw new Error("REGISTRATION_FAILED");
     }
 
-    return { registrationId, alreadyRegistered: existingRows.length > 0 };
+    return {
+      registrationId,
+      alreadyRegistered: existingRows[0]?.registration_status === "registered",
+    };
   });

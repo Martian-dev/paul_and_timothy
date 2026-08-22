@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Youtube } from "lucide-react";
-import logoWhite from "@/assets/logo_white_text.png";
+import logoWhite from "@/assets/logo_white_text.webp";
 
 type FooterLink = { label: string; to?: string; href?: string };
 
@@ -53,10 +53,17 @@ export function SiteFooter() {
     <footer id="contact" className="bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 xl:grid-cols-[minmax(0,1fr)_minmax(0,4fr)]">
         <div>
-          <Link to="/" onClick={() => window.scrollTo(0, 0)} className="block w-fit transition-transform hover:-translate-y-1">
+          <Link
+            to="/"
+            onClick={() => window.scrollTo(0, 0)}
+            className="block w-fit transition-transform hover:-translate-y-1"
+          >
             <img
               src={logoWhite}
               alt="Paul & Timothy Training Centre"
+              width={1659}
+              height={948}
+              loading="lazy"
               className="h-16 w-auto"
             />
           </Link>
@@ -67,9 +74,21 @@ export function SiteFooter() {
 
           <div className="mt-8 flex gap-3">
             {[
-              { Icon: Instagram, href: "https://www.instagram.com/wordlifefoundation?igsi=MXU4dm9rdmdpd243Zw==", label: "Instagram" },
-              { Icon: Youtube, href: "https://youtube.com/@roselindrex?si=CPGbrdWEXdPTEobu", label: "YouTube" },
-              { Icon: Facebook, href: "https://www.facebook.com/share/1ERBAxLiB5/?mibextid=wwXIfr", label: "Facebook" },
+              {
+                Icon: Instagram,
+                href: "https://www.instagram.com/wordlifefoundation?igsi=MXU4dm9rdmdpd243Zw==",
+                label: "Instagram",
+              },
+              {
+                Icon: Youtube,
+                href: "https://youtube.com/@roselindrex?si=CPGbrdWEXdPTEobu",
+                label: "YouTube",
+              },
+              {
+                Icon: Facebook,
+                href: "https://www.facebook.com/share/1ERBAxLiB5/?mibextid=wwXIfr",
+                label: "Facebook",
+              },
             ].map(({ Icon, href, label }) => (
               <a
                 key={label}

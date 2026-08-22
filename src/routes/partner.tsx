@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Handshake, Heart, Globe, Send, ArrowRight, Quote, User, Church, Building } from "lucide-react";
 import { useState, useRef } from "react";
 
-import mentorshipImg from "@/assets/pttc-mentorship.png";
+import mentorshipImg from "@/assets/pttc-mentorship.webp";
 
 export const Route = createFileRoute("/partner")({
   head: () => ({
