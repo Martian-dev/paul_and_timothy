@@ -7,6 +7,20 @@ import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { registerForEvent } from "@/lib/registrations";
 
+type AlethiaTrainingAnswer = "yes" | "no";
+type YouthMinistryAnswer = "yes" | "no" | "wants_to";
+
+const ALETHIA_TRAINING_OPTIONS: Array<[AlethiaTrainingAnswer, string]> = [
+  ["yes", "Yes | ஆம்"],
+  ["no", "No | இல்லை"],
+];
+
+const YOUTH_MINISTRY_OPTIONS: Array<[YouthMinistryAnswer, string]> = [
+  ["yes", "Yes | ஆம்"],
+  ["no", "No | இல்லை"],
+  ["wants_to", "So far no, but wants to | இதுவரை இல்லை, ஆனால் விரும்புகிறேன்"],
+];
+
 const requireRegistrationAuth = createServerFn({ method: "GET" }).handler(async () => {
   const { isAuthenticated } = await auth();
   if (!isAuthenticated) {
@@ -50,6 +64,14 @@ function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const [participatedInAlethiaTraining, setParticipatedInAlethiaTraining] = useState<
+    AlethiaTrainingAnswer | ""
+  >("");
+  const [involvedInYouthMinistry, setInvolvedInYouthMinistry] = useState<YouthMinistryAnswer | "">(
+    "",
+  );
+  const [churchNameArea, setChurchNameArea] = useState("");
+  const [youthMinistryQuestions, setYouthMinistryQuestions] = useState("");
   const [selectedEventSlug, setSelectedEventSlug] = useState(selectedEvent ?? "");
 
   const email =
@@ -59,6 +81,11 @@ function RegisterPage() {
     if (!user || fullName) return;
     setFullName([user.firstName, user.lastName].filter(Boolean).join(" "));
   }, [fullName, user]);
+
+  useEffect(() => {
+    if (!user || phone) return;
+    setPhone(user.primaryPhoneNumber?.phoneNumber ?? user.phoneNumbers[0]?.phoneNumber ?? "");
+  }, [phone, user]);
 
   useEffect(() => {
     setSelectedEventSlug(selectedEvent ?? "");
@@ -75,6 +102,17 @@ function RegisterPage() {
           eventSlug: selectedEventSlug || "alethia",
           fullName,
           phone,
+          additionalQuestions:
+            selectedEventSlug === "alethia" &&
+            participatedInAlethiaTraining !== "" &&
+            involvedInYouthMinistry !== ""
+              ? {
+                  participatedInAlethiaTraining,
+                  involvedInYouthMinistry,
+                  churchNameArea,
+                  youthMinistryQuestions,
+                }
+              : undefined,
         },
       });
       setAlreadyRegistered(result.alreadyRegistered);
@@ -216,6 +254,116 @@ function RegisterPage() {
                       ))}
                     </select>
                   </div>
+
+                  {selectedEventSlug === "alethia" && (
+                    <fieldset className="space-y-6 border-t border-border/60 pt-6">
+                      <legend className="mb-1 font-serif text-xl font-bold text-primary">
+                        Alethia Questionnaire
+                      </legend>
+
+                      <div>
+                        <p className="mb-3 text-sm font-semibold leading-6 text-primary">
+                          Have you participated in Alethia training before? | நீங்கள் இதற்கு முன்பு
+                          அலீத்தியா பயிற்சியில் கலந்து கொண்டிருக்கிறீர்களா?{" "}
+                          <span aria-hidden="true">*</span>
+                        </p>
+                        <div className="space-y-3">
+                          {ALETHIA_TRAINING_OPTIONS.map(([value, label]) => (
+                            <label
+                              key={value}
+                              className="flex items-center gap-3 text-sm text-primary"
+                            >
+                              <input
+                                type="radio"
+                                name="participatedInAlethiaTraining"
+                                value={value}
+                                required
+                                checked={participatedInAlethiaTraining === value}
+                                onChange={(e) => {
+                                  if (e.target.value === "yes" || e.target.value === "no") {
+                                    setParticipatedInAlethiaTraining(e.target.value);
+                                  }
+                                }}
+                                className="h-4 w-4 accent-primary"
+                              />
+                              {label}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="mb-3 text-sm font-semibold leading-6 text-primary">
+                          Are you involved in youth ministry? | நீங்கள் வாலிப ஊழியத்தில் ஈடுபடுபவரா?{" "}
+                          <span aria-hidden="true">*</span>
+                        </p>
+                        <div className="space-y-3">
+                          {YOUTH_MINISTRY_OPTIONS.map(([value, label]) => (
+                            <label
+                              key={value}
+                              className="flex items-center gap-3 text-sm text-primary"
+                            >
+                              <input
+                                type="radio"
+                                name="involvedInYouthMinistry"
+                                value={value}
+                                required
+                                checked={involvedInYouthMinistry === value}
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value === "yes" ||
+                                    e.target.value === "no" ||
+                                    e.target.value === "wants_to"
+                                  ) {
+                                    setInvolvedInYouthMinistry(e.target.value);
+                                  }
+                                }}
+                                className="h-4 w-4 accent-primary"
+                              />
+                              {label}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="churchNameArea"
+                          className="mb-2 block text-sm font-semibold leading-6 text-primary"
+                        >
+                          CHURCH NAME &amp; AREA | சபை பெயர் &amp; ஊர்{" "}
+                          <span aria-hidden="true">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="churchNameArea"
+                          required
+                          value={churchNameArea}
+                          onChange={(e) => setChurchNameArea(e.target.value)}
+                          className="w-full rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          placeholder="Enter your church name and area"
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="youthMinistryQuestions"
+                          className="mb-2 block text-sm font-semibold leading-6 text-primary"
+                        >
+                          Do you have any questions about youth ministry? | வாலிப ஊழியத்தை பற்றி
+                          ஏதேனும் கேள்விகள் உள்ளதா?
+                        </label>
+                        <textarea
+                          id="youthMinistryQuestions"
+                          value={youthMinistryQuestions}
+                          onChange={(e) => setYouthMinistryQuestions(e.target.value)}
+                          rows={4}
+                          className="w-full resize-y rounded-2xl border border-border bg-background px-5 py-3.5 text-sm text-primary placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          placeholder="Share any questions you have"
+                        />
+                      </div>
+                    </fieldset>
+                  )}
 
                   {error && (
                     <p

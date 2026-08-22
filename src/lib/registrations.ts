@@ -6,11 +6,29 @@ import { upsertAppUser } from "@/lib/user-sync";
 
 type DatabaseRow = Record<string, unknown>;
 
-const registrationSchema = z.object({
-  eventSlug: z.string().trim().min(1).max(100),
-  fullName: z.string().trim().min(2, "Enter your full name").max(200),
-  phone: z.string().trim().min(5, "Enter a valid phone number").max(40),
+const alethiaQuestionsSchema = z.object({
+  participatedInAlethiaTraining: z.enum(["yes", "no"]),
+  involvedInYouthMinistry: z.enum(["yes", "no", "wants_to"]),
+  churchNameArea: z.string().trim().min(1, "Enter your church name and area").max(300),
+  youthMinistryQuestions: z.string().trim().max(2000).default(""),
 });
+
+const registrationSchema = z
+  .object({
+    eventSlug: z.string().trim().min(1).max(100),
+    fullName: z.string().trim().min(2, "Enter your full name").max(200),
+    phone: z.string().trim().min(5, "Enter a valid phone number").max(40),
+    additionalQuestions: alethiaQuestionsSchema.optional(),
+  })
+  .superRefine((data, context) => {
+    if (data.eventSlug === "alethia" && !data.additionalQuestions) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["additionalQuestions"],
+        message: "Complete the Alethia questionnaire",
+      });
+    }
+  });
 
 export type RegistrationInput = z.infer<typeof registrationSchema>;
 
@@ -49,6 +67,11 @@ export const registerForEvent = createServerFn({ method: "POST" })
       throw new Error("EVENT_CLOSED");
     }
 
+    // Keep the event-specific questionnaire isolated in JSON so future events
+    // can use their own questions without changing the registration schema.
+    const additionalQuestions =
+      data.eventSlug === "alethia" ? (data.additionalQuestions ?? {}) : {};
+
     const existingRows = (await sql`
       SELECT id
       FROM event_registrations
@@ -57,11 +80,24 @@ export const registerForEvent = createServerFn({ method: "POST" })
     `) as unknown as DatabaseRow[];
 
     const registrationRows = (await sql`
-      INSERT INTO event_registrations (event_id, user_id, full_name, phone)
-      VALUES (${event.id}, ${appUserId}, ${data.fullName}, ${data.phone})
+      INSERT INTO event_registrations (
+        event_id,
+        user_id,
+        full_name,
+        phone,
+        additional_questions
+      )
+      VALUES (
+        ${event.id},
+        ${appUserId},
+        ${data.fullName},
+        ${data.phone},
+        ${JSON.stringify(additionalQuestions)}::jsonb
+      )
       ON CONFLICT (event_id, user_id) DO UPDATE SET
         full_name = EXCLUDED.full_name,
         phone = EXCLUDED.phone,
+        additional_questions = EXCLUDED.additional_questions,
         registration_status = 'registered',
         updated_at = NOW()
       RETURNING id
