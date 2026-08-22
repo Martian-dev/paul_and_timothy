@@ -3,6 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import { motion } from "framer-motion";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { ArrowRight, Baby, Crown, HeartHandshake, RotateCcw, Sparkles, Users } from "lucide-react";
+import { AssessmentResultGate } from "@/components/AssessmentResultGate";
 
 export const Route = createFileRoute("/ministry-calling")({
   head: () => ({
@@ -372,7 +373,7 @@ function AssessmentPage() {
                   resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }, 100);
               }}
-              disabled={answered === 0}
+              disabled={answered < TOTAL_QUESTIONS}
               className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-soft disabled:cursor-not-allowed disabled:opacity-50"
             >
               View my results
@@ -389,13 +390,20 @@ function AssessmentPage() {
 
         {/* Results */}
         {submitted && (
-          <motion.section
-            ref={resultsRef}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="scroll-mt-24 rounded-4xl border border-border/60 bg-card p-8 shadow-soft"
+          <AssessmentResultGate
+            assessmentType="ministry_calling"
+            answers={Object.fromEntries(Object.entries(answers))}
+            result={{
+              rankings: results.map(({ key, title, score }) => ({ key, title, score })),
+            }}
           >
+            <motion.section
+              ref={resultsRef}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="scroll-mt-24 rounded-4xl border border-border/60 bg-card p-8 shadow-soft"
+            >
             <h2 className="font-serif text-2xl font-bold text-primary">Your scoring summary</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Ranked from strongest to lightest burden. Hold these before the Lord in prayer.
@@ -459,7 +467,8 @@ function AssessmentPage() {
             >
               Find a course for your calling <ArrowRight className="h-4 w-4" />
             </Link>
-          </motion.section>
+            </motion.section>
+          </AssessmentResultGate>
         )}
       </div>
     </div>

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { ArrowRight, Send, CheckCircle2 } from "lucide-react";
+import { AssessmentResultGate } from "@/components/AssessmentResultGate";
 
 export const Route = createFileRoute("/spiritual-gifts")({
   head: () => ({
@@ -272,11 +273,21 @@ function TypeOfCallAssessment() {
 
         {/* STEP 3: Results */}
         {step === 3 && results && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="space-y-8"
+          <AssessmentResultGate
+            assessmentType="spiritual_gifts"
+            answers={Object.fromEntries(Object.entries(answers))}
+            result={{
+              scores: results.scores,
+              primary: results.primary,
+              band: results.band,
+              personalInfo,
+            }}
           >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="space-y-8"
+            >
             <div className="rounded-[2rem] gradient-hero p-8 text-center text-white shadow-soft md:p-12">
               <CheckCircle2 className="mx-auto h-12 w-12 text-gold mb-6" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
@@ -352,7 +363,8 @@ function TypeOfCallAssessment() {
                 Retake Assessment
               </button>
             </div>
-          </motion.div>
+            </motion.div>
+          </AssessmentResultGate>
         )}
       </motion.main>
     </div>
