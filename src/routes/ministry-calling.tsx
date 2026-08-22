@@ -1,9 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { motion } from "framer-motion";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Baby, Crown, HeartHandshake, RotateCcw, Sparkles, Users } from "lucide-react";
 import { AssessmentResultGate } from "@/components/AssessmentResultGate";
+import {
+  clearPendingAssessment,
+  readAssessmentResumeFromUrl,
+  readPendingAssessment,
+  savePendingAssessment,
+} from "@/lib/assessment-state";
 
 export const Route = createFileRoute("/ministry-calling")({
   head: () => ({
@@ -160,6 +166,19 @@ function AssessmentPage() {
   const [submitted, setSubmitted] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const pending =
+      readAssessmentResumeFromUrl("ministry_calling") ?? readPendingAssessment("ministry_calling");
+    if (pending) {
+      setAnswers(pending.answers as Record<string, number>);
+      setSubmitted(true);
+      window.setTimeout(
+        () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+        0,
+      );
+    }
+  }, []);
+
   const answered = Object.keys(answers).length;
   const progress = Math.round((answered / TOTAL_QUESTIONS) * 100);
 
@@ -176,9 +195,18 @@ function AssessmentPage() {
     setAnswers((prev) => ({ ...prev, [id]: value }));
 
   const reset = () => {
+    clearPendingAssessment("ministry_calling");
     setAnswers({});
     setSubmitted(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleResultsSaved = () => {
+    clearPendingAssessment("ministry_calling");
+    window.setTimeout(
+      () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      0,
+    );
   };
 
   return (
@@ -372,6 +400,11 @@ function AssessmentPage() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => {
+                savePendingAssessment("ministry_calling", {
+                  version: 1,
+                  answers: Object.fromEntries(Object.entries(answers)),
+                  submitted: true,
+                });
                 setSubmitted(true);
                 setTimeout(() => {
                   resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -394,20 +427,22 @@ function AssessmentPage() {
 
         {/* Results */}
         {submitted && (
-          <AssessmentResultGate
-            assessmentType="ministry_calling"
-            answers={Object.fromEntries(Object.entries(answers))}
-            result={{
-              rankings: results.map(({ key, title, score }) => ({ key, title, score })),
-            }}
-          >
-            <motion.section
-              ref={resultsRef}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="scroll-mt-24 rounded-4xl border border-border/60 bg-card p-8 shadow-soft"
+          <>
+            <div ref={resultsRef} id="assessment-results" className="scroll-mt-24" />
+            <AssessmentResultGate
+              assessmentType="ministry_calling"
+              answers={Object.fromEntries(Object.entries(answers))}
+              result={{
+                rankings: results.map(({ key, title, score }) => ({ key, title, score })),
+              }}
+              onSaved={handleResultsSaved}
             >
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="scroll-mt-24 rounded-4xl border border-border/60 bg-card p-8 shadow-soft"
+              >
             <h2 className="font-serif text-2xl font-bold text-primary">Your scoring summary</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Ranked from strongest to lightest burden. Hold these before the Lord in prayer.
@@ -471,8 +506,9 @@ function AssessmentPage() {
             >
               Find a course for your calling <ArrowRight className="h-4 w-4" />
             </Link>
-            </motion.section>
-          </AssessmentResultGate>
+              </motion.section>
+            </AssessmentResultGate>
+          </>
         )}
       </div>
     </div>

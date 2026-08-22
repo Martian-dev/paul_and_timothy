@@ -1,8 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { AssessmentResultGate } from "@/components/AssessmentResultGate";
+import {
+  clearPendingAssessment,
+  readAssessmentResumeFromUrl,
+  readPendingAssessment,
+  savePendingAssessment,
+} from "@/lib/assessment-state";
 
 export const Route = createFileRoute("/apest-assessment")({
   head: () => ({
@@ -67,6 +73,26 @@ function ApestAssessment() {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [q21, setQ21] = useState<string>("");
 
+  const scrollToResults = () => {
+    window.setTimeout(
+      () =>
+        document
+          .querySelector("#assessment-results")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      0,
+    );
+  };
+
+  useEffect(() => {
+    const pending = readAssessmentResumeFromUrl("apest") ?? readPendingAssessment("apest");
+    if (pending) {
+      setAnswers(pending.answers as Record<number, number>);
+      setQ21(pending.q21 ?? "");
+      setStep(3);
+      scrollToResults();
+    }
+  }, []);
+
   const answered = Object.keys(answers).length + (q21 ? 1 : 0);
   const progress = step === 1 ? Math.round((answered / 21) * 100) : 100;
   const progressLabel = step === 1 ? `${answered}/21` : "Complete";
@@ -79,11 +105,21 @@ function ApestAssessment() {
   };
 
   const showStep = (nextStep: 1 | 3) => {
+    if (nextStep === 3) {
+      savePendingAssessment("apest", {
+        version: 1,
+        answers: Object.fromEntries(Object.entries(answers)),
+        submitted: true,
+        q21,
+      });
+    }
     setStep(nextStep);
-    window.setTimeout(
-      () => document.querySelector("#assessment-content")?.scrollIntoView({ behavior: "smooth" }),
-      0,
-    );
+    if (nextStep === 3) scrollToResults();
+    else
+      window.setTimeout(
+        () => document.querySelector("#assessment-content")?.scrollIntoView({ behavior: "smooth" }),
+        0,
+      );
   };
 
   const results = useMemo(() => {
@@ -232,21 +268,27 @@ function ApestAssessment() {
 
         {/* STEP 3: Results */}
         {step === 3 && results && (
-          <AssessmentResultGate
-            assessmentType="apest"
-            answers={{ ...Object.fromEntries(Object.entries(answers)), q21 }}
-            result={{
-              scores: results.scores,
-              primary: results.primary,
-              secondary: results.secondary,
-              q21,
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="space-y-8"
+          <>
+            <div id="assessment-results" className="scroll-mt-28" />
+            <AssessmentResultGate
+              assessmentType="apest"
+              answers={{ ...Object.fromEntries(Object.entries(answers)), q21 }}
+              result={{
+                scores: results.scores,
+                primary: results.primary,
+                secondary: results.secondary,
+                q21,
+              }}
+              onSaved={() => {
+                clearPendingAssessment("apest");
+                scrollToResults();
+              }}
             >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="space-y-8"
+              >
             <div className="rounded-[2rem] gradient-hero p-8 text-center text-white shadow-soft md:p-12">
               <CheckCircle2 className="mx-auto h-12 w-12 text-gold mb-6" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
@@ -322,6 +364,7 @@ function ApestAssessment() {
             <div className="text-center pt-8">
               <button
                 onClick={() => {
+                  clearPendingAssessment("apest");
                   setAnswers({});
                   setQ21("");
                   showStep(1);
@@ -331,8 +374,9 @@ function ApestAssessment() {
                 Retake Assessment
               </button>
             </div>
-            </motion.div>
-          </AssessmentResultGate>
+              </motion.div>
+            </AssessmentResultGate>
+          </>
         )}
       </motion.main>
     </div>

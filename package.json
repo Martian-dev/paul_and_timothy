@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "test:auth-flow": "node --experimental-strip-types scripts/auth-redirect-smoke.mjs",
+    "test:assessment-state": "node --experimental-strip-types scripts/assessment-state-smoke.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "format": "prettier --write ."
   },

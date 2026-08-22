@@ -1,19 +1,28 @@
-import { useClerk, useAuth } from "@clerk/tanstack-react-start";
+import { useAuth } from "@clerk/tanstack-react-start";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AlertCircle, LockKeyhole, LoaderCircle } from "lucide-react";
 import { saveAssessmentResult, type AssessmentResultInput } from "@/lib/assessment-results";
+import { authUrl } from "@/lib/auth-redirect";
+import { addAssessmentResumeToUrl, savePendingAssessment } from "@/lib/assessment-state";
 
 type Props = AssessmentResultInput & {
   children: ReactNode;
+  onSaved?: () => void;
 };
 
 /** Keeps assessment results private until sign-in is complete and the result is persisted. */
-export function AssessmentResultGate({ assessmentType, answers, result, children }: Props) {
-  const clerk = useClerk();
+export function AssessmentResultGate({
+  assessmentType,
+  answers,
+  result,
+  children,
+  onSaved,
+}: Props) {
   const { isLoaded, isSignedIn, userId } = useAuth();
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [retryCount, setRetryCount] = useState(0);
   const attemptedPayload = useRef<string | null>(null);
+  const notifiedPayload = useRef<string | null>(null);
   const [savedPayload, setSavedPayload] = useState<string | null>(null);
   const [errorPayload, setErrorPayload] = useState<string | null>(null);
   const payloadKey = useMemo(
@@ -43,6 +52,17 @@ export function AssessmentResultGate({ assessmentType, answers, result, children
       });
   }, [answers, assessmentType, isLoaded, isSignedIn, payloadKey, result, retryCount]);
 
+  useEffect(() => {
+    if (
+      status === "saved" &&
+      savedPayload === payloadKey &&
+      notifiedPayload.current !== payloadKey
+    ) {
+      notifiedPayload.current = payloadKey;
+      onSaved?.();
+    }
+  }, [onSaved, payloadKey, savedPayload, status]);
+
   if (!isLoaded) {
     return (
       <GateMessage
@@ -61,7 +81,21 @@ export function AssessmentResultGate({ assessmentType, answers, result, children
         action={
           <button
             type="button"
-            onClick={() => clerk.openSignIn({ withSignUp: true })}
+            onClick={() => {
+              const destination = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+              const state = {
+                version: 1,
+                answers,
+                submitted: true,
+                ...(assessmentType === "apest" && typeof answers.q21 === "string"
+                  ? { q21: answers.q21 }
+                  : {}),
+              } as const;
+              savePendingAssessment(assessmentType, state);
+              window.location.assign(
+                authUrl("/login", addAssessmentResumeToUrl(destination, assessmentType, state)),
+              );
+            }}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-soft"
           >
             Sign in to continue <LockKeyhole className="h-4 w-4" />

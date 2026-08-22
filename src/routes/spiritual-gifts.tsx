@@ -1,8 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { AssessmentResultGate } from "@/components/AssessmentResultGate";
+import {
+  clearPendingAssessment,
+  readAssessmentResumeFromUrl,
+  readPendingAssessment,
+  savePendingAssessment,
+} from "@/lib/assessment-state";
 
 export const Route = createFileRoute("/spiritual-gifts")({
   head: () => ({
@@ -85,6 +91,26 @@ function TypeOfCallAssessment() {
   const [step, setStep] = useState<1 | 3>(1);
   const [answers, setAnswers] = useState<Record<number, number>>({});
 
+  const scrollToResults = () => {
+    window.setTimeout(
+      () =>
+        document
+          .querySelector("#assessment-results")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      0,
+    );
+  };
+
+  useEffect(() => {
+    const pending =
+      readAssessmentResumeFromUrl("spiritual_gifts") ?? readPendingAssessment("spiritual_gifts");
+    if (pending) {
+      setAnswers(pending.answers as Record<number, number>);
+      setStep(3);
+      scrollToResults();
+    }
+  }, []);
+
   const answered = Object.keys(answers).length;
   const progress = step === 1 ? Math.round((answered / QUESTIONS.length) * 100) : 100;
   const progressLabel = step === 1 ? `${answered}/${QUESTIONS.length}` : "Complete";
@@ -95,11 +121,20 @@ function TypeOfCallAssessment() {
   };
 
   const showStep = (nextStep: 1 | 3) => {
+    if (nextStep === 3) {
+      savePendingAssessment("spiritual_gifts", {
+        version: 1,
+        answers: Object.fromEntries(Object.entries(answers)),
+        submitted: true,
+      });
+    }
     setStep(nextStep);
-    window.setTimeout(
-      () => document.querySelector("#assessment-content")?.scrollIntoView({ behavior: "smooth" }),
-      0,
-    );
+    if (nextStep === 3) scrollToResults();
+    else
+      window.setTimeout(
+        () => document.querySelector("#assessment-content")?.scrollIntoView({ behavior: "smooth" }),
+        0,
+      );
   };
 
   const results = useMemo(() => {
@@ -213,20 +248,26 @@ function TypeOfCallAssessment() {
 
         {/* STEP 3: Results */}
         {step === 3 && results && (
-          <AssessmentResultGate
-            assessmentType="spiritual_gifts"
-            answers={Object.fromEntries(Object.entries(answers))}
-            result={{
-              scores: results.scores,
-              primary: results.primary,
-              band: results.band,
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="space-y-8"
+          <>
+            <div id="assessment-results" className="scroll-mt-28" />
+            <AssessmentResultGate
+              assessmentType="spiritual_gifts"
+              answers={Object.fromEntries(Object.entries(answers))}
+              result={{
+                scores: results.scores,
+                primary: results.primary,
+                band: results.band,
+              }}
+              onSaved={() => {
+                clearPendingAssessment("spiritual_gifts");
+                scrollToResults();
+              }}
             >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="space-y-8"
+              >
             <div className="rounded-[2rem] gradient-hero p-8 text-center text-white shadow-soft md:p-12">
               <CheckCircle2 className="mx-auto h-12 w-12 text-gold mb-6" />
               <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
@@ -294,6 +335,7 @@ function TypeOfCallAssessment() {
             <div className="text-center pt-8">
               <button
                 onClick={() => {
+                  clearPendingAssessment("spiritual_gifts");
                   setAnswers({});
                   showStep(1);
                 }}
@@ -302,8 +344,9 @@ function TypeOfCallAssessment() {
                 Retake Assessment
               </button>
             </div>
-            </motion.div>
-          </AssessmentResultGate>
+              </motion.div>
+            </AssessmentResultGate>
+          </>
         )}
       </motion.main>
     </div>
