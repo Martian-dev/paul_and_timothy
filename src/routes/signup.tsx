@@ -15,12 +15,9 @@ export const Route = createFileRoute("/signup")({
 });
 
 function SignupPage() {
-  const { redirect } = Route.useSearch();
-  const signInUrl = redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : "/login";
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-24">
-      <SignUp signInUrl={signInUrl} forceRedirectUrl={redirect ?? "/"} />
+      <SignUp signInUrl="/login" forceRedirectUrl="/" />
     </div>
   );
 }
