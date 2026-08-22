@@ -37,12 +37,9 @@ const learnerBenefits = [
 type AccessMode = "login" | "signup";
 
 function LoginPage() {
-  const { redirect } = Route.useSearch();
-  const signUpUrl = redirect ? `/signup?redirect=${encodeURIComponent(redirect)}` : "/signup";
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-24">
-      <SignIn signUpUrl={signUpUrl} forceRedirectUrl={redirect ?? "/"} />
+      <SignIn signUpUrl="/signup" forceRedirectUrl="/" />
     </div>
   );
 }
