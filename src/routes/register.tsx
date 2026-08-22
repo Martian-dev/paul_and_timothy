@@ -28,7 +28,8 @@ const requireRegistrationAuth = createServerFn({ method: "GET" })
     const { isAuthenticated } = await auth();
     if (!isAuthenticated) {
       throw redirect({
-        to: "/login",
+        to: "/login/$",
+        params: { _splat: "" },
         search: { course: undefined, redirect: data.returnTo },
       });
     }

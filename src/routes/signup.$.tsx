@@ -4,6 +4,7 @@ import { authRedirectFromSearch, authUrl } from "@/lib/auth-redirect";
 
 export const Route = createFileRoute("/signup/$")({
   validateSearch: (search: Record<string, unknown>) => ({
+    course: typeof search.course === "string" ? search.course : undefined,
     redirect: typeof search.redirect === "string" ? search.redirect : undefined,
   }),
   component: SignupCallbackPage,

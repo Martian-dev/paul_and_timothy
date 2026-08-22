@@ -16,8 +16,6 @@ assert.equal(
 );
 
 for (const file of [
-  "src/routes/login.tsx",
-  "src/routes/signup.tsx",
   "src/routes/login.$.tsx",
   "src/routes/signup.$.tsx",
   "src/routes/sign-in.$.tsx",

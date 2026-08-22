@@ -419,7 +419,8 @@ function CoursesPage() {
                 ))}
               </ul>
               <Link
-                to="/login"
+                to="/login/$"
+                params={{ _splat: "" }}
                 search={{ course: undefined, redirect: "/courses" }}
                 className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-ring"
               >

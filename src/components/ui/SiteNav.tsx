@@ -80,7 +80,8 @@ function AuthNavControls({
     : linkCls;
   const fallback = (
     <Link
-      to="/login"
+      to="/login/$"
+      params={{ _splat: "" }}
       search={{ course: undefined, redirect: authDestination }}
       onClick={onNavigate}
       className={loginClass}
@@ -93,7 +94,8 @@ function AuthNavControls({
     <AuthRuntimeBoundary boundary="site_nav_auth_controls" fallback={fallback}>
       <Show when="signed-out" treatPendingAsSignedOut>
         <Link
-          to="/login"
+          to="/login/$"
+          params={{ _splat: "" }}
           search={{ course: undefined, redirect: authDestination }}
           onClick={onNavigate}
           className={loginClass}

@@ -18,11 +18,9 @@ import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as InteractionRouteImport } from './routes/interaction'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as MinistryCallingRouteImport } from './routes/ministry-calling'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RegisterRouteImport } from './routes/register'
-import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SpiritualGiftsRouteImport } from './routes/spiritual-gifts'
 import { Route as WhyWeExistRouteImport } from './routes/why-we-exist'
 import { Route as ArticlesCallingRouteImport } from './routes/articles_.calling'
@@ -84,11 +82,6 @@ const InteractionRoute = InteractionRouteImport.update({
   path: '/interaction',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MinistryCallingRoute = MinistryCallingRouteImport.update({
   id: '/ministry-calling',
   path: '/ministry-calling',
@@ -102,11 +95,6 @@ const PartnerRoute = PartnerRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SpiritualGiftsRoute = SpiritualGiftsRouteImport.update({
@@ -165,9 +153,9 @@ const EventsUpcomingRoute = EventsUpcomingRouteImport.update({
   getParentRoute: () => EventsRoute,
 } as any)
 const LoginSplatRoute = LoginSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
-  getParentRoute: () => LoginRoute,
+  id: '/login/$',
+  path: '/login/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SignInSplatRoute = SignInSplatRouteImport.update({
   id: '/sign-in/$',
@@ -180,9 +168,9 @@ const SignUpSplatRoute = SignUpSplatRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupSplatRoute = SignupSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
-  getParentRoute: () => SignupRoute,
+  id: '/signup/$',
+  path: '/signup/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -195,11 +183,9 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
-  '/login': typeof LoginRouteWithChildren
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
-  '/signup': typeof SignupRouteWithChildren
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/why-we-exist': typeof WhyWeExistRoute
   '/articles/calling': typeof ArticlesCallingRoute
@@ -225,11 +211,9 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
-  '/login': typeof LoginRouteWithChildren
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
-  '/signup': typeof SignupRouteWithChildren
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/why-we-exist': typeof WhyWeExistRoute
   '/articles/calling': typeof ArticlesCallingRoute
@@ -257,11 +241,9 @@ export interface FileRoutesById {
   '/events': typeof EventsRouteWithChildren
   '/faqs': typeof FaqsRoute
   '/interaction': typeof InteractionRoute
-  '/login': typeof LoginRouteWithChildren
   '/ministry-calling': typeof MinistryCallingRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
-  '/signup': typeof SignupRouteWithChildren
   '/spiritual-gifts': typeof SpiritualGiftsRoute
   '/why-we-exist': typeof WhyWeExistRoute
   '/articles_/calling': typeof ArticlesCallingRoute
@@ -290,11 +272,9 @@ export interface FileRouteTypes {
     | '/events'
     | '/faqs'
     | '/interaction'
-    | '/login'
     | '/ministry-calling'
     | '/partner'
     | '/register'
-    | '/signup'
     | '/spiritual-gifts'
     | '/why-we-exist'
     | '/articles/calling'
@@ -320,11 +300,9 @@ export interface FileRouteTypes {
     | '/events'
     | '/faqs'
     | '/interaction'
-    | '/login'
     | '/ministry-calling'
     | '/partner'
     | '/register'
-    | '/signup'
     | '/spiritual-gifts'
     | '/why-we-exist'
     | '/articles/calling'
@@ -351,11 +329,9 @@ export interface FileRouteTypes {
     | '/events'
     | '/faqs'
     | '/interaction'
-    | '/login'
     | '/ministry-calling'
     | '/partner'
     | '/register'
-    | '/signup'
     | '/spiritual-gifts'
     | '/why-we-exist'
     | '/articles_/calling'
@@ -383,19 +359,19 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRouteWithChildren
   FaqsRoute: typeof FaqsRoute
   InteractionRoute: typeof InteractionRoute
-  LoginRoute: typeof LoginRouteWithChildren
   MinistryCallingRoute: typeof MinistryCallingRoute
   PartnerRoute: typeof PartnerRoute
   RegisterRoute: typeof RegisterRoute
-  SignupRoute: typeof SignupRouteWithChildren
   SpiritualGiftsRoute: typeof SpiritualGiftsRoute
   WhyWeExistRoute: typeof WhyWeExistRoute
   ArticlesCallingRoute: typeof ArticlesCallingRoute
   ArticlesRheniusRoute: typeof ArticlesRheniusRoute
   ArticlesScudderRoute: typeof ArticlesScudderRoute
   ArticlesSpiritualGiftsRoute: typeof ArticlesSpiritualGiftsRoute
+  LoginSplatRoute: typeof LoginSplatRoute
   SignInSplatRoute: typeof SignInSplatRoute
   SignUpSplatRoute: typeof SignUpSplatRoute
+  SignupSplatRoute: typeof SignupSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -463,13 +439,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InteractionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/ministry-calling': {
       id: '/ministry-calling'
       path: '/ministry-calling'
@@ -489,13 +458,6 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/spiritual-gifts': {
@@ -577,10 +539,10 @@ declare module '@tanstack/react-router' {
     }
     '/login/$': {
       id: '/login/$'
-      path: '/$'
+      path: '/login/$'
       fullPath: '/login/$'
       preLoaderRoute: typeof LoginSplatRouteImport
-      parentRoute: typeof LoginRoute
+      parentRoute: typeof rootRouteImport
     }
     '/sign-in/$': {
       id: '/sign-in/$'
@@ -598,10 +560,10 @@ declare module '@tanstack/react-router' {
     }
     '/signup/$': {
       id: '/signup/$'
-      path: '/$'
+      path: '/signup/$'
       fullPath: '/signup/$'
       preLoaderRoute: typeof SignupSplatRouteImport
-      parentRoute: typeof SignupRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -634,27 +596,6 @@ const EventsRouteChildren: EventsRouteChildren = {
 const EventsRouteWithChildren =
   EventsRoute._addFileChildren(EventsRouteChildren)
 
-interface LoginRouteChildren {
-  LoginSplatRoute: typeof LoginSplatRoute
-}
-
-const LoginRouteChildren: LoginRouteChildren = {
-  LoginSplatRoute: LoginSplatRoute,
-}
-
-const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
-
-interface SignupRouteChildren {
-  SignupSplatRoute: typeof SignupSplatRoute
-}
-
-const SignupRouteChildren: SignupRouteChildren = {
-  SignupSplatRoute: SignupSplatRoute,
-}
-
-const SignupRouteWithChildren =
-  SignupRoute._addFileChildren(SignupRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApestAssessmentRoute: ApestAssessmentRoute,
@@ -665,19 +606,19 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRouteWithChildren,
   FaqsRoute: FaqsRoute,
   InteractionRoute: InteractionRoute,
-  LoginRoute: LoginRouteWithChildren,
   MinistryCallingRoute: MinistryCallingRoute,
   PartnerRoute: PartnerRoute,
   RegisterRoute: RegisterRoute,
-  SignupRoute: SignupRouteWithChildren,
   SpiritualGiftsRoute: SpiritualGiftsRoute,
   WhyWeExistRoute: WhyWeExistRoute,
   ArticlesCallingRoute: ArticlesCallingRoute,
   ArticlesRheniusRoute: ArticlesRheniusRoute,
   ArticlesScudderRoute: ArticlesScudderRoute,
   ArticlesSpiritualGiftsRoute: ArticlesSpiritualGiftsRoute,
+  LoginSplatRoute: LoginSplatRoute,
   SignInSplatRoute: SignInSplatRoute,
   SignUpSplatRoute: SignUpSplatRoute,
+  SignupSplatRoute: SignupSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
