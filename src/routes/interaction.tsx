@@ -96,7 +96,7 @@ function CalendlyEmbed() {
       className="calendly-inline-widget overflow-hidden rounded-[1.5rem]"
       data-url={calendlyUrl}
       data-auto-load="false"
-      style={{ minWidth: "320px", height: "700px" }}
+      style={{ width: "100%", minWidth: 0, height: "700px" }}
     />
   );
 }

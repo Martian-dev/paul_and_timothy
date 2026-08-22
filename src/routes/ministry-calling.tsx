@@ -206,7 +206,7 @@ function AssessmentPage() {
       </section>
 
       {/* Sticky progress */}
-      <div className="sticky top-[72px] z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
+      <div className="sticky top-[6.5rem] z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-4xl items-center gap-4 px-6 py-3">
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
             <div

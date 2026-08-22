@@ -17,7 +17,10 @@ export const Route = createFileRoute("/events/upcoming")({
   head: () => ({
     meta: [
       { title: "Upcoming Events — Paul & Timothy Training Centre" },
-      { name: "description", content: "Browse upcoming conferences, workshops, retreats and prayer gatherings." },
+      {
+        name: "description",
+        content: "Browse upcoming conferences, workshops, retreats and prayer gatherings.",
+      },
     ],
   }),
   component: UpcomingEventsPage,
@@ -30,7 +33,15 @@ const fadeUp = {
 
 const allPosters = [poster3, poster4, poster1, poster2];
 
-function ThumbnailCard({ images, defaultIndex, onClick }: { images: string[], defaultIndex: number, onClick: (index: number) => void }) {
+function ThumbnailCard({
+  images,
+  defaultIndex,
+  onClick,
+}: {
+  images: string[];
+  defaultIndex: number;
+  onClick: (index: number) => void;
+}) {
   const [isHovered, setIsHovered] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
 
@@ -56,11 +67,11 @@ function ThumbnailCard({ images, defaultIndex, onClick }: { images: string[], de
       transition={{ duration: 0.2 }}
     >
       <AnimatePresence initial={false}>
-        <motion.img 
+        <motion.img
           key={currentIndex}
-          src={images[currentIndex]} 
-          alt="Related Slide" 
-          className="absolute inset-0 w-full h-full object-cover" 
+          src={images[currentIndex]}
+          alt="Related Slide"
+          className="absolute inset-0 w-full h-full object-cover"
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
           exit={{ x: "-100%" }}
@@ -81,7 +92,9 @@ function PosterSection() {
       if (e.key === "ArrowRight") {
         setModalPosterIndex((prev) => (prev !== null ? (prev + 1) % allPosters.length : null));
       } else if (e.key === "ArrowLeft") {
-        setModalPosterIndex((prev) => (prev !== null ? (prev - 1 + allPosters.length) % allPosters.length : null));
+        setModalPosterIndex((prev) =>
+          prev !== null ? (prev - 1 + allPosters.length) % allPosters.length : null,
+        );
       } else if (e.key === "Escape") {
         setModalPosterIndex(null);
       }
@@ -97,7 +110,8 @@ function PosterSection() {
     return () => clearInterval(interval);
   }, []);
 
-  const handlePrev = () => setMainPosterIndex((prev) => (prev - 1 + allPosters.length) % allPosters.length);
+  const handlePrev = () =>
+    setMainPosterIndex((prev) => (prev - 1 + allPosters.length) % allPosters.length);
   const handleNext = () => setMainPosterIndex((prev) => (prev + 1) % allPosters.length);
 
   return (
@@ -114,149 +128,187 @@ function PosterSection() {
       </section>
 
       <section className="px-6 py-16 bg-background text-center md:text-left">
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="mx-auto max-w-4xl">
-
-        {/* TITLE */}
-        <div className="mb-10 w-full overflow-hidden">
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-primary leading-[1.1] whitespace-nowrap tracking-tight">
-            Aletheia Training Conference
-          </h2>
-        </div>
-
-        {/* LARGE EVENT POSTER */}
-        <motion.div 
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.2 }}
-          onClick={() => setModalPosterIndex(mainPosterIndex)}
-          className="w-full aspect-video rounded-[2rem] overflow-hidden bg-black/5 shadow-2xl border border-border/40 relative flex items-center justify-center group cursor-pointer"
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeUp}
+          className="mx-auto max-w-4xl"
         >
-          <AnimatePresence initial={false}>
-            <motion.img 
-              key={mainPosterIndex}
-              src={allPosters[mainPosterIndex]} 
-              alt="Aletheia Training Conference" 
-              className="absolute inset-0 w-full h-full object-contain block" 
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            />
-          </AnimatePresence>
+          {/* TITLE */}
+          <div className="mb-10 w-full">
+            <h2 className="font-serif text-3xl font-bold leading-[1.1] tracking-tight text-primary sm:text-4xl md:text-5xl lg:text-[3.4rem]">
+              Aletheia Training Conference
+            </h2>
+          </div>
 
-          {/* Navigation Buttons */}
-          <button 
-            onClick={(e) => { e.stopPropagation(); handlePrev(); }} 
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-10 shadow-md"
+          {/* LARGE EVENT POSTER */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setModalPosterIndex(mainPosterIndex)}
+            className="w-full aspect-video rounded-[2rem] overflow-hidden bg-black/5 shadow-2xl border border-border/40 relative flex items-center justify-center group cursor-pointer"
           >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button 
-            onClick={(e) => { e.stopPropagation(); handleNext(); }} 
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-10 shadow-md"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={mainPosterIndex}
+                src={allPosters[mainPosterIndex]}
+                alt="Aletheia Training Conference"
+                className="absolute inset-0 w-full h-full object-contain block"
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              />
+            </AnimatePresence>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrev();
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-10 shadow-md"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNext();
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-10 shadow-md"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </motion.div>
+
+          {/* DETAILS SECTION */}
+          <div className="mt-8 max-w-3xl">
+            <p className="text-lg font-bold text-primary">
+              Nov 7-14 <span className="mx-2 text-muted-foreground font-normal">·</span> Online{" "}
+              <span className="mx-2 text-muted-foreground font-normal">·</span> Eight-day
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+              Training for Youth Leaders, Teachers & Counsellors. Walk away with practical tools to
+              reach and disciple the next generation.
+            </p>
+            <div className="mt-8">
+              <Link
+                to="/register"
+                search={{ event: "alethia" }}
+                className="inline-flex items-center justify-center rounded-sm bg-primary px-10 py-3.5 text-base md:text-lg font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md hover:shadow-lg"
+              >
+                Register Now
+              </Link>
+            </div>
+          </div>
+
+          <hr className="my-14 border-border/60" />
+
+          {/* RELATED SLIDES */}
+          <div>
+            <h3 className="text-xl font-bold text-primary mb-6 uppercase tracking-wider text-left">
+              Related Slides
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <ThumbnailCard images={allPosters} defaultIndex={0} onClick={setModalPosterIndex} />
+              <ThumbnailCard images={allPosters} defaultIndex={1} onClick={setModalPosterIndex} />
+              <ThumbnailCard images={allPosters} defaultIndex={2} onClick={setModalPosterIndex} />
+              <ThumbnailCard images={allPosters} defaultIndex={3} onClick={setModalPosterIndex} />
+            </div>
+          </div>
         </motion.div>
 
-        {/* DETAILS SECTION */}
-        <div className="mt-8 max-w-3xl">
-          <p className="text-lg font-bold text-primary">
-            Nov 7-14 <span className="mx-2 text-muted-foreground font-normal">·</span> Online <span className="mx-2 text-muted-foreground font-normal">·</span> Eight-day
-          </p>
-          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Training for Youth Leaders, Teachers & Counsellors. Walk away with practical tools to reach and disciple the next generation.
-          </p>
-          <div className="mt-8">
-            <Link to="/register" search={{ event: "alethia" }} className="inline-flex items-center justify-center rounded-sm bg-primary px-10 py-3.5 text-base md:text-lg font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md hover:shadow-lg">
-              Register Now
-            </Link>
-          </div>
-        </div>
-
-        <hr className="my-14 border-border/60" />
-
-        {/* RELATED SLIDES */}
-        <div>
-          <h3 className="text-xl font-bold text-primary mb-6 uppercase tracking-wider text-left">Related Slides</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-             <ThumbnailCard images={allPosters} defaultIndex={0} onClick={setModalPosterIndex} />
-             <ThumbnailCard images={allPosters} defaultIndex={1} onClick={setModalPosterIndex} />
-             <ThumbnailCard images={allPosters} defaultIndex={2} onClick={setModalPosterIndex} />
-             <ThumbnailCard images={allPosters} defaultIndex={3} onClick={setModalPosterIndex} />
-          </div>
-        </div>
-
-      </motion.div>
-
-      {/* MODAL */}
-      <AnimatePresence>
-        {modalPosterIndex !== null && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setModalPosterIndex(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-12 cursor-pointer"
-          >
-            <div 
-              className="relative max-w-5xl w-full aspect-video flex flex-col items-center justify-center cursor-default group"
-              onClick={(e) => e.stopPropagation()}
+        {/* MODAL */}
+        <AnimatePresence>
+          {modalPosterIndex !== null && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setModalPosterIndex(null)}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-12 cursor-pointer"
             >
-              {/* Keyboard navigation hint */}
-              <div className="absolute -top-10 left-0 text-white/50 text-sm hidden md:block">
-                Use arrow keys to navigate
+              <div
+                className="relative max-w-5xl w-full aspect-video flex flex-col items-center justify-center cursor-default group"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Keyboard navigation hint */}
+                <div className="absolute -top-10 left-0 text-white/50 text-sm hidden md:block">
+                  Use arrow keys to navigate
+                </div>
+                <button
+                  onClick={() => setModalPosterIndex(null)}
+                  className="absolute -top-12 right-0 md:-right-12 md:-top-12 text-white/70 hover:text-white p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-20"
+                >
+                  <X className="w-6 h-6 md:w-8 md:h-8" />
+                </button>
+
+                <button
+                  onClick={() =>
+                    setModalPosterIndex((prev) =>
+                      prev !== null ? (prev - 1 + allPosters.length) % allPosters.length : null,
+                    )
+                  }
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-20 shadow-md"
+                >
+                  <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+                </button>
+
+                <button
+                  onClick={() =>
+                    setModalPosterIndex((prev) =>
+                      prev !== null ? (prev + 1) % allPosters.length : null,
+                    )
+                  }
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-20 shadow-md"
+                >
+                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  <motion.img
+                    key={modalPosterIndex}
+                    src={allPosters[modalPosterIndex]}
+                    alt="Enlarged Slide"
+                    className="w-full h-full max-h-[85vh] object-contain rounded-lg shadow-2xl absolute inset-0 m-auto"
+                    initial={{ x: "100%" }}
+                    animate={{ x: 0 }}
+                    exit={{ x: "-100%" }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                  />
+                </AnimatePresence>
               </div>
-              <button 
-                onClick={() => setModalPosterIndex(null)} 
-                className="absolute -top-12 right-0 md:-right-12 md:-top-12 text-white/70 hover:text-white p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-20"
-              >
-                <X className="w-6 h-6 md:w-8 md:h-8" />
-              </button>
-              
-              <button 
-                onClick={() => setModalPosterIndex((prev) => (prev !== null ? (prev - 1 + allPosters.length) % allPosters.length : null))} 
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-20 shadow-md"
-              >
-                <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
-              </button>
-
-              <button 
-                onClick={() => setModalPosterIndex((prev) => (prev !== null ? (prev + 1) % allPosters.length : null))} 
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm z-20 shadow-md"
-              >
-                <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
-              </button>
-
-              <AnimatePresence initial={false}>
-                <motion.img 
-                  key={modalPosterIndex}
-                  src={allPosters[modalPosterIndex]} 
-                  alt="Enlarged Slide" 
-                  className="w-full h-full max-h-[85vh] object-contain rounded-lg shadow-2xl absolute inset-0 m-auto" 
-                  initial={{ x: "100%" }}
-                  animate={{ x: 0 }}
-                  exit={{ x: "-100%" }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                />
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
     </>
   );
 }
 
 const speakers = [
-  { name: "Roselind Rex", role: "Trainer", org: "Word Life Foundation", bio: "3 decades serving in youth & Teens ministry.", image: trainerImage },
+  {
+    name: "Roselind Rex",
+    role: "Trainer",
+    org: "Word Life Foundation",
+    bio: "3 decades serving in youth & Teens ministry.",
+    image: trainerImage,
+  },
 ];
 
 function Speakers() {
   return (
     <section className="px-6 py-20 bg-cream">
       <div className="mx-auto max-w-5xl">
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeUp}
+          className="text-center"
+        >
           <h2 className="font-serif text-3xl font-bold text-primary md:text-4xl">
             Meet Your Facilitator
           </h2>
@@ -273,7 +325,10 @@ function Speakers() {
               className="group overflow-hidden rounded-4xl border border-border/60 bg-card shadow-card max-w-sm w-full text-left"
             >
               <div className="h-64 overflow-hidden">
-                <img src={s.image} alt={s.name} loading="lazy"
+                <img
+                  src={s.image}
+                  alt={s.name}
+                  loading="lazy"
                   className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
@@ -286,9 +341,13 @@ function Speakers() {
             </motion.article>
           ))}
         </div>
-        
+
         <div className="mt-12 flex justify-center">
-          <Link to="/register" search={{ event: "alethia" }} className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-base md:text-lg font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md">
+          <Link
+            to="/register"
+            search={{ event: "alethia" }}
+            className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-base md:text-lg font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md"
+          >
             Register now
           </Link>
         </div>
@@ -301,8 +360,16 @@ function Testimonials() {
   return (
     <section className="px-6 py-20">
       <div className="mx-auto max-w-5xl">
-        <motion.h3 initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center font-serif text-2xl font-bold text-primary md:text-3xl">
-          Hear from people who have<br />attended this session
+        <motion.h3
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeUp}
+          className="text-center font-serif text-2xl font-bold text-primary md:text-3xl"
+        >
+          Hear from people who have
+          <br />
+          attended this session
         </motion.h3>
 
         <div className="mt-12">
@@ -317,7 +384,13 @@ function Timeline() {
   return (
     <section className="px-6 py-20 bg-cream">
       <div className="mx-auto max-w-4xl">
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={fadeUp} className="text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeUp}
+          className="text-center"
+        >
           <h2 className="font-serif text-3xl font-bold text-primary md:text-4xl">
             What's coming, month by month.
           </h2>
@@ -342,9 +415,13 @@ function Timeline() {
               transition={{ duration: 0.55, delay: i * 0.1 }}
               className={`relative mb-10 pl-16 md:w-1/2 md:pl-0 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:ml-auto md:pl-12"}`}
             >
-              <span className={`absolute top-6 z-10 grid h-4 w-4 place-items-center rounded-full gradient-brand ring-4 ring-background left-6 -translate-x-1/2 ${i % 2 === 0 ? "md:left-auto md:-right-2 md:translate-x-0" : "md:-left-2 md:translate-x-0"}`} />
+              <span
+                className={`absolute top-6 z-10 grid h-4 w-4 place-items-center rounded-full gradient-brand ring-4 ring-background left-6 -translate-x-1/2 ${i % 2 === 0 ? "md:left-auto md:-right-2 md:translate-x-0" : "md:-left-2 md:translate-x-0"}`}
+              />
               <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
-                <span className="text-xs font-semibold uppercase tracking-widest text-gold">{t.month}</span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                  {t.month}
+                </span>
                 <h3 className="mt-1.5 font-serif text-lg font-semibold text-primary">{t.title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{t.detail}</p>
               </div>
@@ -364,13 +441,21 @@ function EmptyState() {
           Nothing on the calendar just yet.
         </h2>
         <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-          We're planning the next season of training programs and other gatherings. Leave your email and we'll let you know as soon as dates are confirmed. You could also start with an online course: you can take these right now, in your own time.
+          We're planning the next season of training programs and other gatherings. Leave your email
+          and we'll let you know as soon as dates are confirmed. You could also start with an online
+          course: you can take these right now, in your own time.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/contact" className="w-full sm:w-auto inline-flex items-center justify-center rounded-sm bg-primary px-8 py-3 text-base font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md">
+          <Link
+            to="/contact"
+            className="w-full sm:w-auto inline-flex items-center justify-center rounded-sm bg-primary px-8 py-3 text-base font-bold text-primary-foreground hover:bg-primary/90 transition-colors uppercase tracking-wider shadow-md"
+          >
             Notify me
           </Link>
-          <Link to="/courses" className="w-full sm:w-auto inline-flex items-center justify-center rounded-sm bg-teal-soft px-8 py-3 text-base font-bold text-teal-deep hover:bg-teal-soft/80 transition-colors uppercase tracking-wider shadow-md">
+          <Link
+            to="/courses"
+            className="w-full sm:w-auto inline-flex items-center justify-center rounded-sm bg-teal-soft px-8 py-3 text-base font-bold text-teal-deep hover:bg-teal-soft/80 transition-colors uppercase tracking-wider shadow-md"
+          >
             Explore Courses
           </Link>
         </div>

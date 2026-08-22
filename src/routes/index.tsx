@@ -103,8 +103,6 @@ function AnimatedLetterLine({
   );
 }
 
-
-
 function Hero() {
   return (
     <section id="top" className="relative min-h-screen overflow-hidden gradient-hero">
@@ -149,7 +147,12 @@ function Hero() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 2.4, duration: 0.25, ease: [0.2, 0.8, 0.2, 1] as const }}
                 >
-                  <AnimatedLetterLine text="Serve with confidence" delay={2.55} stagger={0.08} accent />
+                  <AnimatedLetterLine
+                    text="Serve with confidence"
+                    delay={2.55}
+                    stagger={0.08}
+                    accent
+                  />
                 </motion.span>
               </div>
             </div>
@@ -177,9 +180,7 @@ function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-white/50"
-        >
-          
-        </motion.div>
+        ></motion.div>
       </div>
     </section>
   );
@@ -317,8 +318,11 @@ function JourneyTimeline() {
       <div className="relative text-center">
         <SectionEyebrow>Your Journey With Us</SectionEyebrow>
         <h2 className="mx-auto max-w-3xl text-2xl font-medium leading-[1.15] text-primary md:text-3xl">
-          From wondering<br/>
-          <span className="block my-2 text-5xl md:text-6xl md:leading-[1.1]">“how and where”</span>
+          From wondering
+          <br />
+          <span className="my-2 block text-4xl leading-[1.1] sm:text-5xl md:text-6xl">
+            “how and where”
+          </span>
           to walking with purpose and clarity.
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
@@ -328,7 +332,7 @@ function JourneyTimeline() {
 
       <div className="relative mx-auto mt-20 max-w-6xl md:mt-28">
         {/* Desktop Horizontal Timeline */}
-        <div className="hidden lg:block relative pb-10">
+        <div className="relative hidden pb-10 min-[1180px]:block">
           <div className="flex justify-between items-start">
             {steps.map((step, index) => {
               const isLast = index === steps.length - 1;
@@ -337,7 +341,7 @@ function JourneyTimeline() {
                   {/* Traveling Arrow to next step */}
                   {!isLast && (
                     <div className="absolute top-[55px] left-[calc(50%+56px)] w-[calc(100%-112px)] flex items-center z-0">
-                      <motion.div 
+                      <motion.div
                         className="flex items-center w-full overflow-visible"
                         initial={{ width: "0%", opacity: 0 }}
                         whileInView={{ width: "100%", opacity: 1 }}
@@ -351,15 +355,17 @@ function JourneyTimeline() {
                   )}
 
                   {/* Icon Circle */}
-                  <motion.div 
+                  <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ delay: index * 0.15, duration: 0.5, type: "spring" }}
                     className="relative z-10 flex h-28 w-28 items-center justify-center rounded-full bg-background border-4 border-background ring-[3px] ring-gold/15 shadow-sm"
                   >
-                    <div className={`flex h-[84px] w-[84px] items-center justify-center rounded-full text-white shadow-inner ${step.bgClass}`}>
-                       <step.icon className="h-9 w-9" strokeWidth={1.5} />
+                    <div
+                      className={`flex h-[84px] w-[84px] items-center justify-center rounded-full text-white shadow-inner ${step.bgClass}`}
+                    >
+                      <step.icon className="h-9 w-9" strokeWidth={1.5} />
                     </div>
                   </motion.div>
 
@@ -391,25 +397,29 @@ function JourneyTimeline() {
         </div>
 
         {/* Mobile/Tablet Vertical Timeline */}
-        <div className="lg:hidden relative py-12 px-4 max-w-2xl mx-auto">
-          {/* Vertical central line */}
-          <div className="absolute left-[47px] sm:left-1/2 top-12 bottom-12 w-[2px] bg-gold/30 sm:-translate-x-1/2" />
-          
+        <div className="relative mx-auto max-w-2xl py-12 min-[1180px]:hidden">
+          {/* Vertical timeline line; the first grid column keeps it aligned with every circle. */}
+          <div className="absolute bottom-12 left-12 top-12 w-[2px] bg-gold/30" />
+
           <div className="space-y-16">
             {steps.map((step, index) => {
-              const isEven = index % 2 === 0;
               return (
-                <div key={index} className="relative flex items-center">
+                <div
+                  key={index}
+                  className="relative grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-x-4"
+                >
                   {/* Icon Circle */}
-                  <motion.div 
+                  <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ delay: index * 0.15, duration: 0.5, type: "spring" }}
-                    className="absolute left-[48px] sm:left-1/2 top-0 z-10 flex h-24 w-24 -translate-x-1/2 items-center justify-center rounded-full bg-background border-[5px] border-background ring-[3px] ring-gold/15 shadow-sm"
+                    className="relative z-10 flex h-24 w-24 items-center justify-center rounded-full bg-background border-[5px] border-background ring-[3px] ring-gold/15 shadow-sm"
                   >
-                    <div className={`flex h-[72px] w-[72px] items-center justify-center rounded-full text-white shadow-inner ${step.bgClass}`}>
-                       <step.icon className="h-8 w-8" strokeWidth={1.5} />
+                    <div
+                      className={`flex h-[72px] w-[72px] items-center justify-center rounded-full text-white shadow-inner ${step.bgClass}`}
+                    >
+                      <step.icon className="h-8 w-8" strokeWidth={1.5} />
                     </div>
                   </motion.div>
 
@@ -419,18 +429,18 @@ function JourneyTimeline() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ delay: index * 0.15 + 0.2, duration: 0.5 }}
-                    className={`flex-1 sm:flex-none sm:w-1/2 ${isEven ? 'sm:text-right sm:pr-[5.5rem]' : 'sm:text-left sm:pl-[5.5rem] sm:ml-auto'} ml-[110px] sm:ml-0 pt-2`}
+                    className="min-w-0 pt-2"
                   >
                     <div className={`text-[15px] font-bold tracking-widest ${step.textClass}`}>
                       0{index + 1}
                     </div>
-                    <div className={`my-3 h-[2px] w-5 bg-gold/30 ${isEven ? 'sm:ml-auto' : ''} ${!isEven ? 'sm:mr-auto' : ''}`} />
+                    <div className="my-3 h-[2px] w-5 bg-gold/30" />
                     <h3 className="mb-2 font-serif text-xl font-bold text-primary leading-tight">
                       {step.title.split(" ").slice(0, -1).join(" ")}
                       <br />
                       {step.title.split(" ").slice(-1)}
                     </h3>
-                    <p className="text-[15px] text-muted-foreground/90 leading-relaxed max-w-[220px] inline-block">
+                    <p className="max-w-[220px] text-[15px] leading-relaxed text-muted-foreground/90">
                       {step.desc}
                     </p>
                   </motion.div>
@@ -582,7 +592,11 @@ function Counter({
 
 function Mission() {
   return (
-    <Section id="mission" className="relative overflow-hidden gradient-hero text-white" containerClassName="max-w-[90rem]">
+    <Section
+      id="mission"
+      className="relative overflow-hidden gradient-hero text-white"
+      containerClassName="max-w-[90rem]"
+    >
       <div className="absolute inset-0 opacity-20">
         <img src={communityImg} alt="" className="h-full w-full object-cover" loading="lazy" />
       </div>
@@ -598,7 +612,8 @@ function Mission() {
             Let's Increase the Count
           </div>
           <h2 className="text-4xl font-medium leading-[1.05] md:text-5xl">
-            "The harvest is plentiful, but the workers are few…" <span className="text-2xl text-white/60 whitespace-nowrap">Luke 10:2</span>
+            "The harvest is plentiful, but the workers are few…"{" "}
+            <span className="text-2xl text-white/60">Luke 10:2</span>
             <br />
             <span className="mt-4 block text-3xl italic text-[oklch(0.85_0.12_180)]">
               … and only a handful have ever been trained.
@@ -614,10 +629,14 @@ function Mission() {
         >
           <div className="space-y-4 text-lg leading-relaxed text-white/75">
             <p>
-              Bible colleges provide solid theology education but require three years, leaving out practical ministry training. Most believers want to serve but can't commit that much time. This leads to the misconception that only full-time ministers can do ministry, while the Great Commission to share the Gospel applies to all believers.
+              Bible colleges provide solid theology education but require three years, leaving out
+              practical ministry training. Most believers want to serve but can't commit that much
+              time. This leads to the misconception that only full-time ministers can do ministry,
+              while the Great Commission to share the Gospel applies to all believers.
             </p>
             <p>
-              Paul & Timothy Training Centre closes this gap with short, intentional training designed for ordinary believers with a heart to serve.
+              Paul & Timothy Training Centre closes this gap with short, intentional training
+              designed for ordinary believers with a heart to serve.
             </p>
           </div>
           <div className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
@@ -632,7 +651,11 @@ function Mission() {
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center text-center">
                 <div className="text-3xl font-medium text-[oklch(0.85_0.12_180)] md:text-4xl">
-                  <Counter target={stat.value} format={stat.format} duration={stat.value === 2017 ? 1500 : stat.value === 2439 ? 2500 : 900} />
+                  <Counter
+                    target={stat.value}
+                    format={stat.format}
+                    duration={stat.value === 2017 ? 1500 : stat.value === 2439 ? 2500 : 900}
+                  />
                 </div>
                 <div className="mt-2 text-xs uppercase tracking-widest text-white/60 leading-snug">
                   {stat.label}
@@ -648,14 +671,21 @@ function Mission() {
                 initial={{ opacity: 0, scale: 0.7 }}
                 whileInView={{ opacity: 1, scale: [1.15, 1] }}
                 viewport={{ once: true, margin: "-80px" }}
-                transition={{ delay: 0.4, duration: 0.6, type: "spring", stiffness: 260, damping: 14 }}
+                transition={{
+                  delay: 0.4,
+                  duration: 0.6,
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 14,
+                }}
                 className="inline-block text-[oklch(0.85_0.12_180)]"
               >
                 9 Online & 4 In-person Training
               </motion.strong>
             </p>
             <p>
-              <strong className="text-white">Places Covered:</strong> Various parts of Tamil Nadu, Maharashtra, Karnataka, Pune, Gujarat, Singapore & UK
+              <strong className="text-white">Places Covered:</strong> Various parts of Tamil Nadu,
+              Maharashtra, Karnataka, Pune, Gujarat, Singapore & UK
             </p>
           </div>
           <a
@@ -697,7 +727,8 @@ function Courses() {
             Get Equipped… <br /> … Without Pressing “Pause” on Life.
           </h2>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            All Paul & Timothy Training Centre courses are built for people with lives, jobs and families already in motion.
+            All Paul & Timothy Training Centre courses are built for people with lives, jobs and
+            families already in motion.
           </p>
         </div>
         <Link
@@ -731,7 +762,9 @@ function Courses() {
             </div>
             <div className="flex flex-1 flex-col p-8">
               <h3 className="text-2xl font-medium text-primary">{c.title}</h3>
-              <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">{c.desc}</p>
+              <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">
+                {c.desc}
+              </p>
               <Link
                 to="/courses/$slug"
                 params={{ slug: c.slug }}
@@ -751,7 +784,8 @@ function Courses() {
 function Testimonials() {
   const quotes = [
     {
-      quote: "I now feel prepared and confident to step into ministry — and to strengthen my own family along the way.",
+      quote:
+        "I now feel prepared and confident to step into ministry — and to strengthen my own family along the way.",
       name: "Bro. Akash",
       role: "Kingdom Shakers 2026",
     },
@@ -761,7 +795,8 @@ function Testimonials() {
       role: "Aletheia 2026, Tirunelveli",
     },
     {
-      quote: "This training gave me a clear understanding of what counselling is, and helped me see the importance of this ministry.",
+      quote:
+        "This training gave me a clear understanding of what counselling is, and helped me see the importance of this ministry.",
       name: "Pastor S. Joe Vimal",
       role: "Counsellors Training 2025, Coimbatore",
     },
@@ -799,7 +834,6 @@ function Testimonials() {
     </Section>
   );
 }
-
 
 function Home() {
   return (

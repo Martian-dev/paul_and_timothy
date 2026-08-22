@@ -79,6 +79,17 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
     return () => window.removeEventListener("scroll", on);
   }, [alwaysSolid]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   const solid = alwaysSolid || scrolled;
   const linkCls = `text-sm font-medium transition-colors duration-500 ${
     solid ? "text-primary/80 hover:text-primary" : "text-white/90 hover:text-white"
@@ -100,7 +111,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-8 min-[1180px]:flex">
           {mainLinks.map((l) =>
             l.to ? (
               <Link key={l.label} to={l.to} className={linkCls}>
@@ -124,7 +135,7 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           </Link>
         </nav>
 
-        <div className="hidden items-center gap-3 lg:-ml-4 lg:flex">
+        <div className="hidden items-center gap-3 min-[1180px]:-ml-4 min-[1180px]:flex">
           <Show when="signed-out" treatPendingAsSignedOut>
             <Link
               to="/login"
@@ -150,10 +161,12 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
 
         <button
           onClick={() => setOpen(!open)}
-          className={`rounded-full p-2 transition-colors duration-500 lg:hidden ${
+          className={`rounded-full p-2 transition-colors duration-500 min-[1180px]:hidden ${
             solid ? "text-primary" : "text-white"
           }`}
           aria-label="Menu"
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -161,7 +174,10 @@ export function SiteNav({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
 
       {/* Mobile menu */}
       {open && (
-        <div className="bg-background border-t border-border/40 lg:hidden">
+        <div
+          id="mobile-navigation"
+          className="bg-background border-t border-border/40 min-[1180px]:hidden"
+        >
           <div className="flex flex-col gap-1 px-6 py-4">
             {mainLinks.map((l) =>
               l.to ? (
