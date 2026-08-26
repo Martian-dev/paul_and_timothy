@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as ApestAssessmentRouteImport } from './routes/apest-assessment'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as AssessmentRouteImport } from './routes/assessment'
@@ -23,6 +24,7 @@ import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SpiritualGiftsRouteImport } from './routes/spiritual-gifts'
 import { Route as WhyWeExistRouteImport } from './routes/why-we-exist'
+import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as ArticlesCallingRouteImport } from './routes/articles_.calling'
 import { Route as ArticlesRheniusRouteImport } from './routes/articles_.rhenius'
 import { Route as ArticlesScudderRouteImport } from './routes/articles_.scudder'
@@ -36,10 +38,18 @@ import { Route as LoginSplatRouteImport } from './routes/login.$'
 import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
 import { Route as SignUpSplatRouteImport } from './routes/sign-up.$'
 import { Route as SignupSplatRouteImport } from './routes/signup.$'
+import { Route as AccountReceiptRegistrationIdRouteImport } from './routes/account.receipt.$registrationId'
+import { Route as ApiRazorpayReconcileRouteImport } from './routes/api/razorpay/reconcile'
+import { Route as ApiRazorpayWebhookRouteImport } from './routes/api/razorpay/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApestAssessmentRoute = ApestAssessmentRouteImport.update({
@@ -107,6 +117,11 @@ const WhyWeExistRoute = WhyWeExistRouteImport.update({
   path: '/why-we-exist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountIndexRoute = AccountIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AccountRoute,
+} as any)
 const ArticlesCallingRoute = ArticlesCallingRouteImport.update({
   id: '/articles_/calling',
   path: '/articles/calling',
@@ -172,9 +187,26 @@ const SignupSplatRoute = SignupSplatRouteImport.update({
   path: '/signup/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountReceiptRegistrationIdRoute =
+  AccountReceiptRegistrationIdRouteImport.update({
+    id: '/receipt/$registrationId',
+    path: '/receipt/$registrationId',
+    getParentRoute: () => AccountRoute,
+  } as any)
+const ApiRazorpayReconcileRoute = ApiRazorpayReconcileRouteImport.update({
+  id: '/api/razorpay/reconcile',
+  path: '/api/razorpay/reconcile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRazorpayWebhookRoute = ApiRazorpayWebhookRouteImport.update({
+  id: '/api/razorpay/webhook',
+  path: '/api/razorpay/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRouteWithChildren
   '/apest-assessment': typeof ApestAssessmentRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
@@ -200,7 +232,11 @@ export interface FileRoutesByFullPath {
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/signup/$': typeof SignupSplatRoute
+  '/account/': typeof AccountIndexRoute
   '/courses/': typeof CoursesIndexRoute
+  '/account/receipt/$registrationId': typeof AccountReceiptRegistrationIdRoute
+  '/api/razorpay/reconcile': typeof ApiRazorpayReconcileRoute
+  '/api/razorpay/webhook': typeof ApiRazorpayWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -228,11 +264,16 @@ export interface FileRoutesByTo {
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/signup/$': typeof SignupSplatRoute
+  '/account': typeof AccountIndexRoute
   '/courses': typeof CoursesIndexRoute
+  '/account/receipt/$registrationId': typeof AccountReceiptRegistrationIdRoute
+  '/api/razorpay/reconcile': typeof ApiRazorpayReconcileRoute
+  '/api/razorpay/webhook': typeof ApiRazorpayWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account': typeof AccountRouteWithChildren
   '/apest-assessment': typeof ApestAssessmentRoute
   '/articles': typeof ArticlesRoute
   '/assessment': typeof AssessmentRoute
@@ -258,12 +299,17 @@ export interface FileRoutesById {
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/signup/$': typeof SignupSplatRoute
+  '/account/': typeof AccountIndexRoute
   '/courses/': typeof CoursesIndexRoute
+  '/account/receipt/$registrationId': typeof AccountReceiptRegistrationIdRoute
+  '/api/razorpay/reconcile': typeof ApiRazorpayReconcileRoute
+  '/api/razorpay/webhook': typeof ApiRazorpayWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account'
     | '/apest-assessment'
     | '/articles'
     | '/assessment'
@@ -289,7 +335,11 @@ export interface FileRouteTypes {
     | '/sign-in/$'
     | '/sign-up/$'
     | '/signup/$'
+    | '/account/'
     | '/courses/'
+    | '/account/receipt/$registrationId'
+    | '/api/razorpay/reconcile'
+    | '/api/razorpay/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -317,10 +367,15 @@ export interface FileRouteTypes {
     | '/sign-in/$'
     | '/sign-up/$'
     | '/signup/$'
+    | '/account'
     | '/courses'
+    | '/account/receipt/$registrationId'
+    | '/api/razorpay/reconcile'
+    | '/api/razorpay/webhook'
   id:
     | '__root__'
     | '/'
+    | '/account'
     | '/apest-assessment'
     | '/articles'
     | '/assessment'
@@ -346,11 +401,16 @@ export interface FileRouteTypes {
     | '/sign-in/$'
     | '/sign-up/$'
     | '/signup/$'
+    | '/account/'
     | '/courses/'
+    | '/account/receipt/$registrationId'
+    | '/api/razorpay/reconcile'
+    | '/api/razorpay/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRoute: typeof AccountRouteWithChildren
   ApestAssessmentRoute: typeof ApestAssessmentRoute
   ArticlesRoute: typeof ArticlesRoute
   AssessmentRoute: typeof AssessmentRoute
@@ -372,6 +432,8 @@ export interface RootRouteChildren {
   SignInSplatRoute: typeof SignInSplatRoute
   SignUpSplatRoute: typeof SignUpSplatRoute
   SignupSplatRoute: typeof SignupSplatRoute
+  ApiRazorpayReconcileRoute: typeof ApiRazorpayReconcileRoute
+  ApiRazorpayWebhookRoute: typeof ApiRazorpayWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -381,6 +443,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/apest-assessment': {
@@ -474,6 +543,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WhyWeExistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/': {
+      id: '/account/'
+      path: '/'
+      fullPath: '/account/'
+      preLoaderRoute: typeof AccountIndexRouteImport
+      parentRoute: typeof AccountRoute
+    }
     '/articles_/calling': {
       id: '/articles_/calling'
       path: '/articles/calling'
@@ -565,8 +641,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/receipt/$registrationId': {
+      id: '/account/receipt/$registrationId'
+      path: '/receipt/$registrationId'
+      fullPath: '/account/receipt/$registrationId'
+      preLoaderRoute: typeof AccountReceiptRegistrationIdRouteImport
+      parentRoute: typeof AccountRoute
+    }
+    '/api/razorpay/reconcile': {
+      id: '/api/razorpay/reconcile'
+      path: '/api/razorpay/reconcile'
+      fullPath: '/api/razorpay/reconcile'
+      preLoaderRoute: typeof ApiRazorpayReconcileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/razorpay/webhook': {
+      id: '/api/razorpay/webhook'
+      path: '/api/razorpay/webhook'
+      fullPath: '/api/razorpay/webhook'
+      preLoaderRoute: typeof ApiRazorpayWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface AccountRouteChildren {
+  AccountIndexRoute: typeof AccountIndexRoute
+  AccountReceiptRegistrationIdRoute: typeof AccountReceiptRegistrationIdRoute
+}
+
+const AccountRouteChildren: AccountRouteChildren = {
+  AccountIndexRoute: AccountIndexRoute,
+  AccountReceiptRegistrationIdRoute: AccountReceiptRegistrationIdRoute,
+}
+
+const AccountRouteWithChildren =
+  AccountRoute._addFileChildren(AccountRouteChildren)
 
 interface CoursesRouteChildren {
   CoursesSlugRoute: typeof CoursesSlugRoute
@@ -598,6 +708,7 @@ const EventsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRoute: AccountRouteWithChildren,
   ApestAssessmentRoute: ApestAssessmentRoute,
   ArticlesRoute: ArticlesRoute,
   AssessmentRoute: AssessmentRoute,
@@ -619,6 +730,8 @@ const rootRouteChildren: RootRouteChildren = {
   SignInSplatRoute: SignInSplatRoute,
   SignUpSplatRoute: SignUpSplatRoute,
   SignupSplatRoute: SignupSplatRoute,
+  ApiRazorpayReconcileRoute: ApiRazorpayReconcileRoute,
+  ApiRazorpayWebhookRoute: ApiRazorpayWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

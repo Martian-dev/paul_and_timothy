@@ -100,11 +100,22 @@ function AuthNavControls({
       <Show when="signed-in" treatPendingAsSignedOut={false}>
         {mobile ? (
           <div className="flex items-center gap-3 px-3 py-2.5">
-            <span className="text-sm font-medium text-primary/80">Your account</span>
+            <Link
+              to="/account"
+              onClick={onNavigate}
+              className="text-sm font-medium text-primary/80 hover:text-primary"
+            >
+              Your account
+            </Link>
             <UserButton />
           </div>
         ) : (
-          <UserButton showName />
+          <div className="flex items-center gap-3">
+            <Link to="/account" className="text-sm font-medium text-primary/80 hover:text-primary">
+              Account
+            </Link>
+            <UserButton showName />
+          </div>
         )}
       </Show>
     </AuthRuntimeBoundary>
