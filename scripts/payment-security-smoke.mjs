@@ -95,4 +95,22 @@ assert.match(reconcileSource, /const MAX_ATTEMPTS_PER_RUN = 25/);
 assert.match(reconcileSource, /LIMIT \$\{MAX_ATTEMPTS_PER_RUN\}/);
 assert.match(reconcileSource, /if \(refunds\.length > 0 \|\| matchingDisputes\.length > 0\)/);
 
+const registrationsSource = fs.readFileSync("src/lib/registrations.ts", "utf8");
+assert.match(
+  registrationsSource,
+  /export const refreshEventPaymentStatus = createServerFn\(\{ method: "POST" \}\)/,
+  "the authenticated modal-close status refresh must exist",
+);
+const registerSource = fs.readFileSync("src/routes/register.tsx", "utf8");
+assert.match(
+  registerSource,
+  /refreshEventPaymentStatus/,
+  "the registration UI must refresh provider status after checkout",
+);
+assert.match(
+  registerSource,
+  /ondismiss:\s*\(\) => \{[\s\S]*refreshPaymentStatus/,
+  "modal dismissal must trigger the provider status refresh",
+);
+
 console.log("Payment signature checks passed");

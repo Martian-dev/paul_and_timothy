@@ -894,6 +894,87 @@ export const getPaymentStatus = createServerFn({ method: "GET" })
     };
   });
 
+/**
+ * Refresh an open payment directly from Razorpay.
+ *
+ * The Checkout success callback is not guaranteed to reach the browser (for
+ * example, a modal can close while the callback request is in flight). The
+ * authenticated customer can therefore ask the server to inspect the
+ * server-owned order and apply any captured/failed payment it finds. The
+ * order ID is read from our database rather than accepted from the browser.
+ */
+export const refreshEventPaymentStatus = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      registrationId: z.string().uuid(),
+      paymentAttemptId: z.string().uuid(),
+    }),
+  )
+  .handler(async ({ data }): Promise<PaymentVerificationResult> => {
+    const { appUserId } = await requireCurrentUser();
+    const sql = getDb();
+    const rows = (await sql`
+      SELECT attempts.id, attempts.razorpay_order_id, attempts.amount_minor,
+             attempts.currency, attempts.status, registrations.id AS registration_id
+      FROM event_payment_attempts AS attempts
+      INNER JOIN event_registrations AS registrations
+        ON registrations.id = attempts.registration_id
+      WHERE attempts.id = ${data.paymentAttemptId}
+        AND registrations.id = ${data.registrationId}
+        AND registrations.user_id = ${appUserId}
+      LIMIT 1
+    `) as unknown as DatabaseRow[];
+    const attempt = rows[0];
+    if (!attempt) throw new Error("PAYMENT_ATTEMPT_NOT_FOUND");
+
+    const { fetchRazorpayOrderPayments } = await import("@/lib/razorpay.server");
+    const orderId = attempt.razorpay_order_id as string | null;
+    if (orderId) {
+      const payments = await fetchRazorpayOrderPayments(orderId);
+      for (const payment of payments) {
+        if (
+          payment.amount !== Number(attempt.amount_minor) ||
+          payment.currency !== attempt.currency
+        ) {
+          continue;
+        }
+        const eventType =
+          payment.status === "captured"
+            ? "payment.captured"
+            : payment.status === "authorized"
+              ? "payment.authorized"
+              : payment.status === "failed"
+                ? "payment.failed"
+                : null;
+        if (!eventType) continue;
+        await processRazorpayPaymentEvent({
+          eventType,
+          payment: payment as unknown as Record<string, unknown>,
+        });
+      }
+    }
+
+    const refreshedRows = (await sql`
+      SELECT registrations.id AS registration_id, registrations.receipt_number,
+             attempts.id AS payment_attempt_id, attempts.status
+      FROM event_payment_attempts AS attempts
+      INNER JOIN event_registrations AS registrations
+        ON registrations.id = attempts.registration_id
+      WHERE attempts.id = ${data.paymentAttemptId}
+        AND registrations.id = ${data.registrationId}
+        AND registrations.user_id = ${appUserId}
+      LIMIT 1
+    `) as unknown as DatabaseRow[];
+    const refreshed = refreshedRows[0];
+    if (!refreshed) throw new Error("PAYMENT_ATTEMPT_NOT_FOUND");
+    return {
+      registrationId: refreshed.registration_id as string,
+      paymentAttemptId: refreshed.payment_attempt_id as string,
+      status: refreshed.status as PaymentVerificationResult["status"],
+      receiptNumber: (refreshed.receipt_number as string | null) ?? null,
+    };
+  });
+
 export const getAccountRegistrations = createServerFn({ method: "GET" }).handler(
   async (): Promise<AccountRegistration[]> => {
     const { appUserId } = await requireCurrentUser();

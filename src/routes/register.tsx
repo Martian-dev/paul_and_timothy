@@ -10,9 +10,11 @@ import {
   createEventPaymentOrder,
   getPaymentStatus,
   getRegistrationPageData,
+  refreshEventPaymentStatus,
   saveRegistrationDraft,
   verifyEventPayment,
   type PaymentOrderResult,
+  type PaymentVerificationResult,
 } from "@/lib/registrations";
 
 type RazorpayInstance = {
@@ -154,6 +156,7 @@ function RegisterPage() {
   const [savedRegistrationId, setSavedRegistrationId] = useState(
     registration?.registrationId ?? "",
   );
+  const paymentCallbackInFlight = useRef(false);
   const payableAmountMinor = paymentOrder?.amountMinor ?? eventDetails?.amountMinor;
   const payableCurrency = paymentOrder?.currency ?? eventDetails?.currency;
 
@@ -321,15 +324,48 @@ function RegisterPage() {
     return window.Razorpay;
   };
 
-  const waitForPaymentConfirmation = async (id: string) => {
-    const delays = [500, 1000, 2000, 4000, 8000];
+  const markPaymentCaptured = () => {
+    setPaymentComplete(true);
+    setAlreadyRegistered(true);
+    setStep("payment");
+    setPaymentError(null);
+  };
+
+  const refreshPaymentStatus = async (order: PaymentOrderResult) =>
+    refreshEventPaymentStatus({
+      data: {
+        registrationId: order.registrationId,
+        paymentAttemptId: order.paymentAttemptId,
+      },
+    });
+
+  const waitForPaymentConfirmation = async (order: PaymentOrderResult) => {
+    // Check Razorpay immediately, then repeat with a bounded backoff. This
+    // covers both a callback race and accounts where capture is asynchronous.
+    const delays = [0, 500, 1000, 2000, 4000, 8000];
+    let latest: PaymentVerificationResult | null = null;
     for (const delay of delays) {
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      const status = await getPaymentStatus({ data: { registrationId: id } });
-      if (status?.status === "captured") return status;
-      if (status?.status === "failed" || status?.status === "refunded") return status;
+      if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
+      try {
+        latest = await refreshPaymentStatus(order);
+      } catch {
+        // If Razorpay is temporarily unavailable, retain the locally persisted
+        // state and let the next attempt retry the provider lookup.
+        try {
+          latest = await getPaymentStatus({ data: { registrationId: order.registrationId } });
+        } catch {
+          // Keep polling while the bounded confirmation window remains.
+        }
+      }
+      if (
+        latest?.status === "captured" ||
+        latest?.status === "failed" ||
+        latest?.status === "refunded"
+      ) {
+        return latest;
+      }
     }
-    return null;
+    return latest;
   };
 
   const handlePay = async () => {
@@ -365,34 +401,65 @@ function RegisterPage() {
         theme: { color: "#0f766e" },
         modal: {
           confirm_close: true,
-          ondismiss: () => setPaying(false),
+          ondismiss: () => {
+            // Razorpay can close the modal before its success callback reaches
+            // this page. Reconcile the server-owned order immediately, while
+            // leaving the callback to finish if it is already in flight.
+            if (paymentCallbackInFlight.current) return;
+            void (async () => {
+              try {
+                const refreshed = await refreshPaymentStatus(order);
+                if (refreshed.status === "captured") {
+                  markPaymentCaptured();
+                } else if (refreshed.status === "failed") {
+                  setPaymentError("The payment failed. You can try again.");
+                }
+              } catch {
+                // Closing an unpaid checkout is not an error. A later retry or
+                // the scheduled reconciliation job can recover a lost update.
+              } finally {
+                if (!paymentCallbackInFlight.current) setPaying(false);
+              }
+            })();
+          },
         },
         handler: async (response: {
           razorpay_payment_id: string;
           razorpay_order_id: string;
           razorpay_signature: string;
         }) => {
+          paymentCallbackInFlight.current = true;
           try {
-            const verification = await verifyEventPayment({
-              data: {
-                paymentAttemptId: order.paymentAttemptId,
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpayOrderId: response.razorpay_order_id,
-                razorpaySignature: response.razorpay_signature,
-              },
-            });
-            if (verification.status === "captured") {
-              setPaymentComplete(true);
-              setAlreadyRegistered(true);
-              setStep("payment");
+            let verification: PaymentVerificationResult | null = null;
+            let verificationError: unknown = null;
+            try {
+              verification = await verifyEventPayment({
+                data: {
+                  paymentAttemptId: order.paymentAttemptId,
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpaySignature: response.razorpay_signature,
+                },
+              });
+            } catch (error) {
+              verificationError = error;
+            }
+            if (verification?.status === "captured") {
+              markPaymentCaptured();
               return;
             }
-            const confirmed = await waitForPaymentConfirmation(order.registrationId);
+            const confirmed = await waitForPaymentConfirmation(order);
             if (confirmed?.status === "captured") {
-              setPaymentComplete(true);
-              setAlreadyRegistered(true);
+              markPaymentCaptured();
             } else if (confirmed?.status === "failed") {
               setPaymentError("The payment failed. You can try again.");
+            } else if (
+              verificationError instanceof Error &&
+              verificationError.message === "PAYMENT_SIGNATURE_INVALID"
+            ) {
+              setPaymentError(
+                "We could not verify that payment. Please contact support before trying again.",
+              );
             } else {
               setPaymentError(
                 "Payment received. We are still confirming it. Check your account shortly.",
