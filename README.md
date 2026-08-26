@@ -49,8 +49,9 @@ webhook endpoints separately. The webhook endpoint is:
 POST /api/razorpay/webhook
 ```
 
-The reconciliation endpoint is intended for a trusted scheduler (for example,
-Vercel Cron) and requires `Authorization: Bearer $CRON_SECRET`:
+The reconciliation endpoint is scheduled every five minutes on Vercel via
+`vercel.json` (or can be called by another trusted scheduler). It accepts an
+authenticated GET or POST request with `Authorization: Bearer $CRON_SECRET`:
 
 ```text
 POST /api/razorpay/reconcile
