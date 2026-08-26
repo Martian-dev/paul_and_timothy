@@ -129,6 +129,11 @@ assert.match(
 );
 assert.match(
   registerSource,
+  /providerRefreshFailed && latest\?\.status === "failed"\) return null/,
+  "provider outages must keep an uncertain failed payment pending",
+);
+assert.match(
+  registerSource,
   /checkout\.on\("payment\.failed", \(\) => \{[\s\S]*paymentFailureObserved\.current = true/,
   "a payment.failed event must remain provisional while Checkout can retry",
 );

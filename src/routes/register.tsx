@@ -348,11 +348,13 @@ function RegisterPage() {
     // payment entity is provisional because the same order can receive a later
     // retry; only capture/refund ends the settling window early.
     let latest: PaymentVerificationResult | null = null;
+    let providerRefreshFailed = false;
     for (const delay of delays) {
       if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
       try {
         latest = await refreshPaymentStatus(order);
       } catch {
+        providerRefreshFailed = true;
         // If Razorpay is temporarily unavailable, retain the locally persisted
         // state and let the next attempt retry the provider lookup.
         try {
@@ -365,6 +367,10 @@ function RegisterPage() {
         return latest;
       }
     }
+    // A locally recorded failure is not enough to declare a terminal result if
+    // any provider refresh failed during this settling window. The next retry
+    // (or reconciliation fallback) can still discover a late capture.
+    if (providerRefreshFailed && latest?.status === "failed") return null;
     return latest;
   };
 
