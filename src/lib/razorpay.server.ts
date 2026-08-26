@@ -120,7 +120,6 @@ export async function createRazorpayOrder(input: {
       currency: input.currency,
       receipt: input.receipt,
       partial_payment: false,
-      capture: "automatic",
       notes: {
         registration_id: input.registrationId,
         payment_attempt_id: input.paymentAttemptId,

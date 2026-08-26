@@ -5,7 +5,7 @@ process.env.RAZORPAY_KEY_ID = "rzp_test_smoke";
 process.env.RAZORPAY_KEY_SECRET = "api-secret";
 process.env.RAZORPAY_WEBHOOK_SECRET = "webhook-secret";
 
-const { safeEqualHex, verifyPaymentSignature, verifyWebhookSignature } =
+const { createRazorpayOrder, safeEqualHex, verifyPaymentSignature, verifyWebhookSignature } =
   await import("../src/lib/razorpay.server.ts");
 
 assert.equal(safeEqualHex("0".repeat(64), "0".repeat(64)), true);
@@ -44,6 +44,36 @@ assert.equal(
   }),
   false,
 );
+
+const originalFetch = globalThis.fetch;
+let orderRequestBody;
+globalThis.fetch = async (_input, init) => {
+  orderRequestBody = JSON.parse(String(init?.body));
+  return new Response(
+    JSON.stringify({
+      id: "order_smoke",
+      amount: 150000,
+      currency: "INR",
+      receipt: "PTTC-smoke",
+      status: "created",
+    }),
+    { status: 200, headers: { "content-type": "application/json" } },
+  );
+};
+await createRazorpayOrder({
+  amount: 150000,
+  currency: "INR",
+  receipt: "PTTC-smoke",
+  registrationId: "registration-smoke",
+  paymentAttemptId: "attempt-smoke",
+});
+globalThis.fetch = originalFetch;
+assert.equal(orderRequestBody.capture, undefined);
+assert.equal(orderRequestBody.partial_payment, false);
+assert.deepEqual(orderRequestBody.notes, {
+  registration_id: "registration-smoke",
+  payment_attempt_id: "attempt-smoke",
+});
 
 const vercelConfig = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 assert.deepEqual(
