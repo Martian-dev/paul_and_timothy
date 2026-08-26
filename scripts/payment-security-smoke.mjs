@@ -101,6 +101,11 @@ assert.match(
   /export const refreshEventPaymentStatus = createServerFn\(\{ method: "POST" \}\)/,
   "the authenticated modal-close status refresh must exist",
 );
+assert.match(
+  registrationsSource,
+  /open_attempts\.status IN \('creating', 'created', 'authorized'\)/,
+  "failed-order reuse must not outrank an existing open payment attempt",
+);
 const registerSource = fs.readFileSync("src/routes/register.tsx", "utf8");
 assert.match(
   registerSource,
@@ -109,8 +114,37 @@ assert.match(
 );
 assert.match(
   registerSource,
-  /ondismiss:\s*\(\) => \{[\s\S]*refreshPaymentStatus/,
+  /ondismiss:\s*\(\) => \{[\s\S]*(?:refreshPaymentStatus|waitForPaymentConfirmation)/,
   "modal dismissal must trigger the provider status refresh",
+);
+assert.match(
+  registerSource,
+  /ondismiss:\s*\(\) => \{[\s\S]*waitForPaymentConfirmation/,
+  "modal dismissal must allow the provider order to settle before showing failure",
+);
+assert.match(
+  registerSource,
+  /latest\?\.status === "captured" \|\|\s*latest\?\.status === "refunded"/,
+  "payment polling must not stop on a provisional failed attempt",
+);
+assert.match(
+  registerSource,
+  /checkout\.on\("payment\.failed", \(\) => \{[\s\S]*paymentFailureObserved\.current = true/,
+  "a payment.failed event must remain provisional while Checkout can retry",
+);
+const paymentFailedHandler = registerSource.match(
+  /checkout\.on\("payment\.failed", \(\) => \{[\s\S]*?\n\s*\}\);/,
+);
+assert.ok(paymentFailedHandler, "the payment.failed handler must remain present");
+assert.doesNotMatch(
+  paymentFailedHandler[0],
+  /setPaymentError\(/,
+  "a payment.failed event must not immediately surface a terminal failure",
+);
+assert.doesNotMatch(
+  paymentFailedHandler[0],
+  /setPaying\(/,
+  "a payment.failed event must not unlock or race the active Checkout session",
 );
 
 console.log("Payment signature checks passed");

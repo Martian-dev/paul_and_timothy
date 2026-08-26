@@ -157,6 +157,7 @@ function RegisterPage() {
     registration?.registrationId ?? "",
   );
   const paymentCallbackInFlight = useRef(false);
+  const paymentFailureObserved = useRef(false);
   const payableAmountMinor = paymentOrder?.amountMinor ?? eventDetails?.amountMinor;
   const payableCurrency = paymentOrder?.currency ?? eventDetails?.currency;
 
@@ -339,10 +340,13 @@ function RegisterPage() {
       },
     });
 
-  const waitForPaymentConfirmation = async (order: PaymentOrderResult) => {
-    // Check Razorpay immediately, then repeat with a bounded backoff. This
-    // covers both a callback race and accounts where capture is asynchronous.
-    const delays = [0, 500, 1000, 2000, 4000, 8000];
+  const waitForPaymentConfirmation = async (
+    order: PaymentOrderResult,
+    delays = [0, 500, 1000, 2000, 4000, 8000],
+  ) => {
+    // Check Razorpay immediately, then repeat with a bounded backoff. A failed
+    // payment entity is provisional because the same order can receive a later
+    // retry; only capture/refund ends the settling window early.
     let latest: PaymentVerificationResult | null = null;
     for (const delay of delays) {
       if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
@@ -357,11 +361,7 @@ function RegisterPage() {
           // Keep polling while the bounded confirmation window remains.
         }
       }
-      if (
-        latest?.status === "captured" ||
-        latest?.status === "failed" ||
-        latest?.status === "refunded"
-      ) {
+      if (latest?.status === "captured" || latest?.status === "refunded") {
         return latest;
       }
     }
@@ -372,6 +372,7 @@ function RegisterPage() {
     if (!savedRegistrationId || paying) return;
     setPaying(true);
     setPaymentError(null);
+    paymentFailureObserved.current = false;
     try {
       const order =
         paymentOrder ??
@@ -408,11 +409,20 @@ function RegisterPage() {
             if (paymentCallbackInFlight.current) return;
             void (async () => {
               try {
-                const refreshed = await refreshPaymentStatus(order);
-                if (refreshed.status === "captured") {
+                // A failed attempt does not close a Razorpay order; the
+                // customer may retry inside the same Checkout session. Give
+                // the order a bounded settling window before declaring the
+                // final result, so a later captured attempt wins over an
+                // earlier payment.failed event.
+                const refreshed = await waitForPaymentConfirmation(order);
+                if (refreshed?.status === "captured") {
                   markPaymentCaptured();
-                } else if (refreshed.status === "failed") {
+                } else if (refreshed?.status === "failed") {
                   setPaymentError("The payment failed. You can try again.");
+                } else if (paymentFailureObserved.current) {
+                  setPaymentError(
+                    "Payment has not been confirmed yet. You can retry safely; any captured payment will be reconciled automatically.",
+                  );
                 }
               } catch {
                 // Closing an unpaid checkout is not an error. A later retry or
@@ -479,8 +489,9 @@ function RegisterPage() {
         },
       });
       checkout.on("payment.failed", () => {
-        setPaymentError("The payment failed. No registration was confirmed. You can try again.");
-        setPaying(false);
+        // This event describes one attempt, not necessarily the whole order.
+        // Razorpay can emit it and then accept a retry on the same modal.
+        paymentFailureObserved.current = true;
       });
       checkout.open();
     } catch (paymentSubmissionError) {

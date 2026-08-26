@@ -452,6 +452,12 @@ export const createEventPaymentOrder = createServerFn({ method: "POST" })
       FROM event_payment_attempts
       WHERE registration_id = ${data.registrationId}
         AND status = 'failed' AND razorpay_order_id IS NOT NULL
+        AND NOT EXISTS (
+          SELECT 1
+          FROM event_payment_attempts AS open_attempts
+          WHERE open_attempts.registration_id = ${data.registrationId}
+            AND open_attempts.status IN ('creating', 'created', 'authorized')
+        )
       ORDER BY created_at DESC
       LIMIT 1
     `) as unknown as DatabaseRow[];
