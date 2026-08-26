@@ -9,6 +9,7 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
+    "test": "npm run test:auth-flow && npm run test:assessment-state && npm run test:payments",
     "test:auth-flow": "node --experimental-strip-types scripts/auth-redirect-smoke.mjs",
     "test:assessment-state": "node --experimental-strip-types scripts/assessment-state-smoke.mjs",
     "test:payments": "node --experimental-strip-types scripts/payment-security-smoke.mjs",

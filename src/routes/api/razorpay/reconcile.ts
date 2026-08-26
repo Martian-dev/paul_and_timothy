@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getDb } from "@/db/client";
 
+const MAX_ATTEMPTS_PER_RUN = 25;
+
 function authorized(request: Request) {
   const secret = process.env.CRON_SECRET;
   if (!secret) return false;
@@ -16,7 +18,7 @@ async function handleReconcile(request: Request) {
     FROM event_payment_attempts
     WHERE status IN ('creating', 'failed', 'created', 'authorized', 'captured', 'refund_pending', 'refund_failed', 'disputed')
     ORDER BY COALESCE(updated_at, created_at) ASC, created_at ASC
-    LIMIT 100
+    LIMIT ${MAX_ATTEMPTS_PER_RUN}
   `) as unknown as Array<{
     id: string;
     razorpay_order_id: string | null;
@@ -39,22 +41,24 @@ async function handleReconcile(request: Request) {
   const failures: Array<{ attemptId: string; error: string }> = [];
 
   const disputes: Array<{ payment_id: string; status: string }> = [];
-  try {
-    // Walk the full disputes collection. Chargebacks can be opened well
-    // after a payment, so a recent-only window would permanently miss a
-    // late dispute after a webhook outage.
-    let skip = 0;
-    for (;;) {
-      const page = await fetchRazorpayDisputes(undefined, skip);
-      disputes.push(...page);
-      if (page.length < 100) break;
-      skip += page.length;
+  if (attempts.some((attempt) => Boolean(attempt.razorpay_payment_id))) {
+    try {
+      // Walk the full disputes collection. Chargebacks can be opened well
+      // after a payment, so a recent-only window would permanently miss a
+      // late dispute after a webhook outage.
+      let skip = 0;
+      for (;;) {
+        const page = await fetchRazorpayDisputes(undefined, skip);
+        disputes.push(...page);
+        if (page.length < 100) break;
+        skip += page.length;
+      }
+    } catch (error) {
+      failures.push({
+        attemptId: "disputes",
+        error: error instanceof Error ? error.message : "DISPUTE_RECONCILIATION_FAILED",
+      });
     }
-  } catch (error) {
-    failures.push({
-      attemptId: "disputes",
-      error: error instanceof Error ? error.message : "DISPUTE_RECONCILIATION_FAILED",
-    });
   }
 
   for (const attempt of attempts) {
@@ -99,7 +103,15 @@ async function handleReconcile(request: Request) {
 
       if (attempt.razorpay_payment_id) {
         const refunds = await fetchRazorpayPaymentRefunds(attempt.razorpay_payment_id);
-        const currentPayment = await fetchRazorpayPayment(attempt.razorpay_payment_id);
+        const matchingDisputes = disputes.filter(
+          (item) => item.payment_id === attempt.razorpay_payment_id,
+        );
+        let currentPayment: Awaited<ReturnType<typeof fetchRazorpayPayment>> | undefined;
+        if (refunds.length > 0 || matchingDisputes.length > 0) {
+          // A current payment fetch is needed for cumulative partial-refund
+          // detection, but is skipped for ordinary captured attempts.
+          currentPayment = await fetchRazorpayPayment(attempt.razorpay_payment_id);
+        }
         for (const refund of refunds) {
           const eventType =
             refund.status === "processed"
@@ -115,10 +127,7 @@ async function handleReconcile(request: Request) {
           processed += 1;
         }
 
-        for (const dispute of disputes.filter(
-          (item) => item.payment_id === attempt.razorpay_payment_id,
-        )) {
-          const payment = await fetchRazorpayPayment(attempt.razorpay_payment_id);
+        for (const dispute of matchingDisputes) {
           const disputeEvent =
             dispute.status === "won"
               ? "payment.dispute.won"
@@ -131,7 +140,7 @@ async function handleReconcile(request: Request) {
                     : "payment.dispute.created";
           await processRazorpayPaymentEvent({
             eventType: disputeEvent,
-            payment: payment as unknown as Record<string, unknown>,
+            payment: currentPayment as unknown as Record<string, unknown>,
           });
           processed += 1;
         }

@@ -1,11 +1,16 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 
 process.env.RAZORPAY_KEY_ID = "rzp_test_smoke";
 process.env.RAZORPAY_KEY_SECRET = "api-secret";
 process.env.RAZORPAY_WEBHOOK_SECRET = "webhook-secret";
 
-const { verifyPaymentSignature, verifyWebhookSignature } =
+const { safeEqualHex, verifyPaymentSignature, verifyWebhookSignature } =
   await import("../src/lib/razorpay.server.ts");
+
+assert.equal(safeEqualHex("0".repeat(64), "0".repeat(64)), true);
+assert.equal(safeEqualHex("0".repeat(63), "0".repeat(63)), false);
+assert.equal(safeEqualHex("0".repeat(64), "O".repeat(64)), false);
 
 const rawBody = '{"event":"payment.captured"}';
 assert.equal(
@@ -39,5 +44,25 @@ assert.equal(
   }),
   false,
 );
+
+const vercelConfig = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+assert.deepEqual(
+  vercelConfig.crons,
+  [{ path: "/api/razorpay/reconcile", schedule: "0 3 * * *" }],
+  "the reconciliation fallback must stay within Vercel Hobby's once-daily cron limit",
+);
+
+const webhookSource = fs.readFileSync("src/routes/api/razorpay/webhook.ts", "utf8");
+assert.match(webhookSource, /readBoundedBody/);
+assert.match(webhookSource, /x-razorpay-signature/);
+assert.match(webhookSource, /ON CONFLICT \(razorpay_event_id\) DO NOTHING/);
+assert.match(webhookSource, /status: 500/);
+
+const reconcileSource = fs.readFileSync("src/routes/api/razorpay/reconcile.ts", "utf8");
+assert.match(reconcileSource, /request\.headers\.get\("authorization"\).*Bearer/);
+assert.match(reconcileSource, /if \(!authorized\(request\)\)/);
+assert.match(reconcileSource, /const MAX_ATTEMPTS_PER_RUN = 25/);
+assert.match(reconcileSource, /LIMIT \$\{MAX_ATTEMPTS_PER_RUN\}/);
+assert.match(reconcileSource, /if \(refunds\.length > 0 \|\| matchingDisputes\.length > 0\)/);
 
 console.log("Payment signature checks passed");
