@@ -6,7 +6,7 @@ const requireAccountAuth = createServerFn({ method: "GET" }).handler(async () =>
   const { isAuthenticated } = await auth();
   if (!isAuthenticated) {
     throw redirect({
-      to: "/login/$",
+      to: "/sign-in/$",
       params: { _splat: "" },
       search: { course: undefined, redirect: "/account" },
     });

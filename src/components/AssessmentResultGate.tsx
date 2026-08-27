@@ -93,7 +93,7 @@ export function AssessmentResultGate({
               } as const;
               savePendingAssessment(assessmentType, state);
               window.location.assign(
-                authUrl("/login", addAssessmentResumeToUrl(destination, assessmentType, state)),
+                authUrl("/sign-in", addAssessmentResumeToUrl(destination, assessmentType, state)),
               );
             }}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-soft"

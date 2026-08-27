@@ -1,4 +1,5 @@
 const FALLBACK_REDIRECT = "/";
+const AUTH_REDIRECT_STORAGE_KEY = "pttc.auth.redirect";
 
 /**
  * Only allow same-origin, relative application paths as auth destinations.
@@ -35,7 +36,52 @@ export function authRedirectFromSearch(value: unknown): string {
   return sanitizeAuthRedirect(value) ?? FALLBACK_REDIRECT;
 }
 
-export function authUrl(path: "/login" | "/signup", redirect?: string): string {
+/**
+ * Keep a return destination in the current tab while Clerk completes its
+ * sign-in flow. This is a defensive handoff for providers or verification
+ * steps that ignore the mounted component's redirect props and land on the
+ * configured home URL first.
+ */
+export function rememberAuthRedirect(value: unknown): void {
+  if (typeof window === "undefined") return;
+
+  const safeRedirect = sanitizeAuthRedirect(value);
+  try {
+    if (!safeRedirect || safeRedirect === FALLBACK_REDIRECT) {
+      window.sessionStorage.removeItem(AUTH_REDIRECT_STORAGE_KEY);
+      return;
+    }
+    window.sessionStorage.setItem(AUTH_REDIRECT_STORAGE_KEY, safeRedirect);
+  } catch {
+    // Storage can be disabled by privacy settings; Clerk's own redirect still
+    // remains the primary path in that case.
+  }
+}
+
+export function getPendingAuthRedirect(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+
+  try {
+    return sanitizeAuthRedirect(window.sessionStorage.getItem(AUTH_REDIRECT_STORAGE_KEY));
+  } catch {
+    return undefined;
+  }
+}
+
+export function clearPendingAuthRedirect(): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    window.sessionStorage.removeItem(AUTH_REDIRECT_STORAGE_KEY);
+  } catch {
+    // Ignore storage failures; there is nothing else to clean up.
+  }
+}
+
+export function authUrl(
+  path: "/login" | "/signup" | "/sign-in" | "/sign-up",
+  redirect?: string,
+): string {
   const safeRedirect = sanitizeAuthRedirect(redirect);
   if (!safeRedirect) return path;
 

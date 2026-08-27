@@ -10,6 +10,11 @@ Set `DATABASE_URL` in `.env.local`, then apply the schema and Aletheia seed even
 npm run db:migrate
 ```
 
+The prebuilt Clerk pages are mounted at `/sign-in` and `/sign-up`. Keep the
+`VITE_CLERK_SIGN_IN_URL` and `VITE_CLERK_SIGN_UP_URL` values in sync with those
+paths (the defaults are included in `.env.example`) so return-to-page redirects
+continue to work.
+
 Authenticated users are synchronized into `app_users`. Event registrations are
 stored in `event_registrations`, keyed by the Clerk user and event. Payment
 attempts and webhook deliveries are retained in `event_payment_attempts` and

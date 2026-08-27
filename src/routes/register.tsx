@@ -59,7 +59,7 @@ const requireRegistrationAuth = createServerFn({ method: "GET" })
     const { isAuthenticated } = await auth();
     if (!isAuthenticated) {
       throw redirect({
-        to: "/login/$",
+        to: "/sign-in/$",
         params: { _splat: "" },
         search: { course: undefined, redirect: data.returnTo },
       });
@@ -235,6 +235,15 @@ function RegisterPage() {
   useEffect(() => {
     setSelectedEventSlug(selectedEvent ?? "");
   }, [selectedEvent]);
+
+  useEffect(() => {
+    if (step !== "payment") return;
+
+    // The questionnaire can be considerably taller than the payment step.
+    // Reset the document scroll after the new step renders so the Checkout
+    // action is immediately visible instead of leaving the user mid-page.
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [step]);
 
   // The loader is authorized on the server, but Clerk still has to restore
   // the browser session before it is safe to render user-scoped form data.
@@ -881,7 +890,7 @@ function RegistrationAuthRequired({ returnTo }: { returnTo: string }) {
           Your registration is linked to your account. Sign in to view or update these details.
         </p>
         <Link
-          to="/login/$"
+          to="/sign-in/$"
           params={{ _splat: "" }}
           search={{ course: undefined, redirect: returnTo }}
           className="mt-8 inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 shadow-md"

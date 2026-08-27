@@ -1,5 +1,6 @@
 import { SignIn } from "@clerk/tanstack-react-start";
 import { createFileRoute } from "@tanstack/react-router";
+import { AuthRedirectCapture } from "@/components/AuthRedirectCapture";
 import { authRedirectFromSearch, authUrl } from "@/lib/auth-redirect";
 
 export const Route = createFileRoute("/login/$")({
@@ -16,8 +17,9 @@ function LoginCallbackPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-24">
+      <AuthRedirectCapture destination={destination} />
       <SignIn
-        signUpUrl={authUrl("/signup", destination)}
+        signUpUrl={authUrl("/sign-up", destination)}
         forceRedirectUrl={destination}
         fallbackRedirectUrl={destination}
       />

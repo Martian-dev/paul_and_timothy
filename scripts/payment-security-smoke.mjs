@@ -114,6 +114,11 @@ assert.match(
 const registerSource = fs.readFileSync("src/routes/register.tsx", "utf8");
 assert.match(
   registerSource,
+  /useEffect\(\(\) => \{[\s\S]*step !== "payment"[\s\S]*window\.scrollTo\(\{ top: 0, behavior: "auto" \}\)/,
+  "entering the payment step must return the page to the top",
+);
+assert.match(
+  registerSource,
   /refreshEventPaymentStatus/,
   "the registration UI must refresh provider status after checkout",
 );

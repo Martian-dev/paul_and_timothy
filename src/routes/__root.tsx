@@ -18,6 +18,11 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { FirstLoadConfetti } from "@/components/FirstLoadConfetti";
 import { AuthRuntimeBoundary } from "@/components/AuthRuntimeBoundary";
 import { syncCurrentUser } from "@/lib/user-sync";
+import {
+  clearPendingAuthRedirect,
+  currentPath as buildCurrentPath,
+  getPendingAuthRedirect,
+} from "@/lib/auth-redirect";
 
 function NotFoundComponent() {
   return (
@@ -128,8 +133,13 @@ function RootShell({ children }: { children: ReactNode }) {
          * Keep the UI bundle enabled so those components mount against the
          * same Clerk instance instead of failing after hydration with
          * "Clerk was not loaded with Ui components".
-         */}
-        <ClerkProvider appearance={{ theme: shadcn }} prefetchUI>
+        */}
+        <ClerkProvider
+          signInUrl="/sign-in"
+          signUpUrl="/sign-up"
+          appearance={{ theme: shadcn }}
+          prefetchUI
+        >
           {children}
           <Scripts />
         </ClerkProvider>
@@ -158,6 +168,7 @@ function RootComponent() {
       <AuthRuntimeBoundary boundary="user_record_sync" fallback={null}>
         <UserRecordSync />
       </AuthRuntimeBoundary>
+      <AuthRedirectBridge />
       <SiteNav alwaysSolid={!transparentNavPaths.includes(location.pathname)} />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
@@ -166,6 +177,31 @@ function RootComponent() {
       <FirstLoadConfetti />
     </QueryClientProvider>
   );
+}
+
+function AuthRedirectBridge() {
+  const { isLoaded, isSignedIn } = useAuth();
+  const router = useRouter();
+  const location = router.state.location;
+  const currentUrl = buildCurrentPath(location);
+
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn || typeof window === "undefined") return;
+
+    const pendingDestination = getPendingAuthRedirect();
+    if (!pendingDestination) return;
+
+    if (pendingDestination === currentUrl) {
+      clearPendingAuthRedirect();
+      return;
+    }
+
+    // Use a full navigation so the protected destination gets a fresh server
+    // request with the newly established Clerk session cookie.
+    window.location.replace(pendingDestination);
+  }, [currentUrl, isLoaded, isSignedIn]);
+
+  return null;
 }
 
 function UserRecordSync() {

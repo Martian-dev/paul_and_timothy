@@ -88,7 +88,7 @@ function AuthNavControls({
        */}
       <Show when="signed-out" treatPendingAsSignedOut={false}>
         <Link
-          to="/login/$"
+          to="/sign-in/$"
           params={{ _splat: "" }}
           search={{ course: undefined, redirect: authDestination }}
           onClick={onNavigate}
