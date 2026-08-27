@@ -1,3 +1,5 @@
+import { defaultStringifySearch } from "@tanstack/react-router";
+
 const FALLBACK_REDIRECT = "/";
 const AUTH_REDIRECT_STORAGE_KEY = "pttc.auth.redirect";
 
@@ -98,21 +100,7 @@ export function currentPath(location: {
     typeof location.search === "string"
       ? location.search
       : location.search
-        ? `?${new URLSearchParams(
-            Object.entries(location.search).reduce<Record<string, string>>(
-              (params, [key, value]) => {
-                if (
-                  typeof value === "string" ||
-                  typeof value === "number" ||
-                  typeof value === "boolean"
-                ) {
-                  params[key] = String(value);
-                }
-                return params;
-              },
-              {},
-            ),
-          ).toString()}`
+        ? defaultStringifySearch(location.search)
         : "";
 
   return (

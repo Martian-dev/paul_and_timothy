@@ -9,6 +9,7 @@ const {
   rememberAuthRedirect,
   sanitizeAuthRedirect,
 } = await import("../src/lib/auth-redirect.ts");
+const { addAssessmentResumeToUrl } = await import("../src/lib/assessment-state.ts");
 
 const storage = new Map();
 globalThis.window = {
@@ -46,6 +47,28 @@ assert.equal(
 assert.equal(
   currentPath({ pathname: "/events/upcoming", search: { tab: "alethia" } }),
   "/events/upcoming?tab=alethia",
+);
+
+// TanStack Router JSON-parses JSON-shaped search values. The assessment
+// resume payload must survive that parse/stringify round trip or the auth
+// bridge will repeatedly redirect to the same assessment URL.
+const assessmentState = {
+  version: 1,
+  answers: { "children-0": 5 },
+  submitted: true,
+};
+const assessmentDestination = addAssessmentResumeToUrl(
+  "/ministry-calling",
+  "ministry_calling",
+  assessmentState,
+);
+const assessmentUrl = new URL(assessmentDestination, "https://pttc.local");
+const parsedAssessmentSearch = Object.fromEntries(assessmentUrl.searchParams.entries());
+parsedAssessmentSearch.assessment_resume = JSON.parse(parsedAssessmentSearch.assessment_resume);
+assert.equal(
+  currentPath({ pathname: assessmentUrl.pathname, search: parsedAssessmentSearch }),
+  assessmentDestination,
+  "object-valued assessment resume search must match the stored auth destination",
 );
 
 for (const file of [

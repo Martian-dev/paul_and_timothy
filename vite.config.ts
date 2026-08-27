@@ -5,16 +5,20 @@
 //     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { homedir } from "node:os";
+import { join } from "node:path";
 
 export default defineConfig({
   vite: {
-    // Keep Vite's mutable optimizer cache off the WSL-mounted Windows drive.
-    // Atomic directory renames under /mnt/c can be locked by Windows tooling.
-    cacheDir: "/tmp/paul-and-timothy-vite",
+    // Keep Vite's mutable optimizer cache off both the WSL-mounted Windows
+    // drive (where atomic renames can be locked) and the size-limited /tmp.
+    cacheDir: join(homedir(), ".cache", "paul-and-timothy-vite"),
     server: {
       // Files live on /mnt/c (Windows drive via WSL); inotify events don't fire
       // there, so the dev server never sees changes without polling.
       watch: { usePolling: true },
+      // Allow the current ngrok hostname to proxy browser/webhook requests locally.
+      allowedHosts: ["claw-headdress-guts.ngrok-free.dev"],
     },
   },
   tanstackStart: {
