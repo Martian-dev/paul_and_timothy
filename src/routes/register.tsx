@@ -508,6 +508,8 @@ function RegisterPage() {
       setPaymentError(
         {
           PAYMENT_ORDER_FAILED: "We couldn't start payment. Please try again.",
+          PAYMENT_PROVIDER_AUTH_FAILED:
+            "Payment provider credentials are invalid or expired. Please contact support.",
           PAYMENT_ORDER_DETAILS_MISMATCH:
             "The payment provider returned an unexpected order. Please try again or contact support.",
           PAYMENT_ORDER_PERSIST_FAILED:

@@ -106,11 +106,21 @@ assert.match(
   /open_attempts\.status IN \('creating', 'created', 'authorized'\)/,
   "failed-order reuse must not outrank an existing open payment attempt",
 );
+assert.match(
+  registrationsSource,
+  /PAYMENT_PROVIDER_AUTH_FAILED/,
+  "expired Razorpay credentials must have a distinct safe error",
+);
 const registerSource = fs.readFileSync("src/routes/register.tsx", "utf8");
 assert.match(
   registerSource,
   /refreshEventPaymentStatus/,
   "the registration UI must refresh provider status after checkout",
+);
+assert.match(
+  registerSource,
+  /PAYMENT_PROVIDER_AUTH_FAILED/,
+  "the UI must explain provider credential failures instead of hiding them as generic errors",
 );
 assert.match(
   registerSource,

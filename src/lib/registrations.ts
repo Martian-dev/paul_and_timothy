@@ -578,9 +578,14 @@ export const createEventPaymentOrder = createServerFn({ method: "POST" })
       receipt = claimedRows[0].receipt as string;
     }
 
-    const { createRazorpayOrder, fetchRazorpayOrdersByReceipt, getRazorpayKeyId } =
-      await import("@/lib/razorpay.server");
+    const {
+      createRazorpayOrder,
+      fetchRazorpayOrdersByReceipt,
+      getRazorpayKeyId,
+      RazorpayApiError,
+    } = await import("@/lib/razorpay.server");
     let order: Awaited<ReturnType<typeof createRazorpayOrder>>;
+    let orderError: unknown;
     try {
       order = await createRazorpayOrder({
         amount: Number(registration.amount_minor),
@@ -595,7 +600,8 @@ export const createEventPaymentOrder = createServerFn({ method: "POST" })
       ) {
         throw new Error("PAYMENT_ORDER_DETAILS_MISMATCH");
       }
-    } catch {
+    } catch (error) {
+      orderError = error;
       // The create request may have reached Razorpay even when the response
       // was lost (timeout, connection reset, or a duplicate-receipt error).
       // Look up the unique receipt before marking this attempt failed. This
@@ -633,13 +639,17 @@ export const createEventPaymentOrder = createServerFn({ method: "POST" })
         // Reconciliation will retry the receipt lookup if Razorpay or the
         // database is temporarily unavailable.
       }
+      const providerAuthFailed =
+        orderError instanceof RazorpayApiError && orderError.status === 401;
       await sql`
         UPDATE event_payment_attempts
-        SET status = 'failed', failure_code = 'ORDER_CREATION_FAILED',
-            failure_description = 'Razorpay order creation failed', updated_at = NOW()
+        SET status = 'failed',
+            failure_code = ${providerAuthFailed ? "RAZORPAY_AUTH_FAILED" : "ORDER_CREATION_FAILED"},
+            failure_description = ${providerAuthFailed ? "Razorpay credentials are invalid or expired" : "Razorpay order creation failed"},
+            updated_at = NOW()
         WHERE id = ${attemptId} AND status = 'creating'
       `;
-      throw new Error("PAYMENT_ORDER_FAILED");
+      throw new Error(providerAuthFailed ? "PAYMENT_PROVIDER_AUTH_FAILED" : "PAYMENT_ORDER_FAILED");
     }
 
     // Persist the Razorpay order before returning it to the browser. A short
