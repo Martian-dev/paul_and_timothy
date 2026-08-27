@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useUser } from "@clerk/tanstack-react-start";
+import { SignOutButton, UserProfile, useUser } from "@clerk/tanstack-react-start";
 import { ArrowRight, CheckCircle2, Clock3, Receipt, ShieldCheck } from "lucide-react";
+import { AuthRuntimeBoundary } from "@/components/AuthRuntimeBoundary";
 import { getAccountRegistrations } from "@/lib/registrations";
 
 export const Route = createFileRoute("/account/")({
@@ -57,6 +58,33 @@ function AccountPage() {
         </div>
 
         <div className="space-y-8">
+          <section aria-labelledby="profile-heading">
+            <div className="mb-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-deep">
+                Profile
+              </p>
+              <h2 id="profile-heading" className="mt-2 font-serif text-2xl font-bold text-primary">
+                Personal details
+              </h2>
+              <p className="mt-2 max-w-2xl text-muted-foreground">
+                Update your name, email, password, and other account details.
+              </p>
+            </div>
+            <AuthRuntimeBoundary boundary="account_profile" fallback={null}>
+              <UserProfile />
+            </AuthRuntimeBoundary>
+            <div className="mt-4 flex justify-end">
+              <SignOutButton redirectUrl="/">
+                <button
+                  type="button"
+                  className="rounded-full border border-border/70 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  Sign out
+                </button>
+              </SignOutButton>
+            </div>
+          </section>
+
           <section aria-labelledby="registered-heading">
             <div className="mb-4 flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-teal-deep" />

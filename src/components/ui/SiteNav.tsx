@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Show, UserButton } from "@clerk/tanstack-react-start";
+import { Show } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import logoColored from "@/assets/logo_colored_text.webp";
@@ -99,7 +99,7 @@ function AuthNavControls({
       </Show>
       <Show when="signed-in" treatPendingAsSignedOut={false}>
         {mobile ? (
-          <div className="flex items-center gap-3 px-3 py-2.5">
+          <div className="px-3 py-2.5">
             <Link
               to="/account"
               onClick={onNavigate}
@@ -107,14 +107,12 @@ function AuthNavControls({
             >
               Your account
             </Link>
-            <UserButton />
           </div>
         ) : (
-          <div className="flex items-center gap-3">
+          <div>
             <Link to="/account" className="text-sm font-medium text-primary/80 hover:text-primary">
               Account
             </Link>
-            <UserButton showName />
           </div>
         )}
       </Show>
