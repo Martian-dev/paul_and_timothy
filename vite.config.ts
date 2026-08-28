@@ -27,5 +27,17 @@ export default defineConfig({
     server: { entry: "server" },
   },
   // Vercel is the production target; Lovable builds still force their own preset.
-  nitro: { preset: "vercel" },
+  nitro: {
+    preset: "vercel",
+    experimental: { tasks: true },
+    tasks: {
+      "razorpay:reconcile": {
+        handler: join(process.cwd(), "src/tasks/razorpay-reconcile.ts"),
+        description: "Reconcile unresolved Razorpay payment attempts",
+      },
+    },
+    scheduledTasks: {
+      "0 3 * * *": ["razorpay:reconcile"],
+    },
+  },
 });

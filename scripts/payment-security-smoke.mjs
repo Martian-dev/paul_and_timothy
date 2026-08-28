@@ -75,10 +75,16 @@ assert.deepEqual(orderRequestBody.notes, {
   payment_attempt_id: "attempt-smoke",
 });
 
-const vercelConfig = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
-assert.deepEqual(
-  vercelConfig.crons,
-  [{ path: "/api/razorpay/reconcile", schedule: "0 3 * * *" }],
+const viteConfig = fs.readFileSync("vite.config.ts", "utf8");
+assert.match(viteConfig, /experimental: \{ tasks: true \}/, "Nitro tasks must be enabled");
+assert.match(
+  viteConfig,
+  /handler: join\(process\.cwd\(\), "src\/tasks\/razorpay-reconcile\.ts"\)/,
+  "the Razorpay reconciliation task must be registered with Nitro",
+);
+assert.match(
+  viteConfig,
+  /scheduledTasks: \{[\s\S]*"0 3 \* \* \*": \["razorpay:reconcile"\]/,
   "the reconciliation fallback must stay within Vercel Hobby's once-daily cron limit",
 );
 

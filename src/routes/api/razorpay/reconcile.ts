@@ -9,7 +9,7 @@ function authorized(request: Request) {
   return request.headers.get("authorization") === `Bearer ${secret}`;
 }
 
-async function handleReconcile(request: Request) {
+export async function handleReconcile(request: Request) {
   if (!authorized(request)) return new Response("Unauthorized", { status: 401 });
   const sql = getDb();
   const attempts = (await sql`

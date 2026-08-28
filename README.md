@@ -54,11 +54,13 @@ webhook endpoints separately. The webhook endpoint is:
 POST /api/razorpay/webhook
 ```
 
-The reconciliation endpoint is scheduled once per day at 03:00 UTC on Vercel
-via `vercel.json`. This is intentionally a daily safety net so the project
-stays within Vercel Hobby's free-tier cron limit; Razorpay webhooks remain the
-primary near-real-time confirmation path. It can also be called by another
-trusted scheduler. It accepts an authenticated GET or POST request with
+The reconciliation job is registered through Nitro's Vercel-native
+`scheduledTasks` configuration in `vite.config.ts`. Nitro emits a Vercel Cron
+job that invokes `/_vercel/cron` once per day at 03:00 UTC. This is intentionally
+a daily safety net so the project stays within Vercel Hobby's free-tier cron
+limit; Razorpay webhooks remain the primary near-real-time confirmation path.
+The underlying reconciliation endpoint can also be called by another trusted
+scheduler. It accepts an authenticated GET or POST request with
 `Authorization: Bearer $CRON_SECRET`:
 
 Each run checks at most 25 payment attempts. Unresolved attempts remain in the
