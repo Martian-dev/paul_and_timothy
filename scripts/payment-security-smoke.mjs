@@ -76,6 +76,8 @@ assert.deepEqual(orderRequestBody.notes, {
 });
 
 const viteConfig = fs.readFileSync("vite.config.ts", "utf8");
+const vercelConfig = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+assert.equal(vercelConfig.framework, "tanstack-start", "Vercel must build this as a TanStack Start app");
 assert.match(viteConfig, /experimental: \{ tasks: true \}/, "Nitro tasks must be enabled");
 assert.match(
   viteConfig,
